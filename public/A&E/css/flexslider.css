@@ -100,13 +100,6 @@ html[xmlns] .slides {display: block;}
 
 
 
-.flex-control-nav li {margin-right:6px; display: inline-block; zoom: 1; *display: inline;}
-.flex-control-paging li a {width: 8px; height: 8px; display: block; background:none;cursor: pointer; text-indent: -9999px;border:2px solid #444444;
-	 -webkit-border-radius: 20px; -moz-border-radius: 20px; -o-border-radius: 20px; border-radius: 20px;	box-sizing:border-box;
-	-moz-box-sizing:border-box;}
-.flex-control-paging li a:hover { background:#444444;}
-.flex-control-paging li a.flex-active { position:relative;cursor: default; border:none; background:#444444;opacity:1;border:2px solid #444444
-	}
 
 /*
 .flexslider:hover .flex-next {opacity: 1; }

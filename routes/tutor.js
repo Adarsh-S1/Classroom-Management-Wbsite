@@ -10,11 +10,16 @@ const tutorLogin = (req, res,next) => {
 }
 
 router.get('/', tutorLogin, (req, res) => {
-  res.render('Tutor/tutor-home')
+  res.render('Tutor/tutor-home',{tutorfooter:true})
 
 });
 router.get('/login', (req, res) => {
-  res.render('Tutor/tutorlogin')
+  if (req.session.loggedTutorIn) {
+res.redirect('/')  } 
+else {
+    res.render('Tutor/tutorlogin')  
+  }
+
 });
 router.post('/login', (req, res) => {
   tutorHelpers.doTutorLogin(req.body).then((response) => {
@@ -27,7 +32,10 @@ router.post('/login', (req, res) => {
     }
   })
 });
-
+router.get('/tutorout',function(req,res){
+  req.session.destroy()
+  res.redirect('/tutor/login')
+})
 
 
 module.exports = router;

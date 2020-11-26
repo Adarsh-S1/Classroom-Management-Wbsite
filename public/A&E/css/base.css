@@ -89,10 +89,8 @@ embed,
 figure,
 figcaption,
 footer,
-header,
 hgroup,
 menu,
-nav,
 output,
 ruby,
 section,
@@ -108,17 +106,16 @@ video {
     font: inherit;
     vertical-align: baseline;
     text-decoration: none;
-}
+    
+} 
 article,
 aside,
 details,
 figcaption,
 figure,
 footer,
-header,
 hgroup,
 menu,
-nav,
 section {
     display: block;
 }
@@ -165,17 +162,13 @@ iframe {
     border: none;
     display: inline-block;
 }
-::-moz-selection {
-    background: #000000;
-    color: #ffffff;
-}
+
 /* End reset & basics (Inspired by E. Meyers) */
 /*Basic Styles*/
 
 body {
-    background: #111111;
     font-family: "Open Sans", "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
-    color: #cccccc;
+    
     margin: 0;
     font-size: 14px;
     font-weight: 400;
@@ -204,7 +197,6 @@ h3,
 h4,
 h5,
 h6,
-.header .logo,
 .hero-content p,
 p strong,
 li strong,
@@ -241,10 +233,12 @@ p span {
     display: block;
     position: relative;
     top: -4px;
+    
 }
 p span,
 li span {
     font-size: 13px;
+    
 }
 p,
 blockquote {
@@ -687,12 +681,8 @@ p a:after {
 .brd-bottom {
     border-bottom: 1px #444444 solid;
 }
-.bg-dark {
-    background: #141414;
-}
-.bg-black {
-    background: #000000;
-}
+
+
 .pd-0 {
     padding: 0 !important;
 }
@@ -707,7 +697,5 @@ a[href^="https://maps.google.com/maps"] {
 .gm-style-cc {
     display: none;
 }
-.gmnoprint div {
-    background: none !important;
-}
+
 /*End misc */
