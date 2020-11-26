@@ -10,7 +10,7 @@ const tutorLogin = (req, res,next) => {
 }
 
 router.get('/', tutorLogin, (req, res) => {
-  res.render('Tutor/tutor-home',{tutorfooter:true})
+  res.render('Tutor/tutor-home')
 
 });
 router.get('/login', (req, res) => {
