@@ -42,8 +42,14 @@ router.get('/students',tutorLogin,function(req,res){
 router.get('/profile',tutorLogin,function(req,res){
   res.render('Tutor/profile',{tutor:true})
 })
-router.get('/attendance',tutorLogin,function(req,res){
+router.get('/attendance',tutorLogin,(req,res)=>{
   res.render('Tutor/Attendance',{tutor:true})
+})
+router.get('/assignments',tutorLogin,(req,res)=>{
+  res.render('Tutor/assignment',{tutor:true})
+})
+router.get('/notes',tutorLogin,(req,res)=>{
+  res.render('Tutor/notes',{tutor:true})
 })
 
 module.exports = router;
