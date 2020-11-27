@@ -36,6 +36,14 @@ router.get('/tutorout',function(req,res){
   req.session.destroy()
   res.redirect('/tutor/login')
 })
-
+router.get('/students',tutorLogin,function(req,res){
+  res.render('Tutor/studtable',{tutor:true})
+})
+router.get('/profile',tutorLogin,function(req,res){
+  res.render('Tutor/profile',{tutor:true})
+})
+router.get('/attendance',tutorLogin,function(req,res){
+  res.render('Tutor/Attendance',{tutor:true})
+})
 
 module.exports = router;
