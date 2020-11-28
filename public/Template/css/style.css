@@ -23505,18 +23505,8 @@ header nav.header-fancy .menu .megamenu-content li.active > a {
 @media (max-width: 767px) {
   header nav.header-fancy.core-nav {
     top: 0px; } }
-.core-content .wrap-search-fullscreen .nav-container {
-  padding-top: 0;
-  padding-left: 0;
-  padding-right:0;
-  height: 100%; }
-  .core-content .wrap-search-fullscreen .nav-container > .container {
-    top: 40%;
-    position: absolute; }
-.core-content .wrap-search-fullscreen .close-search {
-  right: 40px;
-  top: 0;
-  padding: 15px 0; }
+
+
 
 .header-fancy-topbar .topbar {
   border-bottom: 0px solid rgba(255, 255, 255, 0.1);
@@ -28230,7 +28220,6 @@ input[type="color"] {
 .form-control {
   border-radius: 5px;
   box-shadow: none;
-  border-color: #f3f6f9;
   height: auto; }
   .form-control:focus {
     box-shadow: none; }
@@ -33531,7 +33520,7 @@ button.btn.dropdown-toggle:after {
       background-color: rgba(0, 0, 0, 0);
       padding: 10px 0;
       border-width: 0 0 2px 0;
-      border-color: #f3f6f9; }
+       }
     .widget.courses-search-bx .input-group label {
       font-size: 1rem;
       font-weight: 400;
