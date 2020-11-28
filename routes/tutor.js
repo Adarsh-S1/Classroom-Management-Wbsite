@@ -18,18 +18,21 @@ router.get('/login', (req, res) => {
     res.redirect('/')
   }
   else {
-    res.render('Tutor/tutorlogin')
+    res.render('Tutor/tutorlogin',{"loginErr":req.session.tutorLoginErr})
+    req.session.tutorLoginErr=false
+
   }
 
 });
 router.post('/login', (req, res) => {
   tutorHelpers.doTutorLogin(req.body).then((response) => {
     if (response.status) {
-      req.session.loggedTutorIn = true
       req.session.tutor = response.tutor
+      req.session.loggedTutorIn = true
       res.redirect('/tutor')
     } else {
-      res.redirect('/tutor/login')
+      req.session.tutorLoginErr="Invalid Username or Password"
+      res.redirect('/tutor/login')  
     }
   })
 });
@@ -69,5 +72,8 @@ router.get('/quiz', tutorLogin, (req, res) => {
 })
 router.get('/studetails', tutorLogin, (req, res) => {
   res.render('Tutor/studetails', { tutor: true })
+})
+router.get('/editstud', tutorLogin, (req, res) => {
+  res.render('Tutor/Edit-Student', { tutor: true })
 })
 module.exports = router;
