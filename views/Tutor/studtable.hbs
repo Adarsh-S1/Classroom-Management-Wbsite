@@ -52,18 +52,18 @@
 											</tr>
 										</thead>
 										<tbody>
-
+                                        {{#each students}}
 											<tr>
 												<td>
-													<center><a style="color: black;" href="/tutor/studetails">1</a>
+													<center><a style="color: black;" href="/tutor/studetails">{{this.Rollno}}</a>
 													</center>
 												</td>
 												<td>
-													<center><a style="color: black;" href="/tutor/studetails">Name</a>
+													<center><a style="color: black;" href="/tutor/studetails">{{this.Name}}</a>
 													</center>
 												</td>
 												<td>
-													<center><a href="/tutor/editstud"><img
+													<center><a href="/tutor/editstud/{{this._id}}"><img
 															src="../Template/icons/themify-icons/SVG/pencil-alt.svg"
 															alt="" srcset=""></a></center>
 												</td>
@@ -73,7 +73,7 @@
 													</center>
 												</td>
 											</tr>
-
+                                        {{/each}}
 										</tbody>
 									</table>
 								</div>

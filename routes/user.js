@@ -7,8 +7,13 @@ router.get('/',(req,res)=>{
 router.get('/login', (req, res) => {
   res.render('Student/login')
 })
-router.get('/student', (req, res) => {
-
+router.get('/otplogin', (req, res) => {
+  res.render('Student/otp-login')
 })
-
+router.get('/otpnumber', (req, res) => {
+  res.render('Student/otp-number')
+})
+router.get('/student', (req, res) => {
+  res.render('Student/Stud-home')
+})
 module.exports = router;

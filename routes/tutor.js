@@ -41,7 +41,9 @@ router.get('/tutorout', function (req, res) {
   res.redirect('/tutor/login')
 })
 router.get('/students', tutorLogin, function (req, res) {
-  res.render('Tutor/studtable', { tutor: true })
+  tutorHelpers.getAllStudents().then((students)=>{
+    res.render('Tutor/studtable', { tutor: true,students })
+  })
 })
 router.get('/profile', tutorLogin, function (req, res) {
   res.render('Tutor/profile', { tutor: true })
@@ -67,13 +69,40 @@ router.get('/photos', tutorLogin, (req, res) => {
 router.get('/addstudent', tutorLogin, (req, res) => {
   res.render('Tutor/add-student', { tutor: true })
 })
+router.post('/addstudent',(req,res)=>{
+  tutorHelpers.addStudent(req.body,(id)=>{
+   let image=req.files.Image
+   console.log(req.body,"-------------BODY------------"); 
+    console.log(id,"---------ID---------"); 
+    image.mv('./public/student-images/'+id+'.jpg',(err)=>{
+    if(!err){
+      res.redirect('/tutor/addstudent')
+     }else{
+       console.log(err);
+     }
+   })
+  })
+})
 router.get('/quiz', tutorLogin, (req, res) => {
   res.render('Tutor/Quiz', { tutor: true })
 })
 router.get('/studetails', tutorLogin, (req, res) => {
   res.render('Tutor/studetails', { tutor: true })
 })
-router.get('/editstud', tutorLogin, (req, res) => {
-  res.render('Tutor/Edit-Student', { tutor: true })
+router.get('/editstud/:id', tutorLogin, async(req, res) => {
+  let student=await tutorHelpers.getStudentDetails(req.params.id)
+  res.render('Tutor/Edit-Student', { tutor: true,student })
 })
+router.post('/editstud/:id',(req,res)=>{
+  let id=req.params.id
+  console.log(req.body);
+  tutorHelpers.updateStudDetails(req.params.id,req.body).then(()=>{
+    res.redirect('/tutor/students')
+    if(req.files.Image)
+    {
+    let image=req.files.Image
+    image.mv('./public/student-images/'+id+'.jpg')
+    }
+  })
+}) 
 module.exports = router;
