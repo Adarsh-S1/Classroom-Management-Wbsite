@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+const userHelpers = require('../helpers/studentHelpers');
 const tutorHelpers = require('../helpers/tutorHelpers');
 const tutorLogin = (req, res, next) => {
   if (req.session.loggedTutorIn) {
@@ -10,8 +11,9 @@ const tutorLogin = (req, res, next) => {
 }
 
 router.get('/', tutorLogin, (req, res) => {
-  res.render('Tutor/tutor-home')
-
+  tutorHelpers.tutorProfileDetails().then((teacher)=>{
+  res.render('Tutor/tutor-home',{teacher})
+  })
 });
 router.get('/login', (req, res) => {
   if (req.session.loggedTutorIn) {
@@ -46,8 +48,34 @@ router.get('/students', tutorLogin, function (req, res) {
   })
 })
 router.get('/profile', tutorLogin, function (req, res) {
-  res.render('Tutor/profile', { tutor: true })
+  tutorHelpers.tutorProfileDetails().then((teacher)=>{
+    res.render('Tutor/profile', { tutor: true,teacher})
+  })
 })
+router.post('/profile',(req,res)=>{
+  tutorHelpers.tutorProfile(req.body,(id)=>{
+   let image=req.files.Tutimage
+    image.mv('./public/Tutor-image/'+id+'.jpg',(err)=>{
+    if(!err){
+      res.redirect('/tutor/profile')
+     }else{
+       console.log(err);
+     }
+   })
+  })
+}) 
+router.post('/editutor/:id',tutorLogin,(req,res)=>{
+  let id=req.params.id
+  console.log(req.body,"-----------------------------------------------------------------------------------------------");
+  tutorHelpers.updateTutDetails(req.params.id,req.body).then(()=>{
+    res.redirect('/tutor/profile')
+    if(req.files.Image)
+    {
+    let image=req.files.Image
+    image.mv('./public/Tutor-image/'+id+'.jpg')
+    }
+  })
+}) 
 router.get('/attendance', tutorLogin, (req, res) => {
   res.render('Tutor/Attendance', { tutor: true })
 })
@@ -72,8 +100,6 @@ router.get('/addstudent', tutorLogin, (req, res) => {
 router.post('/addstudent',(req,res)=>{
   tutorHelpers.addStudent(req.body,(id)=>{
    let image=req.files.Image
-   console.log(req.body,"-------------BODY------------"); 
-    console.log(id,"---------ID---------"); 
     image.mv('./public/student-images/'+id+'.jpg',(err)=>{
     if(!err){
       res.redirect('/tutor/addstudent')
@@ -93,7 +119,7 @@ router.get('/editstud/:id', tutorLogin, async(req, res) => {
   let student=await tutorHelpers.getStudentDetails(req.params.id)
   res.render('Tutor/Edit-Student', { tutor: true,student })
 })
-router.post('/editstud/:id',(req,res)=>{
+router.post('/editstud/:id',tutorLogin,(req,res)=>{
   let id=req.params.id
   console.log(req.body);
   tutorHelpers.updateStudDetails(req.params.id,req.body).then(()=>{
@@ -105,4 +131,10 @@ router.post('/editstud/:id',(req,res)=>{
     }
   })
 }) 
+router.get('/delete-student/:id',tutorLogin,(req,res)=>{
+  let studId=req.params.id
+  tutorHelpers.deleteStudent(studId).then((response)=>{
+    res.redirect('/tutor/students')
+  })
+  })
 module.exports = router;

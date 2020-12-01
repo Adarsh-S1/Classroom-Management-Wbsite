@@ -25,7 +25,8 @@ module.exports = {
       }
     })
   },
-  addStudent: (student, callback) => {
+  addStudent: async(student, callback) => {
+    student.Password = await bcrypt.hash(student.Password, 10)
     db.get().collection('student').insertOne(student).then((data) => {
       callback(data.ops[0]._id)
     })
@@ -54,6 +55,43 @@ module.exports = {
             Phone:studDetails.Phone,
             Email:studDetails.Email,
             Address:studDetails.Address,
+          }
+        }).then((response) => {
+          resolve()
+        })
+    })
+  },
+  deleteStudent: (studId) => {
+    return new Promise((resolve, reject) => {
+      db.get().collection(collection.STUDENT_COLLECTION).removeOne({ _id: objectId(studId) }).then((response) => {
+        console.log(response);
+        resolve(response)
+      })
+    })
+  },
+  tutorProfile: (tutor, callback) => {
+    db.get().collection(collection.TUTOR_PROFILE_COLLECTION).insertOne(tutor).then((data) => {
+      callback(data.ops[0]._id)
+    })
+  },
+  tutorProfileDetails: () => {
+    return new Promise(async (resolve, reject) => {
+      let teacher = await db.get().collection(collection.TUTOR_PROFILE_COLLECTION).findOne()
+      resolve(teacher)
+    })
+  },
+  updateTutDetails: (tutId, tutDetails) => {
+    return new Promise((resolve, reject) => {
+      db.get().collection(collection.TUTOR_PROFILE_COLLECTION)
+        .updateOne({ _id: objectId(tutId) }, {
+          $set: {
+            Firstname: tutDetails.Firstname,
+            Lastname: tutDetails.Lastname,
+            Job: tutDetails.Job,            
+            Pin: tutDetails.Pin,
+            Phone:tutDetails.Phone,
+            Email:tutDetails.Email,
+            Address:tutDetails.Address,
           }
         }).then((response) => {
           resolve()
