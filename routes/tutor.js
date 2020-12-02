@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-const userHelpers = require('../helpers/studentHelpers');
+const studentHelpers = require('../helpers/studentHelpers');
 const tutorHelpers = require('../helpers/tutorHelpers');
 const tutorLogin = (req, res, next) => {
   if (req.session.loggedTutorIn) {
@@ -28,6 +28,7 @@ router.get('/login', (req, res) => {
 });
 router.post('/login', (req, res) => {
   tutorHelpers.doTutorLogin(req.body).then((response) => {
+    console.log(req.body);
     if (response.status) {
       req.session.tutor = response.tutor
       req.session.loggedTutorIn = true

@@ -9,7 +9,7 @@ module.exports = {
     return new Promise(async (resolve, reject) => {
       let student = await db.get().collection(collection.STUDENT_COLLECTION).findOne({ Username:studentDetails.Username })
       if (student) {
-        bcrypt.compare(studentDetails.Password, studentDetails.Password).then((status) => {
+        bcrypt.compare(studentDetails.Password, student.Password).then((status) => {
           if (status) {
             console.log("----------------------------Success-Student Login---------------------");
             response.student = student

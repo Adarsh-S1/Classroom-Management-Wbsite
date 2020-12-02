@@ -42,13 +42,13 @@
 										<p class="mb-0">Login in to continue</p>							
 									</div>
 									<div class="p-40">
-										<form action="https://www.multipurposethemes.com/admin/eduadmin-template/front-end/index.html" method="post">
+										<form action="/login" method="post">
 											<div class="form-group">
 												<div class="input-group mb-15">
 													<div class="input-group-prepend">
 														<span class="input-group-text bg-transparent"><img src="../Template/icons/themify-icons/SVG/user.svg" alt="" srcset=""></span>
 													</div>
-													<input type="text" class="form-control pl-15 bg-transparent" placeholder="Username">
+													<input type="text" class="form-control pl-15 bg-transparent" name="Username" placeholder="Username">
 												</div>
 											</div>
 											<div class="form-group">
@@ -56,10 +56,13 @@
 													<div class="input-group-prepend">
 														<span class="input-group-text  bg-transparent"><img src="../Template/icons/themify-icons/SVG/lock.svg" alt="" srcset=""></span>
 													</div>
-													<input type="password" class="form-control pl-15 bg-transparent" placeholder="Password">
+													<input type="password" class="form-control pl-15 bg-transparent" name="Password" placeholder="Password">
 												</div>
 											</div>
-
+{{#if loginErr}}
+                                                <br><br>
+                                           <p style="color: red;" class="error">{{loginErr}}</p>
+                                         {{/if}}
 												<!-- /.col -->
 		
 												<!-- /.col -->
