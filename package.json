@@ -22,5 +22,7 @@
     "objectid": "^3.2.1",
     "twilio": "^3.52.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "handlebars": "^4.7.6"
+  }
 }
