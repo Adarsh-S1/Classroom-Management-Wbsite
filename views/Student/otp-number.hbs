@@ -8,19 +8,13 @@
 
                 <div class="d-flex flex-row mt-4"><input type="tel" name="Phone" class="text-center form-control"></div>
                 {{#if otpErr}}
-                <br><br>
                 <p style="color: red;" class="error">{{otpErr}}</p>
                 {{/if}}
-                <center><button type="submit" class="mt-3 btn btn-success">Send Otp</button></center>
+                <center><button type="submit" class="mt-2 btn btn-success">Send Otp</button></center>
         </div>
     </div>
 </form>
 <style>
-    input::-webkit-outer-spin-button,
-    input::-webkit-inner-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-    }
 
     .card {
         width: 350px;
@@ -61,3 +55,6 @@
         cursor: pointer
     }
 </style>
+
+
+

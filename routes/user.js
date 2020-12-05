@@ -1,9 +1,10 @@
 var express = require('express');
 const studentHelpers = require('../helpers/studentHelpers');
 var router = express.Router();
+var request = require('request');
 const userHelpers = require('../helpers/studentHelpers');
 const tutorHelpers = require('../helpers/tutorHelpers');
-let studentOtpErr
+
 const studentLogin = (req, res, next) => {
   if (req.session.loggedstudentIn) {
     next()
@@ -27,11 +28,7 @@ router.get('/login', (req, res) => {
     req.session.studentLoginErr=false
   }
 });
- 
 
-router.get('/otplogin', (req, res) => {
-  res.render('Student/otp-login')
-})
 router.get('/otpnumber', (req, res) => {
   if (req.session.loggedstudentIn) {
     res.redirect('/student')
@@ -44,12 +41,54 @@ router.get('/otpnumber', (req, res) => {
 router.post('/otpnumber', (req, res) => {
   studentHelpers.phoneNoCheck(req.body).then((response)=>{
     if (response==true) {
+      var request = require('request');
+var options = {
+  'method': 'POST',
+  'url': 'https://d7networks.com/api/verifier/send',
+  'headers': {
+    'Authorization': 'Token a9a74e9b05a5aeeaf9f3f27e889e48ee0efc5f31'
+  },
+  formData: {
+    'mobile': req.body.Phone,
+    'sender_id': 'D7VERIFY',
+    'message': 'Your otp for classroom login is {code}',
+    'expiry': '900'
+  }
+};
+request(options, function (error, response) {
+  if (error) throw new Error(error);
+  console.log(response.body);
+});
+
       res.redirect('/otplogin')
     } else {
       req.session.studentOtpErr="This number is not registered in a account"
       res.redirect('/otpnumber')  
     }
   })
+})
+router.get('/otplogin', (req, res) => {
+  res.render('Student/otp-login')
+})
+router.post('/otplogin', (req, res) => {
+  studentHelpers.OtpCheck(req.body).then((response)=>{
+  var request = require('request');
+  var options = {
+    'method': 'POST',
+    'url': 'https://d7networks.com/api/verifier/verify',
+    'headers': {
+      'Authorization': 'Token a9a74e9b05a5aeeaf9f3f27e889e48ee0efc5f31'
+    },
+    formData: {
+      'otp_id': 'bfc55d2f-0b8f-4221-882b-62af58bf5b8a',
+      'otp_code': req.body.otp
+    }
+  };
+  request(options, function (error, response) {
+    if (error) throw new Error(error);
+    console.log(response.body);
+  });
+})
 })
 router.post('/login', (req, res) => {
   studentHelpers.doStudentLogin(req.body).then((response) => {

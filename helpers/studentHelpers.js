@@ -29,14 +29,22 @@ module.exports = {
     return new Promise(async (resolve, reject) => {
       let status
       let phone = await db.get().collection(collection.STUDENT_COLLECTION).findOne({ Phone:studentDetails.Phone })
-          if(phone){
+      console.log(studentDetails.Phone);    
+      if(phone){
            status=true
           }else{
            status=false
           }
           resolve(status)
         })
+  },
+  OtpCheck: (studentDetails) => {
+    return new Promise(async (resolve, reject) => {
+          resolve(studentDetails.otp)
+        })
   }
+
+
 
 
 }
