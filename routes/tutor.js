@@ -70,9 +70,9 @@ router.post('/editutor/:id',tutorLogin,(req,res)=>{
   console.log(req.body,"-----------------------------------------------------------------------------------------------");
   tutorHelpers.updateTutDetails(req.params.id,req.body).then(()=>{
     res.redirect('/tutor/profile')
-    if(req.files.Image)
+    if(req.files.Tutimage)
     {
-    let image=req.files.Image
+    let image=req.files.Tutimage
     image.mv('./public/Tutor-image/'+id+'.jpg')
     }
   })

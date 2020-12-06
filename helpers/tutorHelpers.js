@@ -55,6 +55,7 @@ module.exports = {
             Phone:studDetails.Phone,
             Email:studDetails.Email,
             Address:studDetails.Address,
+            Username:studDetails.Username
           }
         }).then((response) => {
           resolve()

@@ -5,7 +5,6 @@ var request = require('request');
 const userHelpers = require('../helpers/studentHelpers');
 const tutorHelpers = require('../helpers/tutorHelpers');
 var text
-var otplogin
 const studentLogin = (req, res, next) => {
   if (req.session.loggedstudentIn) {
     next()
@@ -18,10 +17,13 @@ router.get('/', (req, res) => {
   res.render('home')
 });
 router.get('/student', studentLogin, (req, res) => {
-  res.render('Student/Stud-home')
+  let stud=req.session.student
+  let studo=req.session.phone
+  console.log(studo,"studo---------------------------------------------------------");
+  res.render('Student/Stud-home',{stud,studo})
 })
 router.get('/login', (req, res) => {
-  if (req.session.loggedstudentIn || otplogin==true) {
+  if (req.session.loggedstudentIn) {
     res.redirect('/student')
   }
   else {
@@ -41,13 +43,14 @@ router.get('/otpnumber', (req, res) => {
 })
 router.post('/otpnumber', (req, res) => {
   studentHelpers.phoneNoCheck(req.body).then((response) => {
-    if (response == true) {
+    if (response.status == true) {
+      req.session.phone = response.phone
       var request = require('request');
       var options = {
         'method': 'POST',
         'url': 'https://d7networks.com/api/verifier/send',
         'headers': {
-          'Authorization': 'Token a9a74e9b05a5aeeaf9f3f27e889e48ee0efc5f31'
+          'Authorization': 'Token f66f1c31c8cd42263c609d933e96a6dfe81e5ccd'
         },
         formData: {
           'mobile': req.body.Phone,
@@ -82,7 +85,7 @@ router.post('/otplogin', (req, res) => {
       'method': 'POST',
       'url': 'https://d7networks.com/api/verifier/verify',
       'headers': {
-        'Authorization': 'Token a9a74e9b05a5aeeaf9f3f27e889e48ee0efc5f31'
+        'Authorization': 'Token f66f1c31c8cd42263c609d933e96a6dfe81e5ccd'
       },
       formData: {
         'otp_id': text,
@@ -97,7 +100,6 @@ router.post('/otplogin', (req, res) => {
       {
         res.redirect('/otplogin')
       }else{
-        otplogin=true
         req.session.loggedstudentIn = true
         res.redirect('/student')
       }
@@ -107,7 +109,7 @@ router.post('/otplogin', (req, res) => {
 })
 router.post('/login', (req, res) => {
   studentHelpers.doStudentLogin(req.body).then((response) => {
-    if (response.status || otplogin==true) {
+    if (response.status) {
       req.session.student = response.student
       req.session.loggedstudentIn = true
       res.redirect('/student')

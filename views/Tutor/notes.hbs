@@ -64,16 +64,62 @@
 													<div class="row">
 														<div class="col-md-12">
 															<div class="form-group">
-																<label>File</label>
-																<input type="file" class="form-control"
-																	placeholder="Company Name">
+																<label  style="margin-bottom: 12px;">File Type</label> <br>
+																<select onchange="fileType(this);">
+														     		<option>None</option>
+																	<option value="photo">Photo</option>
+																	<option value="document">Document</option>
+																	<option value="video">Video</option>
+																	<option value="youtube">Youtbe video</option>
+																</select>
+
+												<div  id="ifphoto" style="display: none;">
+													<div class="row">
+														<div class="col-md-12">
+															<div class="form-group">
+																<input style="margin-top:15px ;" type="file" id="file"
+																	onchange="return fileValidation()"
+																	class="form-control" placeholder="Company Name">
+															</div>
+														</div>
+													</div>
+												</div>
+												<div  id="ifdocument" style="display: none;">
+													<div class="row">
+														<div class="col-md-12">
+															<div class="form-group">
+																<input style="margin-top:15px ;" type="file" id="file"
+																	onchange="return fileValidation()"
+																	class="form-control" placeholder="Company Name">
+															</div>
+														</div>
+													</div>
+												</div>
+												<div  id="ifvideo" style="display: none;">
+													<div class="row">
+														<div class="col-md-12">
+															<div class="form-group">
+																<input style="margin-top:15px ;" type="file" id="file"
+																	onchange="return fileValidation()"
+																	class="form-control" placeholder="Company Name">
+															</div>
+														</div>
+													</div>
+												</div>
+																<div  id="ifyoutube" style="display: none;">
+													<div class="row">
+														<div class="col-md-12">
+															<div class="form-group">
+																<input style="margin-top: 15px;" type="text" class="form-control"
+																	placeholder="Youtube video link">
+															</div>
+														</div>
+													</div>
+												</div>
 															</div>
 														</div>
 
 													</div>
-
-
-
 													<button style="float: right;" type="submit" class="btn btn-success">
 														Upload <img style="margin-bottom: 2px;"
 															src="../Template/icons/themify-icons/SVG/upload.svg" alt=""
@@ -175,6 +221,29 @@
 
 	<!-- EduAdmin front end -->
 
-
+	<script>
+   function fileType(that) {
+    if (that.value == "photo") {
+        document.getElementById("ifphoto").style.display = "block";
+    } else {
+        document.getElementById("ifphoto").style.display = "none";
+    }
+	    if (that.value == "document") {
+        document.getElementById("ifdocument").style.display = "block";
+    } else {
+        document.getElementById("ifdocument").style.display = "none";
+    }
+		    if (that.value == "video") {
+        document.getElementById("ifvideo").style.display = "block";
+    } else {
+        document.getElementById("ifvideo").style.display = "none";
+    }
+		    if (that.value == "youtube") {
+        document.getElementById("ifyoutube").style.display = "block";
+    } else {
+        document.getElementById("ifyoutube").style.display = "none";
+    }
+}
+	</script>
 
 </body>

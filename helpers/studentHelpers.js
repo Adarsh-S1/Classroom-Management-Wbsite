@@ -29,9 +29,10 @@ module.exports = {
     return new Promise(async (resolve, reject) => {
       let status
       let phone = await db.get().collection(collection.STUDENT_COLLECTION).findOne({ Phone:studentDetails.Phone })
-      console.log(studentDetails.Phone);    
       if(phone){
-           status=true
+        response.phone = phone
+        response.status=true
+           resolve(response)
           }else{
            status=false
           }
