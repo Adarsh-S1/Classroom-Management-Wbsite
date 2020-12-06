@@ -6,6 +6,7 @@ var objectId = require('mongodb').ObjectID
 
 module.exports = {
   doStudentLogin: (studentDetails) => {
+    let response={}
     return new Promise(async (resolve, reject) => {
       let student = await db.get().collection(collection.STUDENT_COLLECTION).findOne({ Username:studentDetails.Username })
       if (student) {
