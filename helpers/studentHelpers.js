@@ -46,9 +46,5 @@ module.exports = {
           resolve(studentDetails.otp)
         })
   }
-
-
-
-
 }
 

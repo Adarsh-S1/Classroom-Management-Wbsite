@@ -73,7 +73,7 @@ router.post('/otpnumber', (req, res) => {
 })
 router.get('/otplogin', (req, res) => {
   if (req.session.loggedstudentIn) {
-    res.redirect('/student')
+    res.redirect('/')
   }
   else {
     res.render('Student/otp-login',{ "otpInvalid": req.session.studentOtpInvalid })

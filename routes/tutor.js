@@ -28,7 +28,6 @@ router.get('/login', (req, res) => {
 });
 router.post('/login', (req, res) => {
   tutorHelpers.doTutorLogin(req.body).then((response) => {
-    console.log(req.body);
     if (response.status) {
       req.session.tutor = response.tutor
       req.session.loggedTutorIn = true
@@ -67,7 +66,6 @@ router.post('/profile',(req,res)=>{
 }) 
 router.post('/editutor/:id',tutorLogin,(req,res)=>{
   let id=req.params.id
-  console.log(req.body,"-----------------------------------------------------------------------------------------------");
   tutorHelpers.updateTutDetails(req.params.id,req.body).then(()=>{
     res.redirect('/tutor/profile')
     if(req.files.Tutimage)
@@ -85,6 +83,72 @@ router.get('/assignments', tutorLogin, (req, res) => {
 })
 router.get('/notes', tutorLogin, (req, res) => {
   res.render('Tutor/notes', { tutor: true })
+})
+router.post('/notes',(req,res)=>{
+  tutorHelpers.addNotes(req.body,(id)=>{
+    var filetype = req.files.file.name.substring(req.files.file.name.length - 3, req.files.file.name.length);
+    console.log(filetype,"___________________________");
+     if(filetype=="jpg"){
+      let image=req.files.file
+      image.mv('./public/Notes/'+id+'.jpg',(err)=>{
+      if(!err){
+        res.redirect('/tutor/notes')
+       }else{
+         console.log(err);
+       }
+     })
+     }
+     if(filetype=="pdf"){
+      let image=req.files.file
+      image.mv('./public/Notes/'+id+'.pdf',(err)=>{
+      if(!err){
+        res.redirect('/tutor/notes')
+       }else{
+         console.log(err);
+       }
+     })
+     }
+     if(filetype=="png"){
+      let image=req.files.file
+      image.mv('./public/Notes/'+id+'.png',(err)=>{
+      if(!err){
+        res.redirect('/tutor/notes')
+       }else{
+         console.log(err);
+       }
+     })
+     }
+     if(filetype=="mp4"){
+      let image=req.files.file
+      image.mv('./public/Notes/'+id+'.mp4',(err)=>{
+      if(!err){
+        res.redirect('/tutor/notes')
+       }else{
+         console.log(err);
+       }
+     })
+     }
+     if(filetype=="doc"){
+      let image=req.files.file
+      image.mv('./public/Notes/'+id+'.doc',(err)=>{
+      if(!err){
+        res.redirect('/tutor/notes')
+       }else{
+         console.log(err);
+       }
+     })
+     }
+     if(filetype=="docx"){
+      let image=req.files.file
+      image.mv('./public/Notes/'+id+'.docx',(err)=>{
+      if(!err){
+        res.redirect('/tutor/notes')
+       }else{
+         console.log(err);
+       }
+     })
+     }
+  })
 })
 router.get('/announcement', tutorLogin, (req, res) => {
   res.render('Tutor/announcement', { tutor: true })
@@ -122,7 +186,6 @@ router.get('/editstud/:id', tutorLogin, async(req, res) => {
 })
 router.post('/editstud/:id',tutorLogin,(req,res)=>{
   let id=req.params.id
-  console.log(req.body);
   tutorHelpers.updateStudDetails(req.params.id,req.body).then(()=>{
     res.redirect('/tutor/students')
     if(req.files.Image)

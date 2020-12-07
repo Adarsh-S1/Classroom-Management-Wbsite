@@ -99,5 +99,10 @@ module.exports = {
           resolve()
         })
     })
-  }
+  },
+  addNotes: async(notes, callback) => {
+    db.get().collection('notes').insertOne(notes).then((data) => {
+      callback(data.ops[0]._id)
+    })
+  },
 }
