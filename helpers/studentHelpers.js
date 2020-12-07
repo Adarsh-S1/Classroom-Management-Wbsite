@@ -28,6 +28,7 @@ module.exports = {
   },
   phoneNoCheck: (studentDetails) => {
     return new Promise(async (resolve, reject) => {
+      let response={}
       let status
       let phone = await db.get().collection(collection.STUDENT_COLLECTION).findOne({ Phone:studentDetails.Phone })
       if(phone){

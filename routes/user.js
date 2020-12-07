@@ -37,8 +37,8 @@ router.get('/otpnumber', (req, res) => {
     res.redirect('/student')
   }
   else {
-    res.render('Student/otp-number', { "otpErr": req.session.studentOtpErr })
-    req.session.studentOtpErr = false
+    res.render('Student/otp-number', { "otpErr": req.session.studentNumErr })
+    req.session.studentNumErr = false
   }
 })
 router.post('/otpnumber', (req, res) => {
@@ -50,10 +50,10 @@ router.post('/otpnumber', (req, res) => {
         'method': 'POST',
         'url': 'https://d7networks.com/api/verifier/send',
         'headers': {
-          'Authorization': 'Token f66f1c31c8cd42263c609d933e96a6dfe81e5ccd'
+          'Authorization': 'Token a9a74e9b05a5aeeaf9f3f27e889e48ee0efc5f31'
         },
         formData: {
-          'mobile': req.body.Phone,
+          'mobile': '91'+req.body.Phone,
           'sender_id': 'D7VERIFY',
           'message': 'Your otp for classroom login is {code}',
           'expiry': '900'
@@ -66,7 +66,7 @@ router.post('/otpnumber', (req, res) => {
       });
       res.redirect('/otplogin')
     } else {
-      req.session.studentOtpErr = "This number is not registered in a account"
+      req.session.studentNumErr = "This number is not registered in a account"
       res.redirect('/otpnumber')
     }
   })
@@ -76,7 +76,8 @@ router.get('/otplogin', (req, res) => {
     res.redirect('/student')
   }
   else {
-    res.render('Student/otp-login')
+    res.render('Student/otp-login',{ "otpInvalid": req.session.studentOtpInvalid })
+    req.session.studentOtpInvalid = false
   }
 })
 router.post('/otplogin', (req, res) => {
@@ -85,7 +86,7 @@ router.post('/otplogin', (req, res) => {
       'method': 'POST',
       'url': 'https://d7networks.com/api/verifier/verify',
       'headers': {
-        'Authorization': 'Token f66f1c31c8cd42263c609d933e96a6dfe81e5ccd'
+        'Authorization': 'Token a9a74e9b05a5aeeaf9f3f27e889e48ee0efc5f31'
       },
       formData: {
         'otp_id': text,
@@ -98,6 +99,7 @@ router.post('/otplogin', (req, res) => {
       var status = response.body.substring(11, 17);
       if(status=="failed")
       {
+        req.session.studentOtpInvalid = "Invalid OTP"
         res.redirect('/otplogin')
       }else{
         req.session.loggedstudentIn = true
