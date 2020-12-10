@@ -45,6 +45,30 @@ module.exports = {
     return new Promise(async (resolve, reject) => {
           resolve(studentDetails.otp)
         })
+  },
+  Notes: () => {
+    return new Promise(async (resolve, reject) => {
+      let doc = await db.get().collection(collection.NOTES_DOC_COLLECTION).find().toArray()
+      resolve(doc)
+    })
+  },
+  videoNotes: () => {
+    return new Promise(async (resolve, reject) => {
+      let video = await db.get().collection(collection.NOTES_VID_COLLECTION).find().toArray()
+      resolve(video)
+    })
+  },
+  utubeNotes: () => {
+    return new Promise(async (resolve, reject) => {
+      let uvideo = await db.get().collection(collection.NOTES_U_VID_COLLECTION).find().toArray()
+      resolve(uvideo)
+    })
+  },
+  viewAssign: () => {
+    return new Promise(async (resolve, reject) => {
+      let assign = await db.get().collection(collection.ASSIGNMENT_COLLECTION).find().toArray()
+      resolve(assign)
+    })
   }
 }
 

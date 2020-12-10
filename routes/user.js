@@ -19,7 +19,6 @@ router.get('/', (req, res) => {
 router.get('/student', studentLogin, (req, res) => {
   let stud=req.session.student
   let studo=req.session.phone
-  console.log(studo,"studo---------------------------------------------------------");
   res.render('Student/Stud-home',{stud,studo})
 })
 router.get('/login', (req, res) => {
@@ -62,7 +61,6 @@ router.post('/otpnumber', (req, res) => {
       request(options, function (error, response) {
         if (error) throw new Error(error);
         text = response.body.substring(11, 47);
-        console.log(response.body);
       });
       res.redirect('/otplogin')
     } else {
@@ -95,7 +93,6 @@ router.post('/otplogin', (req, res) => {
     };
     request(options, function (error, response) {
       if (error) throw new Error(error);
-      console.log(response.body);
       var status = response.body.substring(11, 17);
       if(status=="failed")
       {
@@ -105,7 +102,6 @@ router.post('/otplogin', (req, res) => {
         req.session.loggedstudentIn = true
         res.redirect('/student')
       }
-      console.log(status);
     });
   })
 })
@@ -124,5 +120,26 @@ router.post('/login', (req, res) => {
 router.get('/studentout', function (req, res) {
   req.session.destroy()
   res.redirect('/login')
+})
+router.get('/notes', studentLogin, (req, res) => {
+  studentHelpers.Notes().then((doc)=>{
+    res.render('Student/notes',{student:true,doc})
+    })
+})
+router.get('/video', studentLogin, (req, res) => {
+    studentHelpers.videoNotes().then((video)=>{
+      res.render('Student/video',{student:true,video})
+    })
+})
+router.get('/uvideo', studentLogin, (req, res) => {
+  studentHelpers.utubeNotes().then((uvideo)=>{
+    res.render('Student/Utubevid',{student:true,uvideo})
+    console.log(uvideo,"----------------------------");
+  })
+})
+router.get('/assignments', studentLogin, (req, res) => {
+  studentHelpers.viewAssign().then((assign)=>{
+    res.render('Student/assignments',{student:true,assign})
+  })
 })
 module.exports = router;

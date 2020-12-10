@@ -1,0 +1,112 @@
+<!-- Mirrored from www.multipurposethemes.com/admin/eduadmin-template/front-end/mydashboard.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 23 Nov 2020 08:29:37 GMT -->
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<link rel="icon" href="https://www.multipurposethemes.com/admin/eduadmin-template/images/favicon.ico">
+
+	<title>EduAdmin - Dashboard</title>
+	<link href="../Studtable/style.bundled1cf.css" rel="stylesheet" type="text/css" />
+ <link rel="stylesheet" type="text/css" href="../Studtemplate/assets/css/assets.css">
+    <link rel="stylesheet" type="text/css" href="../Studtemplate/assets/css/typography.css">
+    <link rel="stylesheet" type="text/css" href="../Studtemplate/assets/css/shortcodes/shortcodes.css">
+    <link rel="stylesheet" type="text/css" href="../Studtemplate/assets/css/style.css">
+    <link class="skin" rel="stylesheet" type="text/css" href="../Studtemplate/assets/css/color/color-4.css">
+	<!-- Vendors Style-->
+	<link rel="stylesheet" href="../Template/css/vendors_css.css">
+
+	<!-- Style-->
+	<link rel="stylesheet" href="../Template/css/style.css">
+
+</head>
+
+<body id="bg">
+
+<div class="page-wraper">
+        <div class="page-content bg-white">
+<div class="page-banner ovbl-dark"
+                style="background-image:url(../Studtemplate/assets/images/banner/banner3.jpg);">
+                <div class="container">
+                    <div class="page-banner-entry">
+                        <h1 class="text-white">NOTES</h1>
+                    </div>
+                </div>
+            </div>
+	<div  class="d-flex flex-column flex-root">
+
+		<div class="d-flex flex-row flex-column-fluid page">
+
+			<div class="d-flex flex-column flex-row-fluid" id="kt_wrapper">
+
+				<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+
+					<div class="d-flex flex-column-fluid">
+						<!--begin::Container-->
+
+						<div class="container">
+
+
+
+							<div style="margin-left: -20px;" class="card card-custom">
+								<div style="margin-left: -10px;" class="card-body">
+									<!--begin: Datatable-->
+									<table  class="table table-bordered table-hover table-checkable " id="kt_datatable">
+										<thead>
+
+											<tr>
+												<th>
+													<center>Topic</center>
+												</th>
+												<th>
+													<center>File</center>
+												</th>
+												<th>
+													<center>Submit</center>
+												</th>
+											</tr>
+										</thead>
+										<tbody>
+                                         {{#each assign}}
+											<tr>
+												<td>
+													<center>{{this.Topic}}</center>
+												</td>
+												<td>
+													<center><a href="../Assignments/{{this._id}}.pdf " download>
+  <center><img style="height: 40px; width: auto;" src="../Notes/open-document.png" alt="W3Schools" width="104" height="142"><br><small style="color: rgb(17, 165, 17);">Click to download the file</small></center></center>
+												</td>
+												<td>
+													<center> <a href=""><button class="btn btn-success">Submit</button></a>
+													</center>
+												</td>
+												<td hidden nowrap="nowrap"></td>
+											</tr>
+                                      {{/each}}
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+    </div>
+    </div>
+
+	<script src="../Template/js/vendors.min.js"></script>
+	<!-- Corenav Master JavaScript -->
+	<script src="../Template/corenav-master/coreNavigation-1.1.3.js"></script>
+	<script src="../Template/vendor_components/jquery-ui/jquery-ui.min.js"></script>
+
+	<!-- EduAdmin front end -->
+
+
+
+</body>
+

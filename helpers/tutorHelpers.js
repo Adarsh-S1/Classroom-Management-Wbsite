@@ -100,9 +100,38 @@ module.exports = {
         })
     })
   },
-  addNotes: async(notes, callback) => {
-    db.get().collection('notes').insertOne(notes).then((data) => {
+  docNotes: async(notes, callback) => {
+    db.get().collection(collection.NOTES_DOC_COLLECTION).insertOne(notes).then((data) => {
       callback(data.ops[0]._id)
     })
   },
+  vidNotes: async(notes, callback) => {
+    db.get().collection(collection.NOTES_VID_COLLECTION).insertOne(notes).then((data) => {
+      callback(data.ops[0]._id)
+    })
+  },
+  uvidNotes: async(notes, callback) => {
+    db.get().collection(collection.NOTES_U_VID_COLLECTION).insertOne(notes).then((data) => {
+      callback(data.ops[0]._id)
+    })
+  },
+  addAssign: async(assignments, callback) => {
+    db.get().collection(collection.ASSIGNMENT_COLLECTION).insertOne(assignments).then((data) => {
+      callback(data.ops[0]._id)
+    })
+  },
+  viewAssign: () => {
+    return new Promise(async (resolve, reject) => {
+      let assign = await db.get().collection(collection.ASSIGNMENT_COLLECTION).find().toArray()
+      resolve(assign)
+    })
+  },
+  deleteAssign: (assignId) => {
+    return new Promise((resolve, reject) => {
+      db.get().collection(collection.ASSIGNMENT_COLLECTION).removeOne({ _id: objectId(assignId) }).then((response) => {
+        console.log(response);
+        resolve(response)
+      })
+    })
+  }
 }

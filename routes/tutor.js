@@ -49,6 +49,7 @@ router.get('/students', tutorLogin, function (req, res) {
 })
 router.get('/profile', tutorLogin, function (req, res) {
   tutorHelpers.tutorProfileDetails().then((teacher)=>{
+    console.log(teacher);
     res.render('Tutor/profile', { tutor: true,teacher})
   })
 })
@@ -79,76 +80,31 @@ router.get('/attendance', tutorLogin, (req, res) => {
   res.render('Tutor/Attendance', { tutor: true })
 })
 router.get('/assignments', tutorLogin, (req, res) => {
-  res.render('Tutor/assignment', { tutor: true })
+  tutorHelpers.viewAssign().then((assign)=>{
+    res.render('Tutor/assignment', { tutor: true ,assign})
+  })
 })
+router.post('/assignments',(req,res)=>{
+  tutorHelpers.addAssign(req.body,(id)=>{
+    console.log(req.body);
+    let file=req.files.file
+     file.mv('./public/Assignments/'+id+'.pdf',(err)=>{
+     if(!err){
+       res.redirect('/tutor/assignments')
+      }else{
+        console.log(err);
+      }
+    })
+   })
+})
+router.get('/delete-assign/:id',tutorLogin,(req,res)=>{
+  let assignId=req.params.id
+  tutorHelpers.deleteAssign(assignId).then((response)=>{
+    res.redirect('/tutor/assignments')
+  })
+  })
 router.get('/notes', tutorLogin, (req, res) => {
   res.render('Tutor/notes', { tutor: true })
-})
-router.post('/notes',(req,res)=>{
-  tutorHelpers.addNotes(req.body,(id)=>{
-    var filetype = req.files.file.name.substring(req.files.file.name.length - 3, req.files.file.name.length);
-    console.log(filetype,"___________________________");
-     if(filetype=="jpg"){
-      let image=req.files.file
-      image.mv('./public/Notes/'+id+'.jpg',(err)=>{
-      if(!err){
-        res.redirect('/tutor/notes')
-       }else{
-         console.log(err);
-       }
-     })
-     }
-     if(filetype=="pdf"){
-      let image=req.files.file
-      image.mv('./public/Notes/'+id+'.pdf',(err)=>{
-      if(!err){
-        res.redirect('/tutor/notes')
-       }else{
-         console.log(err);
-       }
-     })
-     }
-     if(filetype=="png"){
-      let image=req.files.file
-      image.mv('./public/Notes/'+id+'.png',(err)=>{
-      if(!err){
-        res.redirect('/tutor/notes')
-       }else{
-         console.log(err);
-       }
-     })
-     }
-     if(filetype=="mp4"){
-      let image=req.files.file
-      image.mv('./public/Notes/'+id+'.mp4',(err)=>{
-      if(!err){
-        res.redirect('/tutor/notes')
-       }else{
-         console.log(err);
-       }
-     })
-     }
-     if(filetype=="doc"){
-      let image=req.files.file
-      image.mv('./public/Notes/'+id+'.doc',(err)=>{
-      if(!err){
-        res.redirect('/tutor/notes')
-       }else{
-         console.log(err);
-       }
-     })
-     }
-     if(filetype=="docx"){
-      let image=req.files.file
-      image.mv('./public/Notes/'+id+'.docx',(err)=>{
-      if(!err){
-        res.redirect('/tutor/notes')
-       }else{
-         console.log(err);
-       }
-     })
-     }
-  })
 })
 router.get('/announcement', tutorLogin, (req, res) => {
   res.render('Tutor/announcement', { tutor: true })
@@ -201,4 +157,45 @@ router.get('/delete-student/:id',tutorLogin,(req,res)=>{
     res.redirect('/tutor/students')
   })
   })
+  router.get('/doc', tutorLogin, (req, res) => {
+    res.render('Tutor/doc',{tutor: true})
+})
+router.post('/doc',(req,res)=>{
+  tutorHelpers.docNotes(req.body,(id)=>{
+    console.log(req.body);
+    let image=req.files.file
+     image.mv('./public/Notes/doc/'+id+'.pdf',(err)=>{
+     if(!err){
+       res.redirect('/tutor/notes')
+      }else{
+        console.log(err);
+      }
+    })
+   })
+})
+router.get('/vid', tutorLogin, (req, res) => {
+  res.render('Tutor/video',{tutor: true})
+})
+router.post('/vid',(req,res)=>{
+  tutorHelpers.vidNotes(req.body,(id)=>{
+    console.log(req.body);
+    let video=req.files.file
+     video.mv('./public/Notes/videos/'+id+'.mp4',(err)=>{
+     if(!err){
+       res.redirect('/tutor/notes')
+      }else{
+        console.log(err);
+      }
+    })
+   })
+})
+router.get('/uvid', tutorLogin, (req, res) => {
+  res.render('Tutor/Utubevid',{tutor: true})
+})
+router.post('/uvid',(req,res)=>{
+  tutorHelpers.uvidNotes(req.body).then((response)=>{
+    res.redirect('/tutor/notes')
+  })
+})
+
 module.exports = router;

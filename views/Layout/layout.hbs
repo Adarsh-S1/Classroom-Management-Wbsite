@@ -14,7 +14,10 @@
   {{>tutor-header}}
   <title>Tutor Panel</title>
   {{/if}}
-
+  {{#if student}}
+  {{>student-header}}
+  <title>E - Classroom</title>
+  {{/if}}
   {{{body}}}
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
