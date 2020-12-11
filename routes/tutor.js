@@ -132,8 +132,10 @@ router.post('/addstudent',(req,res)=>{
 router.get('/quiz', tutorLogin, (req, res) => {
   res.render('Tutor/Quiz', { tutor: true })
 })
-router.get('/studetails', tutorLogin, (req, res) => {
-  res.render('Tutor/studetails', { tutor: true })
+router.get('/studetails', tutorLogin, async(req, res) => {
+  let assignments=await tutorHelpers.getAssignments()
+  console.log(assignments,"--------------------------");
+  res.render('Tutor/studetails', {assignments, tutor: true })
 })
 router.get('/editstud/:id', tutorLogin, async(req, res) => {
   let student=await tutorHelpers.getStudentDetails(req.params.id)

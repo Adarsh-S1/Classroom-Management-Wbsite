@@ -222,14 +222,14 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-
+{{#each assignments}}
                                             <tr>
                                                 <td>
-                                                    <center>1</center>
+                                                    <center>{{this.topic.Topic}}</center>
                                                 </td>
                                                 <td>
-                                                    <center>File Name</center>
-                                                </td>
+<a href="../studentAssignment/{{this.students}}.pdf " download>
+  <center><img style="height: 50px; width: auto;" src="../Notes/open-document.png" alt="W3Schools" width="104" height="142"><br><small>Click to download the file</small></center>                                                </td>
                                                 <td style="width: 100px;">
                                                     <center>
                                                         <input type="number" class="form-control" placeholder="Mark"
@@ -249,7 +249,7 @@
                                                         </button></center>
                                                 </td>
                                             </tr>
-
+{{/each}}
                                         </tbody>
                                     </table>
                                 </div>

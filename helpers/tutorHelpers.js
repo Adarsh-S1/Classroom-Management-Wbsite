@@ -7,9 +7,9 @@ var objectId = require('mongodb').ObjectID
 
 module.exports = {
   doTutorLogin: (tutorData) => {
-    let response={}
+    let response = {}
     return new Promise(async (resolve, reject) => {
-      let tutor = await db.get().collection(collection.TUTOR_COLLECTION).findOne({ Email:tutorData.Email })
+      let tutor = await db.get().collection(collection.TUTOR_COLLECTION).findOne({ Email: tutorData.Email })
       if (tutor) {
         bcrypt.compare(tutorData.Password, tutor.Password).then((status) => {
           if (status) {
@@ -27,7 +27,7 @@ module.exports = {
       }
     })
   },
-  addStudent: async(student, callback) => {
+  addStudent: async (student, callback) => {
     student.Password = await bcrypt.hash(student.Password, 10)
     db.get().collection('student').insertOne(student).then((data) => {
       callback(data.ops[0]._id)
@@ -53,11 +53,11 @@ module.exports = {
           $set: {
             Name: studDetails.Name,
             Gender: studDetails.Gender,
-            Rollno:studDetails.Rollno,
-            Phone:studDetails.Phone,
-            Email:studDetails.Email,
-            Address:studDetails.Address,
-            Username:studDetails.Username
+            Rollno: studDetails.Rollno,
+            Phone: studDetails.Phone,
+            Email: studDetails.Email,
+            Address: studDetails.Address,
+            Username: studDetails.Username
           }
         }).then((response) => {
           resolve()
@@ -90,37 +90,37 @@ module.exports = {
           $set: {
             Firstname: tutDetails.Firstname,
             Lastname: tutDetails.Lastname,
-            Job: tutDetails.Job,            
+            Job: tutDetails.Job,
             Pin: tutDetails.Pin,
-            Phone:tutDetails.Phone,
-            Email:tutDetails.Email,
-            Address:tutDetails.Address,
+            Phone: tutDetails.Phone,
+            Email: tutDetails.Email,
+            Address: tutDetails.Address,
           }
         }).then((response) => {
           resolve()
         })
     })
   },
-  docNotes: async(notes, callback) => {
+  docNotes: async (notes, callback) => {
     db.get().collection(collection.NOTES_DOC_COLLECTION).insertOne(notes).then((data) => {
       callback(data.ops[0]._id)
     })
   },
-  vidNotes: async(notes, callback) => {
+  vidNotes: async (notes, callback) => {
     db.get().collection(collection.NOTES_VID_COLLECTION).insertOne(notes).then((data) => {
       callback(data.ops[0]._id)
     })
   },
-  uvidNotes: async(notes, callback) => {
+  uvidNotes: async (notes, callback) => {
     db.get().collection(collection.NOTES_U_VID_COLLECTION).insertOne(notes).then((data) => {
       callback(data.ops[0]._id)
     })
   },
-  addAssign:(topic) => {
-    return new Promise((resolve,reject)=>{
-      let assignments={
+  addAssign: (topic) => {
+    return new Promise((resolve, reject) => {
+      let assignments = {
         topic,
-        students:[]
+        students: []
       }
       db.get().collection(collection.ASSIGNMENT_COLLECTION).insertOne(assignments).then((response) => {
         resolve(response.ops[0]._id)
@@ -139,6 +139,17 @@ module.exports = {
         console.log(response);
         resolve(response)
       })
+    })
+  },
+  getAssignments: () => {
+    return new Promise(async (resolve, reject) => {
+      let assignments = await db.get().collection(collection.ASSIGNMENT_COLLECTION).aggregate([
+        {
+          $unwind:'$students'
+        }
+      ]).toArray()
+      console.log(assignments,"__________________________________________");
+      resolve(assignments)
     })
   }
 }
