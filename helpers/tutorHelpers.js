@@ -2,6 +2,7 @@ var db = require('../config/connection')
 var collection = require('../config/collections')
 const { response } = require('express')
 const bcrypt = require('bcrypt')
+const { log } = require('handlebars')
 var objectId = require('mongodb').ObjectID
 
 module.exports = {
@@ -115,9 +116,15 @@ module.exports = {
       callback(data.ops[0]._id)
     })
   },
-  addAssign: async(assignments, callback) => {
-    db.get().collection(collection.ASSIGNMENT_COLLECTION).insertOne(assignments).then((data) => {
-      callback(data.ops[0]._id)
+  addAssign:(topic) => {
+    return new Promise((resolve,reject)=>{
+      let assignments={
+        topic,
+        students:[]
+      }
+      db.get().collection(collection.ASSIGNMENT_COLLECTION).insertOne(assignments).then((response) => {
+        resolve(response.ops[0]._id)
+      })
     })
   },
   viewAssign: () => {

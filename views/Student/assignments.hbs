@@ -1,5 +1,3 @@
-<!-- Mirrored from www.multipurposethemes.com/admin/eduadmin-template/front-end/mydashboard.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 23 Nov 2020 08:29:37 GMT -->
-
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,7 +6,6 @@
 	<meta name="author" content="">
 	<link rel="icon" href="https://www.multipurposethemes.com/admin/eduadmin-template/images/favicon.ico">
 
-	<title>EduAdmin - Dashboard</title>
 	<link href="../Studtable/style.bundled1cf.css" rel="stylesheet" type="text/css" />
  <link rel="stylesheet" type="text/css" href="../Studtemplate/assets/css/assets.css">
     <link rel="stylesheet" type="text/css" href="../Studtemplate/assets/css/typography.css">
@@ -72,14 +69,14 @@
                                          {{#each assign}}
 											<tr>
 												<td>
-													<center>{{this.Topic}}</center>
+													<center>{{this.topic.Topic}}</center>
 												</td>
 												<td>
 													<center><a href="../Assignments/{{this._id}}.pdf " download>
   <center><img style="height: 40px; width: auto;" src="../Notes/open-document.png" alt="W3Schools" width="104" height="142"><br><small style="color: rgb(17, 165, 17);">Click to download the file</small></center></center>
 												</td>
 												<td>
-													<center> <a href=""><button class="btn btn-success">Submit</button></a>
+													<center> <a href="/assignments/{{this._id}}"><button class="btn btn-success">Submit</button></a>
 													</center>
 												</td>
 												<td hidden nowrap="nowrap"></td>

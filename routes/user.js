@@ -134,7 +134,6 @@ router.get('/video', studentLogin, (req, res) => {
 router.get('/uvideo', studentLogin, (req, res) => {
   studentHelpers.utubeNotes().then((uvideo)=>{
     res.render('Student/Utubevid',{student:true,uvideo})
-    console.log(uvideo,"----------------------------");
   })
 })
 router.get('/assignments', studentLogin, (req, res) => {
@@ -142,4 +141,23 @@ router.get('/assignments', studentLogin, (req, res) => {
     res.render('Student/assignments',{student:true,assign})
   })
 })
+router.get('/assignments/:id',studentLogin,(req,res)=>{
+  let assignId=req.params.id
+  studentHelpers.subAssign(assignId).then((response)=>{
+    res.render('Student/subassign',{student:true,assignId})
+  })
+  }),
+  router.post('/assignments/:id',(req,res)=>{
+    studentHelpers.submitAssignment(req.params.id).then((response)=>{
+      console.log(response,"_______________________");
+      let file=req.files.file
+      file.mv('./public/studentAssignment/'+response+'.pdf',(err)=>{
+      if(!err){
+        res.redirect('/assignments')
+       }else{
+         console.log(err);
+       }
+     })
+    })
+  })
 module.exports = router;

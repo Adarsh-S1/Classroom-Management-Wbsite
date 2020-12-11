@@ -85,10 +85,9 @@ router.get('/assignments', tutorLogin, (req, res) => {
   })
 })
 router.post('/assignments',(req,res)=>{
-  tutorHelpers.addAssign(req.body,(id)=>{
-    console.log(req.body);
+  tutorHelpers.addAssign(req.body).then((response)=>{    
     let file=req.files.file
-     file.mv('./public/Assignments/'+id+'.pdf',(err)=>{
+     file.mv('./public/Assignments/'+response+'.pdf',(err)=>{
      if(!err){
        res.redirect('/tutor/assignments')
       }else{

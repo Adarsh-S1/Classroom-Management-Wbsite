@@ -12,7 +12,6 @@ module.exports = {
       if (student) {
         bcrypt.compare(studentDetails.Password, student.Password).then((status) => {
           if (status) {
-            console.log("----------------------------Success-Student Login---------------------");
             response.student = student
             response.status = true
             resolve(response)
@@ -68,6 +67,26 @@ module.exports = {
     return new Promise(async (resolve, reject) => {
       let assign = await db.get().collection(collection.ASSIGNMENT_COLLECTION).find().toArray()
       resolve(assign)
+    })
+  },
+  subAssign: (assignId) => {
+    return new Promise((resolve, reject) => {
+     db.get().collection(collection.ASSIGNMENT_COLLECTION).findOne({ _id: objectId(assignId) })
+     resolve(response)
+    })
+  },
+  submitAssignment:(assignId,stuassign) => {
+    let id=objectId(stuassign)
+    return new Promise((resolve,reject)=>{
+      if(db.get().collection(collection.ASSIGNMENT_COLLECTION).findOne({ _id: objectId(assignId) }))
+      {
+        db.get().collection(collection.ASSIGNMENT_COLLECTION).updateOne({ _id: objectId(assignId) },
+         {
+           $push:{students:id}
+         }).then((response)=>{
+          resolve(id)
+         })
+        }
     })
   }
 }
