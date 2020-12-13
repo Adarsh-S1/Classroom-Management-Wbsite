@@ -55,11 +55,11 @@
                                         {{#each students}}
 											<tr>
 												<td>
-													<center><a style="color: black;" href="/tutor/studetails">{{this.Rollno}}</a>
+													<center>{{this.student.Rollno}}
 													</center>
 												</td>
 												<td>
-													<center><a style="color: black;" href="/tutor/studetails">{{this.Name}}</a>
+													<center><a style="color: black;" href="/tutor/studetails/{{this._id}}">{{this.student.Name}}</a>
 													</center>
 												</td>
 												<td>

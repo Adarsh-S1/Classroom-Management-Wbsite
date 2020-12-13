@@ -3,6 +3,7 @@ var collection = require('../config/collections')
 const { response } = require('express')
 const bcrypt = require('bcrypt')
 const { log } = require('handlebars')
+const { FALSE, TRUE } = require('node-sass')
 var objectId = require('mongodb').ObjectID
 
 module.exports = {
@@ -28,8 +29,13 @@ module.exports = {
     })
   },
   addStudent: async (student, callback) => {
+    let assignments = {
+      student,
+      assignments: [],
+      topic:[]
+    }
     student.Password = await bcrypt.hash(student.Password, 10)
-    db.get().collection('student').insertOne(student).then((data) => {
+    db.get().collection('student').insertOne(assignments).then((data) => {
       callback(data.ops[0]._id)
     })
   },
@@ -141,15 +147,31 @@ module.exports = {
       })
     })
   },
-  getAssignments: () => {
+  getAssignments: (studId) => {
     return new Promise(async (resolve, reject) => {
-      let assignments = await db.get().collection(collection.ASSIGNMENT_COLLECTION).aggregate([
+      let assignments = await db.get().collection(collection.STUDENT_COLLECTION).aggregate([
         {
-          $unwind:'$students'
+          $match:{_id:objectId(studId)}
+        },
+        {
+          $unwind:'$assignments',
+        },
+        {
+          $project:{
+            assignments:'$assignments',
+            topic:'$topic'
+          }
+        },
+        {
+          $lookup:{
+            from:collection.ASSIGNMENT_COLLECTION,
+            localField:'topic',
+            foreignField:'_id',
+            as:'assignmentid'
+          }
         }
       ]).toArray()
-      console.log(assignments,"__________________________________________");
-      resolve(assignments)
+        resolve(assignments)
     })
   }
 }

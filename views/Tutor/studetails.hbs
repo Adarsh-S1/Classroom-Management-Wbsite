@@ -11,11 +11,11 @@
     <title>EduAdmin - Dashboard</title>
 
     <!-- Vendors Style-->
-    <link rel="stylesheet" href="../Template/css/vendors_css.css">
-    <link href="../Studtable/style.bundled1cf.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="/Template/css/vendors_css.css">
+    <link href="/Studtable/style.bundled1cf.css" rel="stylesheet" type="text/css" />
 
     <!-- Style-->
-    <link rel="stylesheet" href="../Template/css/style.css">
+    <link rel="stylesheet" href="/Template/css/style.css">
 
 </head>
 
@@ -224,12 +224,14 @@
                                         <tbody>
 {{#each assignments}}
                                             <tr>
+                                                {{#each this.assignmentid}}
                                                 <td>
                                                     <center>{{this.topic.Topic}}</center>
                                                 </td>
+                                                {{/each}}
                                                 <td>
-<a href="../studentAssignment/{{this.students}}.pdf " download>
-  <center><img style="height: 50px; width: auto;" src="../Notes/open-document.png" alt="W3Schools" width="104" height="142"><br><small>Click to download the file</small></center>                                                </td>
+<a href="/studentAssignment/{{this.assignments}}.pdf " download>
+  <center><img style="height: 50px; width: auto;" src="/Notes/open-document.png" alt="W3Schools" width="104" height="142"><br><small>Click to download the file</small></center>                                                </td>
                                                 <td style="width: 100px;">
                                                     <center>
                                                         <input type="number" class="form-control" placeholder="Mark"

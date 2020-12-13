@@ -45,11 +45,13 @@
 								<div class="tab-pane fade show active" id="pills-edit" role="tabpanel" aria-labelledby="pills-edit-tab">
 									<div class="row">
 										<div class="col-12">
-											<form action="/assignments/{{assignId}}" method="POST" enctype="multipart/form-data" class="form">
+											<form action="/assignments/{{student._id}}" method="POST" enctype="multipart/form-data" class="form">
 												<div>
 													<h4 class="box-title text-primary"><i class="ti-user mr-15"></i>SUBMIT ASSIGNMENT</h4>
 													<hr class="my-15">
-				
+				                                    <div class="row">
+
+													</div>
 													<div class="row">
 													  <div class="col-md-12">
 														<div class="form-group">
@@ -59,7 +61,7 @@
 													  </div>
 
 													</div>
-
+		                                    
 
 
                                                <a href="/assignments/{{assignId}}"></a> <button  style="float: right;" type="submit" class="btn btn-success">

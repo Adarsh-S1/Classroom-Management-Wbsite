@@ -8,12 +8,14 @@ module.exports = {
   doStudentLogin: (studentDetails) => {
     let response={}
     return new Promise(async (resolve, reject) => {
-      let student = await db.get().collection(collection.STUDENT_COLLECTION).findOne({ Username:studentDetails.Username })
+      let student= await db.get().collection(collection.STUDENT_COLLECTION).findOne({"student.Username":studentDetails.Username})
+      console.log(student);
       if (student) {
-        bcrypt.compare(studentDetails.Password, student.Password).then((status) => {
+        bcrypt.compare(studentDetails.Password, student.student.Password).then((status) => {
           if (status) {
             response.student = student
             response.status = true
+            console.log(response.student,"-------------------------");
             resolve(response)
           } else {
             resolve({ status: false })
@@ -71,18 +73,19 @@ module.exports = {
   },
   subAssign: (assignId) => {
     return new Promise((resolve, reject) => {
-     db.get().collection(collection.ASSIGNMENT_COLLECTION).findOne({ _id: objectId(assignId) })
-     resolve(response)
+     db.get().collection(collection.ASSIGNMENT_COLLECTION).findOne({ _id: objectId(assignId) }).then((response)=>{
+      resolve(response)
+     })
     })
   },
-  submitAssignment:(assignId,stuassign) => {
+  submitAssignment:(studId,assignId,stuassign) => {
     let id=objectId(stuassign)
     return new Promise((resolve,reject)=>{
-      if(db.get().collection(collection.ASSIGNMENT_COLLECTION).findOne({ _id: objectId(assignId) }))
+      if(db.get().collection(collection.STUDENT_COLLECTION).findOne({ _id: objectId(studId) }))
       {
-        db.get().collection(collection.ASSIGNMENT_COLLECTION).updateOne({ _id: objectId(assignId) },
+        db.get().collection(collection.STUDENT_COLLECTION).updateOne({ _id: objectId(studId) },
          {
-           $push:{students:id}
+           $push:{topic:objectId(assignId),assignments:id}         
          }).then((response)=>{
           resolve(id)
          })

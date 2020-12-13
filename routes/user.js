@@ -5,6 +5,7 @@ var request = require('request');
 const userHelpers = require('../helpers/studentHelpers');
 const tutorHelpers = require('../helpers/tutorHelpers');
 var text
+let assignmentt
 const studentLogin = (req, res, next) => {
   if (req.session.loggedstudentIn) {
     next()
@@ -17,7 +18,7 @@ router.get('/', (req, res) => {
   res.render('home')
 });
 router.get('/student', studentLogin, (req, res) => {
-  let stud=req.session.student
+  let stud=req.session.student.student
   let studo=req.session.phone
   res.render('Student/Stud-home',{stud,studo})
 })
@@ -143,13 +144,15 @@ router.get('/assignments', studentLogin, (req, res) => {
 })
 router.get('/assignments/:id',studentLogin,(req,res)=>{
   let assignId=req.params.id
+  assignmentt=req.params.id
   studentHelpers.subAssign(assignId).then((response)=>{
-    res.render('Student/subassign',{student:true,assignId})
+    let topic=response.topic.Topic
+    res.render('Student/subassign',{topic,student:true,assignId,student:req.session.student})
   })
   }),
   router.post('/assignments/:id',(req,res)=>{
-    studentHelpers.submitAssignment(req.params.id).then((response)=>{
-      console.log(response,"_______________________");
+    console.log(assignmentt,")()()()()()()()()________________---------------------");
+    studentHelpers.submitAssignment(req.params.id,assignmentt).then((response)=>{
       let file=req.files.file
       file.mv('./public/studentAssignment/'+response+'.pdf',(err)=>{
       if(!err){
