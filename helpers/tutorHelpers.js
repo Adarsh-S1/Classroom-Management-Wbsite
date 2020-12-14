@@ -3,7 +3,6 @@ var collection = require('../config/collections')
 const { response } = require('express')
 const bcrypt = require('bcrypt')
 const { log } = require('handlebars')
-const { FALSE, TRUE } = require('node-sass')
 var objectId = require('mongodb').ObjectID
 
 module.exports = {
@@ -29,13 +28,8 @@ module.exports = {
     })
   },
   addStudent: async (student, callback) => {
-    let assignments = {
-      student,
-      assignments: [],
-      topic:[]
-    }
     student.Password = await bcrypt.hash(student.Password, 10)
-    db.get().collection('student').insertOne(assignments).then((data) => {
+    db.get().collection('student').insertOne(student).then((data) => {
       callback(data.ops[0]._id)
     })
   },
@@ -123,12 +117,13 @@ module.exports = {
     })
   },
   addAssign: (topic) => {
+
+    let assignmentObj = {
+    Topic:topic,
+    assignments:[]
+    }
     return new Promise((resolve, reject) => {
-      let assignments = {
-        topic,
-        students: []
-      }
-      db.get().collection(collection.ASSIGNMENT_COLLECTION).insertOne(assignments).then((response) => {
+      db.get().collection(collection.ASSIGNMENT_COLLECTION).insertOne(assignmentObj).then((response) => {
         resolve(response.ops[0]._id)
       })
     })
@@ -149,29 +144,25 @@ module.exports = {
   },
   getAssignments: (studId) => {
     return new Promise(async (resolve, reject) => {
-      let assignments = await db.get().collection(collection.STUDENT_COLLECTION).aggregate([
+      let assignments = await db.get().collection(collection.ASSIGNMENT_COLLECTION).aggregate([
         {
-          $match:{_id:objectId(studId)}
+          $match:{"assignments.student":objectId(studId)}
         },
         {
-          $unwind:'$assignments',
+          $unwind:'$assignments'
         },
         {
           $project:{
-            assignments:'$assignments',
-            topic:'$topic'
+            assignments:"$assignments",
+            topic:"$Topic"
           }
         },
         {
-          $lookup:{
-            from:collection.ASSIGNMENT_COLLECTION,
-            localField:'topic',
-            foreignField:'_id',
-            as:'assignmentid'
-          }
+          $match:{"assignments.student":objectId(studId)}
         }
       ]).toArray()
-        resolve(assignments)
+      console.log(assignments,"__________________________________________");
+      resolve(assignments)
     })
   }
 }

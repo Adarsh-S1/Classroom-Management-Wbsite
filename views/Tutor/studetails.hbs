@@ -224,13 +224,11 @@
                                         <tbody>
 {{#each assignments}}
                                             <tr>
-                                                {{#each this.assignmentid}}
                                                 <td>
                                                     <center>{{this.topic.Topic}}</center>
                                                 </td>
-                                                {{/each}}
                                                 <td>
-<a href="/studentAssignment/{{this.assignments}}.pdf " download>
+<a href="/studentAssignment/{{this.assignments.assignment}}.pdf " download>
   <center><img style="height: 50px; width: auto;" src="/Notes/open-document.png" alt="W3Schools" width="104" height="142"><br><small>Click to download the file</small></center>                                                </td>
                                                 <td style="width: 100px;">
                                                     <center>
@@ -271,10 +269,10 @@
 
 
     <!-- Vendor JS -->
-    <script src="../Template/js/vendors.min.js"></script>
+    <script src="/Template/js/vendors.min.js"></script>
     <!-- Corenav Master JavaScript -->
-    <script src="../Template/corenav-master/coreNavigation-1.1.3.js"></script>
-    <script src="../Template//vendor_components/jquery-ui/jquery-ui.min.js"></script>
+    <script src="/Template/corenav-master/coreNavigation-1.1.3.js"></script>
+    <script src="/Template/vendor_components/jquery-ui/jquery-ui.min.js"></script>
 
     <!-- EduAdmin front end -->
 
@@ -282,4 +280,3 @@
 
 </body>
 
-<!-- Mirrored from www.multipurposethemes.com/admin/eduadmin-template/front-end/mydashboard.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 23 Nov 2020 08:30:47 GMT -->

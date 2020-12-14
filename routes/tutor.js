@@ -119,7 +119,6 @@ router.get('/addstudent', tutorLogin, (req, res) => {
 })
 router.post('/addstudent',(req,res)=>{
   tutorHelpers.addStudent(req.body,(id)=>{
-    console.log(req.body);
    let image=req.files.Image
     image.mv('./public/student-images/'+id+'.jpg',(err)=>{
     if(!err){
@@ -135,8 +134,7 @@ router.get('/quiz', tutorLogin, (req, res) => {
 })
 router.get('/studetails/:id', tutorLogin, async(req, res) => {
   let assignments=await tutorHelpers.getAssignments(req.params.id)
-  console.log(assignments);
-    res.render('Tutor/studetails', {tutor: true,assignments })
+  res.render('Tutor/studetails', {assignments, tutor: true })
 })
 router.get('/editstud/:id', tutorLogin, async(req, res) => {
   let student=await tutorHelpers.getStudentDetails(req.params.id)
