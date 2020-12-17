@@ -5,5 +5,6 @@ module.exports={
     NOTES_DOC_COLLECTION:'notesdoc',
     NOTES_VID_COLLECTION:'notesvideo',
     NOTES_U_VID_COLLECTION:'notesyoutube',
-    ASSIGNMENT_COLLECTION:'assignments'
+    ASSIGNMENT_COLLECTION:'assignments',
+    ATTENDANCE_COLLECTION:'attendance'
 }

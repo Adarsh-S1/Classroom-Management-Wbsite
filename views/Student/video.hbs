@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="../Studtemplate/assets/css/typography.css">
     <link rel="stylesheet" type="text/css" href="../Studtemplate/assets/css/shortcodes/shortcodes.css">
     <link rel="stylesheet" type="text/css" href="../Studtemplate/assets/css/style.css">
-    <link class="skin" rel="stylesheet" type="text/css" href="../Studtemplate/assets/css/color/color-4.css">
+    <link rel="stylesheet" type="text/css" href="../Studtemplate/assets/css/color/color-4.css">
     <link href="../Image enlarge/magicthumb-trial/magicthumb/magicthumb.css" rel="stylesheet" type="text/css" />
 </head>
 
@@ -66,8 +66,7 @@
                                     <div class="col-md-6 col-lg-4 col-sm-6 m-b30">
                                         <div class="cours-bx">
                                             <div class="action-box">
-                                               <a href="../Notes/videos/{{this._id}}.mp4" data-options="hint:always;" class="MagicThumb"></a>
-                                                 </div>
+<video controls   src="../Notes/videos/{{this._id}}.mp4" class="MagicThumb" onended="end()"></video></div>
                                             <div class="info-bx text-center">
                                                 <h5>{{this.Topic}}</h5>
                                             </div>
@@ -88,10 +87,28 @@
         <!-- Footer END ==== -->
         <button class="back-to-top fa fa-chevron-up"></button>
     </div>
-    <!-- External JavaScripts -->
-
+    <style>
+        .myVideo:hover{
+            cursor: default;
+        }
+    </style>
     <script type="text/javascript" src="../Image enlarge/magicthumb-trial/magicthumb/magicthumb.js"></script>
-
+<script>
+    function end() {
+  $.ajax({
+   url:'/attendvideo',
+   method:'get',
+   success:(response)=>{
+         if(response.status)
+         {
+             console.log("STATUS")
+         }  else{
+             console.log("hi")
+         }    
+      }
+})
+}
+</script>
 </body>
 
 </html>

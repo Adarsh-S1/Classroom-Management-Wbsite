@@ -46,7 +46,7 @@
 									aria-labelledby="pills-edit-tab">
 									<div class="row">
 										<div class="col-12">
-											<form class="form" method="POST" action="/tutor/assignments	" enctype="multipart/form-data">
+											<form class="form" method="POST" action="/tutor/assignments" enctype="multipart/form-data">
 												<div>
 													<h4 class="box-title text-primary"><i
 															class="ti-user mr-15"></i>ASSIGNMENTS</h4>
@@ -66,8 +66,8 @@
 														<div class="col-md-12">
 															<div class="form-group">
 																<label>File</label>
-																<input type="file" class="form-control" name="file" required id="file" onchange="return fileValidation()"
-																	placeholder="Company Name">
+																<input type="file" class="form-control" id="file1" name="file" required  onchange="return fileValidation()"
+																	>
 															</div>
 														</div>
 
@@ -75,21 +75,22 @@
 
 
 
-													<button style="float: right;" type="submit" class="btn btn-success">
+													<button style="float: right;" type="submit" class="btn btn-success" onclick="uploadFile();showDiv();">
 														Upload <img style="margin-bottom: 2px;"
 															src="../Template/icons/themify-icons/SVG/upload.svg" alt=""
 															srcset="">
 													</button>
 												</div>
 											</form>
+													<div id="progress" style="display: none; height:18px; width: 310px;" class="progress progress-bar-striped active" >
+													<progress id="progressBar" value="0" max="100"
+														style="margin-top: -7.5px;  width: 310px;  height: 30px;"></progress>
+                                                           </div>
+													<h4 class="box-title text-primary" id="status"></h4>
+													<p style="font-family:monospace;" id="loaded_n_total"></p>
 										</div>
 									</div>
 								</div>
-
-
-
-
-
 							</div>
 						</div>
 					</div>
@@ -134,10 +135,10 @@
                                          {{#each assign}}
 											<tr>
 												<td>
-													<center>{{this.Topic}}</center>
+													<center>{{this.Topic.Topic}}</center>
 												</td>
 												<td>
-													<center><a href="../Assignments/{{this._id}}.pdf " download>
+													<center><a href="../Assignments/{{this._id}}.pdf ">
   <center><img style="height: 40px; width: auto;" src="../Notes/open-document.png" alt="W3Schools" width="104" height="142"><br><small style="color: rgb(17, 165, 17);">Click to download the file</small></center></center>
 												</td>
 												<td>
@@ -180,6 +181,53 @@
         } 
 
 </script>
+
+	<script>
+		function showDiv() {
+			document.getElementById('progress').style.display = "block";
+		}
+		function _(el) {
+			return document.getElementById(el);
+		}
+
+		function uploadFile() {
+			
+			var file = _("file1").files[0];
+			// alert(file.name+" | "+file.size+" | "+file.type);
+			var formdata = new FormData();
+			formdata.append("file1", file);
+			var ajax = new XMLHttpRequest();
+			ajax.upload.addEventListener("progress", progressHandler, false);
+			ajax.addEventListener("load", completeHandler, false);
+			ajax.addEventListener("error", errorHandler, false);
+			ajax.addEventListener("abort", abortHandler, false);
+			ajax.open("POST", "/tutor/test"); // http://www.developphp.com/video/JavaScript/File-Upload-Progress-Bar-Meter-Tutorial-Ajax-PHP
+			//use file_upload_parser.php from above url
+			ajax.send(formdata);
+		}
+
+		function progressHandler(event) {
+			_("loaded_n_total").innerHTML = "Uploaded " + event.loaded + " bytes of " + event.total;
+			var percent = (event.loaded / event.total) * 100;
+			_("progressBar").value = Math.round(percent);
+			_("status").innerHTML = Math.round(percent) + "% uploaded... <br>Please wait.. , Dont do any other operations";
+		}
+
+		function completeHandler(event) {
+			_("status").innerHTML = event.target.responseText;
+			_("progressBar").value = 0; //wil clear progress bar after successful upload
+		}
+
+		function errorHandler(event) {
+			_("status").innerHTML = "Upload Failed";
+		}
+
+		function abortHandler(event) {
+			_("status").innerHTML = "Upload Aborted";
+		}
+	</script>
+
+
 
 
 

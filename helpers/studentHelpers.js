@@ -94,6 +94,34 @@ module.exports = {
          })
         }
     })
-  }
+  },
+  attendance: (studId) => {
+    let datecheck=new Date().getDate()+"-"+new Date().getMonth()+"-"+new Date().getFullYear()
+    let attendObj = {
+      date: new Date().getDate()+"-"+new Date().getMonth()+"-"+new Date().getFullYear(),
+      status: "Present"
+    }
+    let attendDetailObj = {
+      student: objectId(studId),
+      attendance: [attendObj]
+    }
+   return new Promise(async(resolve,reject)=>{
+    let studattend = await db.get().collection(collection.ATTENDANCE_COLLECTION).findOne({ student: objectId(studId) })
+    if(studattend){
+      if(attendObj.date!==datecheck){
+       db.get().collection(collection.ATTENDANCE_COLLECTION).updateOne({student: objectId(studId) },
+       {
+         $push:{attendance:attendObj}
+       }
+       ).then((response)=>{
+        resolve()
+       })
+      }
+    }else{
+      db.get().collection(collection.ATTENDANCE_COLLECTION).insertOne(attendDetailObj).then((response) => {
+        resolve()
+      })
+    }
+   })    
 }
-
+}

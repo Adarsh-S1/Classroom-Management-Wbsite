@@ -4,6 +4,7 @@ var router = express.Router();
 var request = require('request');
 const userHelpers = require('../helpers/studentHelpers');
 const tutorHelpers = require('../helpers/tutorHelpers');
+const { response } = require('express');
 var text
 const studentLogin = (req, res, next) => {
   if (req.session.loggedstudentIn) {
@@ -128,7 +129,7 @@ router.get('/notes', studentLogin, (req, res) => {
 })
 router.get('/video', studentLogin, (req, res) => {
     studentHelpers.videoNotes().then((video)=>{
-      res.render('Student/video',{student:true,video})
+      res.render('Student/video',{student:true,video,stud:req.session.student})
     })
 })
 router.get('/uvideo', studentLogin, (req, res) => {
@@ -159,5 +160,10 @@ router.get('/assignments/:id',studentLogin,(req,res)=>{
        }
      })
     })
+  }),
+  router.get('/attendvideo',(req,res)=>{
+  studentHelpers.attendance(req.session.student._id).then((response)=>{
+res.json({status:true})
+  })
   })
 module.exports = router;
