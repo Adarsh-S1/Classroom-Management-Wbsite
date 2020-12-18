@@ -112,7 +112,7 @@
 
             <div class="d-flex flex-column flex-row-fluid" id="kt_wrapper">
                 <center>
-                    <h1 style="margin-top: -20px;">Exams</h1>
+                    <h1 style="margin-top: -20px;">Attendance</h1>
                 </center>
                 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
 
@@ -130,48 +130,26 @@
 
                                             <tr>
                                                 <th>
-                                                    <center>Topic</center>
+                                                    <center>Date</center>
                                                 </th>
                                                 <th>
-                                                    <center>File</center>
+                                                    <center>Attendance</center>
                                                 </th>
-                                                <th>
-                                                    <center>Mark</center>
-                                                </th>
-                                                <th>
-                                                    <center>Save</center>
-                                                </th>
+                                    
                                             </tr>
                                         </thead>
                                         <tbody>
-
+{{#each attendance}}
                                             <tr>
                                                 <td>
-                                                    <center>1</center>
+                                                    <center>{{this.attendate}}</center>
                                                 </td>
                                                 <td>
-                                                    <center>File name</center>
+                                                    <center>{{this.status}}</center>
                                                 </td>
-                                                <td style="width: 100px;">
-                                                    <center>
-                                                        <input type="number" class="form-control" placeholder="Mark"
-                                                            value="">
-                                                    </center>
-                                                </td>
-                                                <style>
-                                                    input::-webkit-outer-spin-button,
-                                                    input::-webkit-inner-spin-button {
-                                                        -webkit-appearance: none;
-                                                        margin: 0;
-                                                    }
-                                                </style>
-                                                <td>
-                                                    <center> <button type="submit" class="btn btn-success">
-                                                            Save changes
-                                                        </button></center>
-                                                </td>
+    
                                             </tr>
-
+{{/each}}
                                         </tbody>
                                     </table>
                                 </div>

@@ -76,8 +76,10 @@ router.post('/editutor/:id',tutorLogin,(req,res)=>{
     }
   })
 }) 
-router.get('/attendance', tutorLogin, (req, res) => {
-  res.render('Tutor/Attendance', { tutor: true })
+router.get('/attendance', tutorLogin, async(req, res) => {
+  let datecheck=new Date().getDate()+"-"+(new Date().getMonth()+1)+"-"+new Date().getFullYear()
+  let attendance=await tutorHelpers.getAttendance()
+  res.render('Tutor/Attendance', { tutor: true,attendance,datecheck })
 })
 router.get('/assignments', tutorLogin, (req, res) => {
   tutorHelpers.viewAssign().then((assign)=>{
@@ -108,6 +110,43 @@ router.get('/notes', tutorLogin, (req, res) => {
 router.get('/announcement', tutorLogin, (req, res) => {
   res.render('Tutor/announcement', { tutor: true })
 })
+router.post('/announcement',(req,res)=>{
+  console.log("API CALL");
+  tutorHelpers.addAnnouncement(req.body,(id)=>{
+    var filetype = req.files.file.name.substring(req.files.file.name.length - 3, req.files.file.name.length);
+    console.log(filetype,"___________________________");
+     if(filetype=="jpg"){
+      let image=req.files.file
+      image.mv('./public/Announcements/Photo/'+id+'.jpg',(err)=>{
+      if(!err){
+        res.redirect('/tutor/announcement')
+       }else{
+         console.log(err);
+       }
+     })
+     }
+     if(filetype=="pdf"){
+      let image=req.files.file
+      image.mv('./public/Announcements/Pdf/'+id+'.pdf',(err)=>{
+      if(!err){
+        res.redirect('/tutor/announcement')
+       }else{
+         console.log(err);
+       }
+     })
+     }
+     if(filetype=="mp4"){
+      let image=req.files.file
+      image.mv('./public/Announcements/Video/'+id+'.mp4',(err)=>{
+      if(!err){
+        res.redirect('/tutor/announcement')
+       }else{
+         console.log(err);
+       }
+     })
+     }
+   })
+})
 router.get('/events', tutorLogin, (req, res) => {
   res.render('Tutor/Events', { tutor: true })
 })
@@ -133,8 +172,9 @@ router.get('/quiz', tutorLogin, (req, res) => {
   res.render('Tutor/Quiz', { tutor: true })
 })
 router.get('/studetails/:id', tutorLogin, async(req, res) => {
+  let attendance=await tutorHelpers.getstudAttend(req.params.id)
   let assignments=await tutorHelpers.getAssignments(req.params.id)
-  res.render('Tutor/studetails', {assignments, tutor: true })
+  res.render('Tutor/studetails', {assignments, tutor: true ,attendance})
 })
 router.get('/editstud/:id', tutorLogin, async(req, res) => {
   let student=await tutorHelpers.getStudentDetails(req.params.id)

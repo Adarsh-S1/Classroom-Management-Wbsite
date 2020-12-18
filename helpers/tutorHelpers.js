@@ -161,8 +161,62 @@ module.exports = {
           $match:{"assignments.student":objectId(studId)}
         }
       ]).toArray()
-      console.log(assignments,"__________________________________________");
       resolve(assignments)
     })
-  }
+  },
+  getstudAttend:(studId)=>{
+  return new Promise(async(resolve,reject)=>{
+    let datecheck=new Date().getDate()+"-"+(new Date().getMonth()+1)+"-"+new Date().getFullYear()
+    let attend = await db.get().collection(collection.ATTENDANCE_COLLECTION).aggregate([
+      {
+        $match:{student:objectId(studId)}
+      },
+      {
+        $unwind:'$attendance'
+      },
+      {
+        $project:{
+          attendate:"$attendance.date",
+          status:"$attendance.status"
+        }
+      }
+    ]).toArray()
+    console.log(attend,"__________________________________________");
+    resolve(attend)
+  })
+  },
+  getAttendance:()=>{
+    return new Promise(async(resolve,reject)=>{
+      let datecheck=new Date().getDate()+"-"+(new Date().getMonth()+1)+"-"+new Date().getFullYear()
+      let attend = await db.get().collection(collection.ATTENDANCE_COLLECTION).aggregate([
+        {
+          $unwind:'$attendance'
+        },
+        {
+          $project:{
+            studId:"$student",
+            attendate:"$attendance.date",
+            status:"$attendance.status"
+          }
+        },
+        {
+          $match:{"attendate":datecheck}
+        },
+        {
+          $lookup:{
+            from:collection.STUDENT_COLLECTION,
+            localField:'studId',
+            foreignField:'_id',
+            as:'student'
+          }
+        }
+      ]).toArray()
+      resolve(attend)
+     })
+  },
+addAnnouncement: async (announce, callback) => {
+  db.get().collection(collection.ANNOUNCEMENT_COLLECTION).insertOne(announce).then((data) => {
+    callback(data.ops[0]._id)
+  })
+}
 }

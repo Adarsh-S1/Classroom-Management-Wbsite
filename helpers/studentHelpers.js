@@ -95,20 +95,24 @@ module.exports = {
         }
     })
   },
-  attendance: (studId) => {
-    let datecheck=new Date().getDate()+"-"+new Date().getMonth()+"-"+new Date().getFullYear()
+  
+attendhome:(studId)=>{
+  return new Promise(async(resolve,reject)=>{
+    let datecheck=new Date().getDate()+"-"+(new Date().getMonth()+1)+"-"+new Date().getFullYear()
     let attendObj = {
-      date: new Date().getDate()+"-"+new Date().getMonth()+"-"+new Date().getFullYear(),
-      status: "Present"
+      date: new Date().getDate()+"-"+(new Date().getMonth()+1)+"-"+new Date().getFullYear(),
+      status: "Absent"
     }
     let attendDetailObj = {
       student: objectId(studId),
       attendance: [attendObj]
     }
-   return new Promise(async(resolve,reject)=>{
+  
     let studattend = await db.get().collection(collection.ATTENDANCE_COLLECTION).findOne({ student: objectId(studId) })
     if(studattend){
-      if(attendObj.date!==datecheck){
+      let attendExist = studattend.attendance.findIndex(attendanc => attendanc.date == attendObj.date)
+      if(attendExist==-1)
+      {
        db.get().collection(collection.ATTENDANCE_COLLECTION).updateOne({student: objectId(studId) },
        {
          $push:{attendance:attendObj}
@@ -116,12 +120,60 @@ module.exports = {
        ).then((response)=>{
         resolve()
        })
-      }
-    }else{
+    }
+  }else{
       db.get().collection(collection.ATTENDANCE_COLLECTION).insertOne(attendDetailObj).then((response) => {
         resolve()
       })
+    }  
+    let attend =await db.get().collection(collection.ATTENDANCE_COLLECTION).aggregate([
+      {
+        $match:{student:objectId(studId)}
+      },
+      {
+        $unwind:'$attendance'
+      },
+      {
+        $project:{
+          attendate:"$attendance.date",
+          status:"$attendance.status"
+        }
+      },
+      {
+        $match:{"attendate":datecheck}
+      }
+    ]).toArray()
+    console.log(attend,"___________________________________");
+    resolve(attend)
+  })  
+  },
+  attendance: (studId) => {
+    let datecheck=new Date().getDate()+"-"+(new Date().getMonth()+1)+"-"+new Date().getFullYear()
+   return new Promise(async(resolve,reject)=>{
+    await db.get().collection(collection.ATTENDANCE_COLLECTION).updateOne({ student: objectId(studId), 'attendance.date': datecheck },
+    {
+      $set: { 'attendance.$.status': "Present" }
     }
+    )
+    let attend = await db.get().collection(collection.ATTENDANCE_COLLECTION).aggregate([
+      {
+        $match:{student:objectId(studId)}
+      },
+      {
+        $unwind:'$attendance'
+      },
+      {
+        $project:{
+          attendate:"$attendance.date",
+          status:"$attendance.status"
+        }
+      },
+      {
+        $match:{"attendate":datecheck}
+      }
+    ]).toArray()
+    console.log(attend[0].status);
+    resolve(attend)
    })    
 }
 }

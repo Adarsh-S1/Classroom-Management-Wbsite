@@ -20,7 +20,7 @@
 					<h1 style="margin-top: -90px;">ATTENDANCE</h1>
 				</center>
 				<center>
-					<h4 style="margin-top: -50px;">08/12/2020</h4>
+					<h4 style="margin-top: -50px;">{{datecheck}}</h4>
 				</center>
 				<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
 
@@ -49,20 +49,22 @@
 											</tr>
 										</thead>
 										<tbody>
-
+{{#each attendance}}
 											<tr>
+												{{#each this.student}}
 												<td>
-													<center>1</center>
+													<center>{{this.Rollno}}</center>
 												</td>
 												<td>
-													<center>Name</center>
+													<center>{{this.Name}}</center>
 												</td>
+												{{/each}}
 												<td>
-													<center>Present</center>
+													<center>{{this.status}}</center>
 												</td>
 												<td hidden nowrap="nowrap"></td>
 											</tr>
-
+{{/each}}
 										</tbody>
 									</table>
 								</div>

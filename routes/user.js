@@ -17,10 +17,11 @@ const studentLogin = (req, res, next) => {
 router.get('/', (req, res) => {
   res.render('home')
 });
-router.get('/student', studentLogin, (req, res) => {
+router.get('/student', studentLogin, async(req, res) => {
+  let attendance=await studentHelpers.attendhome(req.session.student._id)
   let stud=req.session.student
   let studo=req.session.phone
-  res.render('Student/Stud-home',{stud,studo})
+  res.render('Student/Stud-home',{stud,studo,attendance})
 })
 router.get('/login', (req, res) => {
   if (req.session.loggedstudentIn) {

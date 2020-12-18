@@ -6,5 +6,6 @@ module.exports={
     NOTES_VID_COLLECTION:'notesvideo',
     NOTES_U_VID_COLLECTION:'notesyoutube',
     ASSIGNMENT_COLLECTION:'assignments',
-    ATTENDANCE_COLLECTION:'attendance'
+    ATTENDANCE_COLLECTION:'attendance',
+    ANNOUNCEMENT_COLLECTION:'announcements'
 }

@@ -45,7 +45,7 @@
 									aria-labelledby="pills-edit-tab">
 									<div class="row">
 										<div class="col-12">
-											<form class="form">
+											<form class="form" action="/tutor/announcement" method="POST" enctype="multipart/form-data">
 												<div>
 													<h4 class="box-title text-primary"><i
 															class="ti-user mr-15"></i>ANNOUNCEMENTS</h4>
@@ -55,7 +55,7 @@
 
 															<div class="form-group">
 																<label>Message</label>
-																<input type="text" class="form-control"
+																<input type="text" class="form-control" name="Message"
 																	placeholder="Message">
 															</div>
 														</div>
@@ -66,7 +66,7 @@
 															<div class="form-group">
 																<label>Description</label>
 																<textarea class="form-control"
-																	id="exampleFormControlTextarea1"
+																	id="exampleFormControlTextarea1" name="Description"
 																	placeholder="Description" rows="4"></textarea>
 															</div>
 														</div>
@@ -76,7 +76,7 @@
 														<div class="col-md-12">
 															<div class="form-group">
 																<label>File</label>
-																<input type="file" class="form-control"
+																<input type="file" class="form-control" name="file"
 																	placeholder="Company Name">
 															</div>
 														</div>
