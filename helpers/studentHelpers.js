@@ -147,14 +147,16 @@ attendhome:(studId)=>{
     resolve(attend)
   })  
   },
-  attendance: (studId) => {
+  attendance: (date,studId) => {
     let datecheck=new Date().getDate()+"-"+(new Date().getMonth()+1)+"-"+new Date().getFullYear()
    return new Promise(async(resolve,reject)=>{
+     if(date.Date==datecheck){
     await db.get().collection(collection.ATTENDANCE_COLLECTION).updateOne({ student: objectId(studId), 'attendance.date': datecheck },
     {
       $set: { 'attendance.$.status': "Present" }
     }
     )
+  }
     let attend = await db.get().collection(collection.ATTENDANCE_COLLECTION).aggregate([
       {
         $match:{student:objectId(studId)}

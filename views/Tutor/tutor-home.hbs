@@ -109,11 +109,6 @@
 		</div>
 		<!--End row-->
 	</div>
-	<!--End container-->
-	<!--Container-->
-
-	<!--End container-->
-	<!--Container-->
 	<div style="margin-top: -70px;" class="container">
 		<!--Row-->
 		<div class="row">
@@ -122,7 +117,6 @@
 				<ul class="block-tabs">
 					<li class="active"><i class="et-line-calendar"></i><strong>Announcements</strong></li>
 					<li class=""><i class="et-line-calendar"></i><strong>Events</strong></li>
-
 				</ul>
 			</div>
 			<div id="tabb" class="col-sm-8">
@@ -143,27 +137,20 @@
 						<div class="block-date"><img style="margin-top: -5px;"
 								src="../Template/icons/themify-icons/SVG/announcement.svg" alt=""
 								srcset=""><strong>&nbsp;Announcements</strong></div>
-
-
-
-						<div class="block-detail">
-							<span class="time">15:00 - 16:30</span>
-							<span class="topic">Retouching</span>
+						{{#each announcement}}
+						<div class="block-detail" style="padding-bottom: 50px;">
+							<a style="font-weight: bold; font-size: 15px;"
+								class="gradient-text ">{{this.announcearray.Message}}</a>
 							<div class="block-text">
-								<p>Nihilne te nocturnum praesidium Palati, nihil urbis
-									vigilae, nihil timor populi, nihil concursus velit omnium, nihil hic muntissimus
-									habendi senatus locus, nihil horum ora vultusque moverunt, patere tua consilia non
-									sentis constrictam nihil hic muntissimus.</p>
-								<span class="speaker"> <strong style="color: black;">Speaker</strong> : <a href="#"
-										class="gradient-text "> Lina Blamberg </a> </span>
+								<p>{{this.announcearray.Description}}</p>
+									<img src="../Announcements/{{this._id}}.jpg" alt="">
+							<a href="../Announcements/{{this._id}}.mp4" data-options="hint:always;" class="MagicThumb"></a>
+							<br><br><br><br>
+							<a href="../Announcements/{{this._id}}.pdf"><img src="../Notes/open-document.png" alt="" srcset=""></a>
 							</div>
 						</div>
-
-
+						{{/each}}
 					</li>
-					<!--Tab-->
-
-					<!--Tab-->
 					<li>
 						<div class="block-date"><img style="margin-top: -5px;"
 								src="../Template/icons/themify-icons/SVG/calendar.svg" alt="" srcset=""><strong> Events
@@ -180,12 +167,7 @@
 										class="gradient-text "> Lina Blamberg </a> </span>
 							</div>
 						</div>
-
-
-
 					</li>
-					<!--Tab-->
-
 				</ul>
 			</div>
 		</div>
@@ -205,3 +187,4 @@
 <!-- Corenav Master JavaScript -->
 <script src="../Template/corenav-master/coreNavigation-1.1.3.js"></script>
 <script src="../Template/js/nav.js"></script>
+<script type="text/javascript" src="../Image enlarge/magicthumb-trial/magicthumb/magicthumb.js"></script>

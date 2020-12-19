@@ -66,7 +66,7 @@
                                     <div class="col-md-6 col-lg-4 col-sm-6 m-b30">
                                         <div class="cours-bx">
                                             <div class="action-box">
-<video controls   src="../Notes/videos/{{this._id}}.mp4" class="MagicThumb" onended="end()"></video></div>
+<video controls   src="../Notes/videos/{{this._id}}.mp4" class="MagicThumb" onended="end('{{this.Date}}')"></video></div>
                                             <div class="info-bx text-center">
                                                 <h5>{{this.Topic}}</h5>
                                             </div>
@@ -94,10 +94,13 @@
     </style>
     <script type="text/javascript" src="../Image enlarge/magicthumb-trial/magicthumb/magicthumb.js"></script>
 <script>
-    function end() {
+    function end(date) {
   $.ajax({
    url:'/attendvideo',
-   method:'get',
+               data:{
+                Date:date
+            },
+   method:'post',
    success:(response)=>{
          if(response.status)
          {

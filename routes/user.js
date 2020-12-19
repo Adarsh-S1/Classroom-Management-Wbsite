@@ -151,7 +151,6 @@ router.get('/assignments/:id',studentLogin,(req,res)=>{
   }),
   router.post('/assignments/:id',(req,res)=>{
     studentHelpers.submitAssignment(req.params.id,req.session.student._id).then((response)=>{
-      console.log(response,"_______________________");
       let file=req.files.file
       file.mv('./public/studentAssignment/'+response+'.pdf',(err)=>{
       if(!err){
@@ -162,8 +161,8 @@ router.get('/assignments/:id',studentLogin,(req,res)=>{
      })
     })
   }),
-  router.get('/attendvideo',(req,res)=>{
-  studentHelpers.attendance(req.session.student._id).then((response)=>{
+  router.post('/attendvideo',(req,res)=>{
+  studentHelpers.attendance(req.body,req.session.student._id).then((response)=>{
 res.json({status:true})
   })
   })
