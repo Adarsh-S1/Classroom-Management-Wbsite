@@ -56,7 +56,7 @@
 
 															<div class="form-group">
 																<label>Topic</label>
-																<input type="text" class="form-control" name="Topic" required
+																<input type="text" class="form-control" id="topic" name="Topic" onchange="buttonValidation()"  required
 																	placeholder="Topic">
 															</div>
 														</div>
@@ -66,8 +66,7 @@
 														<div class="col-md-12">
 															<div class="form-group">
 																<label>File</label>
-																<input type="file" class="form-control" id="file1" name="file" required  onchange="return fileValidation()"
-																	>
+																<input type="file" class="form-control" id="file1" required name="file" onchange="return fileValidation()" >>
 															</div>
 														</div>
 
@@ -75,7 +74,7 @@
 
 
 
-													<button style="float: right;" type="submit" class="btn btn-success" onclick="uploadFile();showDiv();">
+                                                <button id="button" style="display: none;" onclick="uploadFile();showDiv();" type="submit"  class="btn btn-success">
 														Upload <img style="margin-bottom: 2px;"
 															src="../Template/icons/themify-icons/SVG/upload.svg" alt=""
 															srcset="">
@@ -162,14 +161,13 @@
 	</div>
 	<!-- BEGIN MODAL -->
 	<!-- Modal Add Category -->
+<script>  
 
-<script>        function fileValidation() { 
+	      function fileValidation() { 
             var fileInput =  
-                document.getElementById('file'); 
+                document.getElementById('file1'); 
               
             var filePath = fileInput.value; 
-          
-            // Allowing file type 
             var allowedExtensions =  
 /(\.pdf)$/i; 
               
@@ -177,10 +175,39 @@
                 alert('WARNING : Upload PDF Files Only'); 
                 fileInput.value = ''; 
                 return false; 
-            }  
-        } 
+            }  else{
+				if(document.getElementById('topic').value==""){
+					console.log("hy")
+				}else{
+			document.getElementById('button').style.display = "block";
+			document.getElementById('button').style.float = "right";
+  }
+ }
+}
+		
+	      function buttonValidation() { 
+            var fileInput =  
+                document.getElementById('file1'); 
+              
+            var filePath = fileInput.value; 
+            var allowedExtensions =  
+/(\.pdf)$/i; 
+              
+            if (!allowedExtensions.exec(filePath)) { 
+                fileInput.value = ''; 
+                return false; 
+            }  else{
+				if(document.getElementById('topic').value==""){
+					console.log("hy")
+				}else{
+			document.getElementById('button').style.display = "block";
+			document.getElementById('button').style.float = "right";
+  }
+ }
+}		          
 
 </script>
+
 
 	<script>
 		function showDiv() {
@@ -226,9 +253,6 @@
 			_("status").innerHTML = "Upload Aborted";
 		}
 	</script>
-
-
-
 
 
 

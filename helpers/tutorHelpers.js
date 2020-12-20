@@ -210,6 +210,35 @@ module.exports = {
       resolve(attend)
     })
   },
+  
+  getAttendDate: (date) => {
+    return new Promise(async (resolve, reject) => {
+      let attend = await db.get().collection(collection.ATTENDANCE_COLLECTION).aggregate([
+        {
+          $unwind: '$attendance'
+        },
+        {
+          $project: {
+            studId: "$student",
+            attendate: "$attendance.date",
+            status: "$attendance.status"
+          }
+        },
+        {
+          $match: { "attendate": date }
+        },
+        {
+          $lookup: {
+            from: collection.STUDENT_COLLECTION,
+            localField: 'studId',
+            foreignField: '_id',
+            as: 'student'
+          }
+        }
+      ]).toArray()
+      resolve(attend)
+    })
+  },
   addAnnouncement: async (ext, announce, callback) => {
     let announcement = {
       announcearray: announce,

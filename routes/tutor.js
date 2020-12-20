@@ -82,6 +82,12 @@ router.get('/attendance', tutorLogin, async (req, res) => {
   let attendance = await tutorHelpers.getAttendance()
   res.render('Tutor/Attendance', { tutor: true, attendance, datecheck })
 })
+router.get('/attendate/:id', tutorLogin, async (req, res) => {
+  console.log(req.params.id,"________________________________________");
+  let attendance = await tutorHelpers.getAttendDate(req.params.id)
+  let date=req.params.id
+  res.render('Tutor/attend-date', { tutor: true, attendance,date})
+})
 router.get('/assignments', tutorLogin, (req, res) => {
   tutorHelpers.viewAssign().then((assign) => {
     res.render('Tutor/assignment', { tutor: true, assign })
