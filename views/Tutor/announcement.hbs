@@ -10,6 +10,7 @@
 
 	<title>EduAdmin - Dashboard</title>
 	<link href="../Studtable/style.bundled1cf.css" rel="stylesheet" type="text/css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropper/2.3.4/cropper.min.css">
 
 	<!-- Vendors Style-->
 	<link rel="stylesheet" href="../Template/css/vendors_css.css">
@@ -20,15 +21,6 @@
 </head>
 
 <body class="theme-primary">
-
-	<!-- The social media icon bar -->
-
-
-
-	<!---page Title --->
-
-	<!--Page content -->
-
 	<section style="margin-top: -500px;" class="py-50">
 		<div class="container">
 			<center>
@@ -45,7 +37,8 @@
 									aria-labelledby="pills-edit-tab">
 									<div class="row">
 										<div class="col-12">
-											<form class="form" action="/tutor/announcement" method="POST" enctype="multipart/form-data">
+											<form class="form" action="/tutor/announcement" method="POST"
+												enctype="multipart/form-data">
 												<div>
 													<h4 class="box-title text-primary"><i
 															class="ti-user mr-15"></i>ANNOUNCEMENTS</h4>
@@ -55,7 +48,8 @@
 
 															<div class="form-group">
 																<label>Message</label>
-																<input type="text" class="form-control" name="Message" id="topic" required onchange="buttonValidation()"
+																<input type="text" class="form-control" name="Message"
+																	id="topic" required onchange="buttonValidation()"
 																	placeholder="Message">
 															</div>
 														</div>
@@ -65,9 +59,8 @@
 														<div class="col-md-12">
 															<div class="form-group">
 																<label>Description</label>
-																<textarea class="form-control"
-																	id="description" name="Description"
-																	placeholder="Description" rows="4"  onchange="buttonValidation2()"></textarea>
+																<textarea class="form-control" name="Description"
+																	placeholder="Description" rows="4"></textarea>
 															</div>
 														</div>
 													</div>
@@ -75,31 +68,47 @@
 														<div class="col-md-12">
 															<div class="form-group">
 																<label>File</label>
-											  <input type="file"  class="form-control" placeholder="Company Name" id="file1" required name="file" onchange="return fileValidation()" >
+																<input type="file" class="form-control"
+																	placeholder="Company Name" id="file-input" required
+																	name="file" onchange="return fileValidation()">
+															<input type="text" name="im" id="inp" hidden value="">
+																<div class="box-2">
+																	<div class="result"></div>
+																</div>
+																<!--rightbox-->
+																<div class="box-2 img-result hide">
+																	<!-- result of crop -->
+																	<input type="image" name="file" class="cropped" >
+																</div>
+																<div class="box">
+																	<div class="options hide">
+																		<label hidden> Width</label>
+																		<input hidden type="number" class="img-w" value="300"
+																			min="100" max="1200" />
+																	</div>
+																	<!-- save btn -->
+																	<button class="btn btn-success save hide">Crop</button>
+																	<!-- download btn -->
+																	<a href="" class="btn download hide">Download</a>
+																</div>
 															</div>
 														</div>
-
 													</div>
-
-<div id="progress" style="display: none; height:18px; width: 310px;" class="progress progress-bar-striped active" >
-													<progress id="progressBar" value="0" max="100"
-														style="margin-top: -7.5px;  width: 310px;  height: 30px;"></progress>
-                                                           </div>
+													<div id="progress" style="display: none; height:18px; width: 310px;"
+														class="progress progress-bar-striped active">
+														<progress id="progressBar" value="0" max="100"
+															style="margin-top: -7.5px;  width: 310px;  height: 30px;"></progress>
+													</div>
 													<h4 class="box-title text-primary" id="status"></h4>
 													<p style="font-family:monospace;" id="loaded_n_total"></p>
-
-
-									               <button id="button" style="display: none;" onclick="uploadFile();showDiv();" type="submit"  class="btn btn-success">Upload</button>
+													<button id="button" style="display: none;"
+														onclick="uploadFile();showDiv();" type="submit"
+														class="btn btn-success">Upload</button>
 												</div>
 											</form>
 										</div>
 									</div>
 								</div>
-
-
-
-
-
 							</div>
 						</div>
 					</div>
@@ -107,76 +116,111 @@
 			</div>
 		</div>
 	</section>
-
-<script>  
-
-	      function fileValidation() { 
-            var fileInput =  
-                document.getElementById('file1'); 
-              
-            var filePath = fileInput.value; 
-            var allowedExtensions =  
-/(\.mp4|\.pdf|\.jpg)$/i; 
-              
-            if (!allowedExtensions.exec(filePath)) { 
-                alert('WARNING : Upload VIDEO PDF and Photo Files Only'); 
-                fileInput.value = ''; 
-                return false; 
-            }  else{
-				if(document.getElementById('topic').value=="" && document.getElementById('description').value==""){
-					console.log("hy")
-				}else{
-			document.getElementById('button').style.display = "block";
-			document.getElementById('button').style.float = "right";
-  }
- }
-}
-		
-	      function buttonValidation() { 
-            var fileInput =  
-                document.getElementById('file1'); 
-              
-            var filePath = fileInput.value; 
-            var allowedExtensions =  
-/(\.mp4|\.pdf|\.jpg)$/i; 
-              
-            if (!allowedExtensions.exec(filePath)) { 
-                fileInput.value = ''; 
-                return false; 
-            }  else{
-				if(document.getElementById('topic').value=="" && document.getElementById('description').value==""){
-					console.log("hy")
-				}else{
-			document.getElementById('button').style.display = "block";
-			document.getElementById('button').style.float = "right";
-  }
- }
-}		          
-
-  function buttonValidation2() { 
-            var fileInput =  
-                document.getElementById('file1'); 
-              
-            var filePath = fileInput.value; 
-            var allowedExtensions =  
-/(\.mp4|\.pdf|\.jpg)$/i; 
-              
-            if (!allowedExtensions.exec(filePath)) { 
-                fileInput.value = ''; 
-                return false; 
-            }  else{
-				if(document.getElementById('description').value=="" && document.getElementById('topic').value==""){
-					console.log("hy")
-				}else{
-			document.getElementById('button').style.display = "block";
-			document.getElementById('button').style.float = "right";
-  }
- }
-}		          
-</script>
-
-
+</body>
+<script src="../Template/js/vendors.min.js"></script>
+	<script src="../Template/corenav-master/coreNavigation-1.1.3.js"></script>
+	<script src="../Template//vendor_components/jquery-ui/jquery-ui.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/0.8.1/cropper.min.js"></script>
 	<script>
+	let result = document.querySelector('.result'),
+			img_result = document.querySelector('.img-result'),
+			img_w = document.querySelector('.img-w'),
+			img_h = document.querySelector('.img-h'),
+			options = document.querySelector('.options'),
+			save = document.querySelector('.save'),
+			cropped = document.querySelector('.cropped'),
+			dwn = document.querySelector('.download'),
+			upload = document.querySelector('#file-input'),
+			cropper = '';
+
+		// on change show image with crop options
+	upload.addEventListener('change', (e) => {
+			if (e.target.files.length) {
+				// start file reader
+				const reader = new FileReader();
+				reader.onload = (e) => {
+					if (e.target.result) {
+						// create new image
+						let img = document.createElement('img');
+						img.id = 'image';
+						img.src = e.target.result
+						// clean result before
+						result.innerHTML = '';
+						// append new image
+						result.appendChild(img);
+						// show save btn and options
+						save.classList.remove('hide');
+						options.classList.remove('hide');
+						// init cropper
+						cropper = new Cropper(img);
+					}
+				};
+				reader.readAsDataURL(e.target.files[0]);
+			}
+		});
+
+		// save on click
+		save.addEventListener('click', (e) => {
+			e.preventDefault();
+			// get result to data uri
+			let imgSrc = cropper.getCroppedCanvas({
+				width: img_w.value // input value
+			}).toDataURL();
+			// remove hide class of img
+			cropped.classList.remove('hide');
+			img_result.classList.remove('hide');
+			// show image cropped
+			cropped.src = imgSrc;
+			document.getElementById("inp").value=imgSrc
+			dwn.classList.remove('hide');
+			dwn.download = 'imagename.png';
+			dwn.setAttribute('href', imgSrc);
+		});
+
+
+		function fileValidation() {
+			var fileInput =
+				document.getElementById('file-input');
+
+			var filePath = fileInput.value;
+			var allowedExtensions =
+				/(\.jpg)$/i;
+
+			if (!allowedExtensions.exec(filePath)) {
+				alert('WARNING : Upload Photos Only');
+				fileInput.value = '';
+				return false;
+			} else {
+				if (document.getElementById('topic').value == "") {
+					console.log("hy")
+				} else {
+					document.getElementById('button').style.display = "block";
+					document.getElementById('button').style.float = "right";
+				}
+			}
+		}
+
+		function buttonValidation() {
+			var fileInput =
+				document.getElementById('file-input');
+
+			var filePath = fileInput.value;
+			var allowedExtensions =
+				/(\.jpg)$/i;
+
+			if (!allowedExtensions.exec(filePath)) {
+				fileInput.value = '';
+				return false;
+			} else {
+				if (document.getElementById('topic').value == "" ) {
+					console.log("hy")
+				} else {
+					document.getElementById('button').style.display = "block";
+					document.getElementById('button').style.float = "right";
+				}
+			}
+		}
+
 		function showDiv() {
 			document.getElementById('progress').style.display = "block";
 		}
@@ -185,11 +229,11 @@
 		}
 
 		function uploadFile() {
-			
-			var file = _("file1").files[0];
+
+			var file = _("file-input").files[0];
 			// alert(file.name+" | "+file.size+" | "+file.type);
 			var formdata = new FormData();
-			formdata.append("file1", file);
+			formdata.append("file-input", file);
 			var ajax = new XMLHttpRequest();
 			ajax.upload.addEventListener("progress", progressHandler, false);
 			ajax.addEventListener("load", completeHandler, false);
@@ -220,14 +264,4 @@
 			_("status").innerHTML = "Upload Aborted";
 		}
 	</script>
-
-	<script src="../Template/js/vendors.min.js"></script>
-	<!-- Corenav Master JavaScript -->
-	<script src="../Template/corenav-master/coreNavigation-1.1.3.js"></script>
-	<script src="../Template//vendor_components/jquery-ui/jquery-ui.min.js"></script>
-
-	<!-- EduAdmin front end -->
-
-
-
-</body>
+	

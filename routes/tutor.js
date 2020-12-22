@@ -118,11 +118,14 @@ router.get('/announcement', tutorLogin, (req, res) => {
   res.render('Tutor/announcement', { tutor: true })
 })
 router.post('/announcement', (req, res) => {
-  console.log("API CALL");
-  var ext = req.files.file.name.substring(req.files.file.name.length - 3, req.files.file.name.length);
+  var ext
+  if(req.body.im==""){
+  ext = req.files.file.name.substring(req.files.file.name.length - 3, req.files.file.name.length);
+}else{
+  ext=""
+}
   tutorHelpers.addAnnouncement(ext, req.body, (id) => {
     var filetype = req.files.file.name.substring(req.files.file.name.length - 3, req.files.file.name.length);
-    console.log(filetype, "___________________________");
     if (filetype == "jpg") {
       let image = req.files.file
       image.mv('./public/Announcements/' + id + '.jpg', (err) => {

@@ -143,7 +143,9 @@
 								class="gradient-text ">{{this.announcearray.Message}}</a>
 							<div class="block-text">
 								<p>{{this.announcearray.Description}}</p>
-									<img src="../Announcements/{{this._id}}.jpg" alt="">
+																<img src="{{this.announcearray.im}}" alt="">
+
+									<img src="../Announcements/{{this._id}}.{{extension}}" alt="">
 							<a href="../Announcements/{{this._id}}.mp4" data-options="hint:always;" class="MagicThumb"></a>
 							<br><br><br><br>
 							<a href="../Announcements/{{this._id}}.pdf"><img src="../Notes/open-document.png" alt="" srcset=""></a>
