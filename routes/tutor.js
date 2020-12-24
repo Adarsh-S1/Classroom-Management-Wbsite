@@ -13,10 +13,34 @@ const tutorLogin = (req, res, next) => {
 router.get('/', tutorLogin, (req, res) => {
   tutorHelpers.tutorProfileDetails().then((teacher) => {
     tutorHelpers.getAnnouncements().then((announcement) => {
-      res.render('Tutor/tutor-home', { teacher, announcement })
+      tutorHelpers.getEvents().then((events) => {
+      res.render('Tutor/tutor-home', { teacher, announcement,events })
+      })
     })
   })
 });
+router.get('/announcement/:id',tutorLogin,(req,res)=>{
+  studentHelpers.getAnnounceDetails(req.params.id).then((announcement) => {
+    const fs = require('fs')
+
+    let path = './public/Announcements/pdf/'+announcement._id+".pdf"
+    let path1 = './public/Announcements/photo/'+announcement._id+".jpg"
+      if (fs.existsSync(path) && fs.existsSync(path1)) {
+        console.log(path,path1,"________________");
+        let pathimg="/Announcements/photo/"+announcement._id+".jpg"
+        let pathpdf="/Notes/open-document.png"
+        res.render("Tutor/announcedetails",{tutor:true,announcement,pathimg,pathpdf})
+      }else if(fs.existsSync(path) && !fs.existsSync(path1)){
+        let pathpdf="/Notes/open-document.png"
+        res.render("Tutor/announcedetails",{tutor:true,announcement,pathpdf})
+      }else if(!fs.existsSync(path) && fs.existsSync(path1)){
+        let pathimg="/Announcements/photo/"+announcement._id+".jpg"
+        res.render("Tutor/announcedetails",{tutor:true,announcement,pathimg})
+      }else if(!fs.existsSync(path) && !fs.existsSync(path1)){
+        res.render("Tutor/announcedetails",{tutor:true,announcement})
+      }
+  })
+})
 router.get('/login', (req, res) => {
   if (req.session.loggedTutorIn) {
     res.redirect('/')
@@ -118,51 +142,233 @@ router.get('/announcement', tutorLogin, (req, res) => {
   res.render('Tutor/announcement', { tutor: true })
 })
 router.post('/announcement', (req, res) => {
-  var ext
-  if(req.body.im==""){
-  ext = req.files.file.name.substring(req.files.file.name.length - 3, req.files.file.name.length);
-}else{
-  ext=""
-}
-  tutorHelpers.addAnnouncement(ext, req.body, (id) => {
-    var filetype = req.files.file.name.substring(req.files.file.name.length - 3, req.files.file.name.length);
-    if (filetype == "jpg") {
+  console.log(req.files);
+  tutorHelpers.addAnnouncement(req.body, (id) => {
+    if(req.files.file && !req.files.pdf && !req.files.video){
+    if(req.body.im=="")
+    {
       let image = req.files.file
-      image.mv('./public/Announcements/' + id + '.jpg', (err) => {
+      image.mv('./public/Announcements/photo/' + id + '.jpg', (err) => {
         if (!err) {
           res.redirect('/tutor/announcement')
         } else {
           console.log(err);
         }
       })
+    }else{
+      res.redirect('/tutor/announcement')
     }
-    if (filetype == "pdf") {
-      let image = req.files.file
-      image.mv('./public/Announcements/' + id + '.pdf', (err) => {
-        if (!err) {
-          res.redirect('/tutor/announcement')
-        } else {
-          console.log(err);
-        }
-      })
-    }
-    if (filetype == "mp4") {
-      let image = req.files.file
-      image.mv('./public/Announcements/' + id + '.mp4', (err) => {
-        if (!err) {
-          res.redirect('/tutor/announcement')
-        } else {
-          console.log(err);
-        }
-      })
+  } else if(req.files.pdf && !req.files.file && !req.files.video)
+{
+  let pdf = req.files.pdf
+  pdf.mv('./public/Announcements/pdf/' + id + '.pdf', (err) => {
+    if (!err) {
+      res.redirect('/tutor/announcement')
+    } else {
+      console.log(err);
     }
   })
-})
+}
+ else if(req.files.video && !req.files.file && !req.files.pdf)
+{
+  let video= req.files.video
+    video.mv('./public/Announcements/video/' + id + '.mp4', (err) => {
+    })
+}else if(req.files.file && req.files.pdf && !req.files.video){
+  let pdf = req.files.pdf
+  pdf.mv('./public/Announcements/pdf/' + id + '.pdf', (err) => {
+  })
+  if(req.body.im=="")
+  {
+    let image = req.files.file
+    image.mv('./public/Announcements/photo/' + id + '.jpg', (err) => {
+      if (!err) {
+        res.redirect('/tutor/announcement')
+      } else {
+        console.log(err);
+      }
+    })
+  }else{
+    res.redirect('/tutor/announcement')
+  }
+}
+else if(req.files.file && !req.files.pdf && req.files.video){
+  let video= req.files.video
+  video.mv('./public/Announcements/video/' + id + '.mp4', (err) => {
+  })
+  if(req.body.im=="")
+  {
+    let image = req.files.file
+    image.mv('./public/Announcements/photo/' + id + '.jpg', (err) => {
+      if (!err) {
+        res.redirect('/tutor/announcement')
+      } else {
+        console.log(err);
+      }
+    })
+  }else{
+    res.redirect('/tutor/announcement')
+  }
+}
+else if(!req.files.file && req.files.pdf && req.files.video){
+  let video= req.files.video
+  video.mv('./public/Announcements/video/' + id + '.mp4', (err) => {
+  })
+  let pdf = req.files.pdf
+  pdf.mv('./public/Announcements/pdf/' + id + '.pdf', (err) => {
+    res.redirect('/tutor/announcement')
+  })
+}else if(req.files.file && req.files.pdf && req.files.video){
+  let video= req.files.video
+  video.mv('./public/Announcements/video/' + id + '.mp4', (err) => {
+  })
+  let pdf = req.files.pdf
+  pdf.mv('./public/Announcements/pdf/' + id + '.pdf', (err) => {
+  })
+  if(req.body.im=="")
+  {
+    let image = req.files.file
+    image.mv('./public/Announcements/photo/' + id + '.jpg', (err) => {
+      if (!err) {
+        res.redirect('/tutor/announcement')
+      } else {
+        console.log(err);
+      }
+    })
+  }else{
+    res.redirect('/tutor/announcement')
+  }
+}
+  })
+})  
 router.get('/events', tutorLogin, (req, res) => {
   res.render('Tutor/Events', { tutor: true })
 })
+router.post('/event', (req, res) => {
+  tutorHelpers.addEvent(req.body, (id) => {
+    if(req.files.file && !req.files.pdf && !req.files.video){
+    if(req.body.im=="")
+    {
+      let image = req.files.file
+      image.mv('./public/Events/photo/' + id + '.jpg', (err) => {
+        if (!err) {
+          res.redirect('/tutor/events')
+        } else {
+          console.log(err);
+        }
+      })
+    }else{
+      res.redirect('/tutor/events')
+    }
+  } else if(req.files.pdf && !req.files.file && !req.files.video)
+{
+  let pdf = req.files.pdf
+  pdf.mv('./public/Events/pdf/' + id + '.pdf', (err) => {
+    if (!err) {
+      res.redirect('/tutor/events')
+    } else {
+      console.log(err);
+    }
+  })
+}
+ else if(req.files.video && !req.files.file && !req.files.pdf)
+{
+  let video= req.files.video
+    video.mv('./public/Events/video/' + id + '.mp4', (err) => {
+    })
+}else if(req.files.file && req.files.pdf && !req.files.video){
+  let pdf = req.files.pdf
+  pdf.mv('./public/Events/pdf/' + id + '.pdf', (err) => {
+  })
+  if(req.body.im=="")
+  {
+    let image = req.files.file
+    image.mv('./public/Events/photo/' + id + '.jpg', (err) => {
+      if (!err) {
+        res.redirect('/tutor/events')
+      } else {
+        console.log(err);
+      }
+    })
+  }else{
+    res.redirect('/tutor/events')
+  }
+}
+else if(req.files.file && !req.files.pdf && req.files.video){
+  let video= req.files.video
+  video.mv('./public/Events/video/' + id + '.mp4', (err) => {
+  })
+  if(req.body.im=="")
+  {
+    let image = req.files.file
+    image.mv('./public/Events/photo/' + id + '.jpg', (err) => {
+      if (!err) {
+        res.redirect('/tutor/events')
+      } else {
+        console.log(err);
+      }
+    })
+  }else{
+    res.redirect('/tutor/events')
+  }
+}
+else if(!req.files.file && req.files.pdf && req.files.video){
+  let video= req.files.video
+  video.mv('./public/Events/video/' + id + '.mp4', (err) => {
+  })
+  let pdf = req.files.pdf
+  pdf.mv('./public/Events/pdf/' + id + '.pdf', (err) => {
+    res.redirect('/tutor/events')
+  })
+}else if(req.files.file && req.files.pdf && req.files.video){
+  let video= req.files.video
+  video.mv('./public/Events/video/' + id + '.mp4', (err) => {
+  })
+  let pdf = req.files.pdf
+  pdf.mv('./public/Events/pdf/' + id + '.pdf', (err) => {
+  })
+  if(req.body.im=="")
+  {
+    let image = req.files.file
+    image.mv('./public/Events/photo/' + id + '.jpg', (err) => {
+      if (!err) {
+        res.redirect('/tutor/events')
+      } else {
+        console.log(err);
+      }
+    })
+  }else{
+    res.redirect('/tutor/events')
+  }
+}
+  })
+}) 
+
+router.get('/event/:id',tutorLogin,(req,res)=>{
+  tutorHelpers.getEventDetails(req.params.id).then((event) => {
+    const fs = require('fs')
+    let path = './public/Events/pdf/'+event._id+".pdf"
+    let path1 = './public/Events/photo/'+event._id+".jpg"
+      if (fs.existsSync(path) && fs.existsSync(path1)) {
+        console.log(path,path1,"________________");
+        let pathimg="/Events/photo/"+event._id+".jpg"
+        let pathpdf="/Notes/open-document.png"
+        res.render("Tutor/eventdetails",{tutor:true,event,pathimg,pathpdf})
+      }else if(fs.existsSync(path) && !fs.existsSync(path1)){
+        let pathpdf="/Notes/open-document.png"
+        res.render("Tutor/eventdetails",{tutor:true,event,pathpdf})
+      }else if(!fs.existsSync(path) && fs.existsSync(path1)){
+        let pathimg="/Events/photo/"+event._id+".jpg"
+        res.render("Tutor/eventdetails",{tutor:true,event,pathimg})
+      }else if(!fs.existsSync(path) && !fs.existsSync(path1)){
+        res.render("Tutor/eventdetails",{tutor:true,event})
+      }
+  })
+})
 router.get('/photos', tutorLogin, (req, res) => {
-  res.render('Tutor/photos', { tutor: true })
+  studentHelpers.getPhotos().then((photos) => {
+    res.render('Tutor/photos', { tutor: true ,photos})
+  })
 })
 router.get('/addstudent', tutorLogin, (req, res) => {
   res.render('Tutor/add-student', { tutor: true })
@@ -246,6 +452,24 @@ router.get('/uvid', tutorLogin, (req, res) => {
 router.post('/uvid', (req, res) => {
   tutorHelpers.uvidNotes(req.body).then((response) => {
     res.redirect('/tutor/notes')
+  })
+})
+router.post('/photos', (req, res) => {
+  tutorHelpers.addPhotos(req.body, (id) => {
+    let image = req.files.Image
+    image.mv('./public/Photos/' + id + '.jpg', (err) => {
+      if (!err) {
+        res.redirect('/tutor/photos')
+      } else {
+        console.log(err);
+      }
+    })
+  })
+})
+router.get('/delete-photo/:id', tutorLogin, (req, res) => {
+  let photoId = req.params.id
+  tutorHelpers.deletePhoto(photoId).then((response) => {
+    res.redirect('/tutor/photos')
   })
 })
 router.post('/test', (req, res) => {

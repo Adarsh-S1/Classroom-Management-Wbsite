@@ -161,9 +161,45 @@ router.get('/assignments/:id',studentLogin,(req,res)=>{
      })
     })
   }),
-  router.post('/attendvideo',(req,res)=>{
+  router.post('/attendvideo',studentLogin,(req,res)=>{
   studentHelpers.attendance(req.body,req.session.student._id).then((response)=>{
 res.json({status:true})
   })
+  })
+  router.get('/attendance',studentLogin,async(req,res)=>{
+    let attendance = await studentHelpers.getfullAttendance(req.session.student._id)
+    res.render("Student/attendance",{student:true,attendance})
+  })
+  router.get('/announcement',studentLogin,(req,res)=>{
+    tutorHelpers.getAnnouncements().then((announcement) => {
+    res.render("Student/announcement",{student:true,announcement})
+    })
+  })
+  router.get('/announcement/:id',studentLogin,(req,res)=>{
+    studentHelpers.getAnnounceDetails(req.params.id).then((announcement) => {
+      const fs = require('fs')
+
+      let path = './public/Announcements/pdf/'+announcement._id+".pdf"
+      let path1 = './public/Announcements/photo/'+announcement._id+".jpg"
+        if (fs.existsSync(path) && fs.existsSync(path1)) {
+          console.log(path,path1,"________________");
+          let pathimg="../Announcements/photo/"+announcement._id+".jpg"
+          let pathpdf="../Notes/open-document.png"
+          res.render("Student/announcedetails",{student:true,announcement,pathimg,pathpdf})
+        }else if(fs.existsSync(path) && !fs.existsSync(path1)){
+          let pathpdf="../Notes/open-document.png"
+          res.render("Student/announcedetails",{student:true,announcement,pathpdf})
+        }else if(!fs.existsSync(path) && fs.existsSync(path1)){
+          let pathimg="../Announcements/photo/"+announcement._id+".jpg"
+          res.render("Student/announcedetails",{student:true,announcement,pathimg})
+        }else if(!fs.existsSync(path) && !fs.existsSync(path1)){
+          res.render("Student/announcedetails",{student:true,announcement})
+        }
+    })
+  })
+  router.get('/gallery',studentLogin,(req,res)=>{
+    studentHelpers.getPhotos().then((photos) => {
+      res.render("Student/gallery",{student:true,photos})
+    })
   })
 module.exports = router;

@@ -139,16 +139,10 @@
 								srcset=""><strong>&nbsp;Announcements</strong></div>
 						{{#each announcement}}
 						<div class="block-detail" style="padding-bottom: 50px;">
-							<a style="font-weight: bold; font-size: 15px;"
-								class="gradient-text ">{{this.announcearray.Message}}</a>
+							<a href="/tutor/announcement/{{this._id}}" style="font-weight: bold; font-size: 15px;"
+								class="gradient-text ">{{this.Message}}</a>
 							<div class="block-text">
-								<p>{{this.announcearray.Description}}</p>
-																<img src="{{this.announcearray.im}}" alt="">
-
-									<img src="../Announcements/{{this._id}}.{{extension}}" alt="">
-							<a href="../Announcements/{{this._id}}.mp4" data-options="hint:always;" class="MagicThumb"></a>
-							<br><br><br><br>
-							<a href="../Announcements/{{this._id}}.pdf"><img src="../Notes/open-document.png" alt="" srcset=""></a>
+								<p>{{this.Description}}</p>
 							</div>
 						</div>
 						{{/each}}
@@ -157,18 +151,19 @@
 						<div class="block-date"><img style="margin-top: -5px;"
 								src="../Template/icons/themify-icons/SVG/calendar.svg" alt="" srcset=""><strong> Events
 						</div>
-						<div class="block-detail">
-							<span style="color: black;" class="time">15:00 - 16:30</span>
-							<span style="color: black; font-weight: lighter;" class="topic">Retouching</span>
+												{{#each events}}
+						<div class="block-detail" style="padding-bottom: 50px;">
+							<a href="/tutor/event/{{this._id}}" style=" font-size: 15px;"
+								class="gradient-text ">{{this.Name}}</a>
 							<div class="block-text">
-								<p style="font-weight: lighter;">Nihilne te nocturnum praesidium Palati, nihil urbis
-									vigilae, nihil timor populi, nihil concursus velit omnium, nihil hic muntissimus
-									habendi senatus locus, nihil horum ora vultusque moverunt, patere tua consilia non
-									sentis constrictam nihil hic muntissimus.</p>
-								<span class="speaker"> <strong style="color: black;">Speaker</strong> : <a href="#"
-										class="gradient-text "> Lina Blamberg </a> </span>
+								<p>{{this.Date}}</p>
+								<span class="speaker"> <strong style="color: black;">Speaker</strong> : <a 
+										class="gradient-text "> {{this.Person}}</a> </span>
 							</div>
+							
 						</div>
+						{{/each}}
+
 					</li>
 				</ul>
 			</div>

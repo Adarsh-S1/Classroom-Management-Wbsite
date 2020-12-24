@@ -239,12 +239,8 @@ module.exports = {
       resolve(attend)
     })
   },
-  addAnnouncement: async (ext, announce, callback) => {
-    let announcement = {
-      announcearray: announce,
-      extension: ext
-    }
-    db.get().collection(collection.ANNOUNCEMENT_COLLECTION).insertOne(announcement).then((data) => {
+  addAnnouncement: async (announce, callback) => {
+    db.get().collection(collection.ANNOUNCEMENT_COLLECTION).insertOne(announce).then((data) => {
       callback(data.ops[0]._id)
     })
   },
@@ -252,6 +248,36 @@ module.exports = {
     return new Promise(async (resolve, reject) => {
       let announcement = await db.get().collection(collection.ANNOUNCEMENT_COLLECTION).find().toArray()
       resolve(announcement)
+    })
+  },
+  getEvents: () => {
+    return new Promise(async (resolve, reject) => {
+      let event = await db.get().collection(collection.EVENT_COLLECTION).find().toArray()
+      resolve(event)
+    })
+  },
+  addEvent: async (event, callback) => {
+    db.get().collection(collection.EVENT_COLLECTION).insertOne(event).then((data) => {
+      callback(data.ops[0]._id)
+    })
+  },
+  getEventDetails:(eventId)=>{
+    return new Promise(async (resolve, reject) => {
+    await db.get().collection(collection.EVENT_COLLECTION).findOne({_id:objectId(eventId)}).then((response)=>{
+      resolve(response)
+    })
+    })
+  },
+  addPhotos: async (photo, callback) => {
+    db.get().collection(collection.PHOTO_COLLECTION).insertOne(photo).then((data) => {
+      callback(data.ops[0]._id)
+    })
+  },
+  deletePhoto: (photoId) => {
+    return new Promise((resolve, reject) => {
+      db.get().collection(collection.PHOTO_COLLECTION).removeOne({ _id: objectId(photoId) }).then((response) => {
+        resolve(response)
+      })
     })
   }
 }

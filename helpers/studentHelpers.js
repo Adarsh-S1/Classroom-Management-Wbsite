@@ -143,7 +143,6 @@ attendhome:(studId)=>{
         $match:{"attendate":datecheck}
       }
     ]).toArray()
-    console.log(attend,"___________________________________");
     resolve(attend)
   })  
   },
@@ -174,8 +173,41 @@ attendhome:(studId)=>{
         $match:{"attendate":datecheck}
       }
     ]).toArray()
-    console.log(attend[0].status);
     resolve(attend)
    })    
+},
+getfullAttendance: (studId) => {
+  return new Promise(async (resolve, reject) => {
+    let datecheck = new Date().getDate() + "-" + (new Date().getMonth() + 1) + "-" + new Date().getFullYear()
+    let attend = await db.get().collection(collection.ATTENDANCE_COLLECTION).aggregate([
+      {
+        $match: { student: objectId(studId) }
+      },
+      {
+        $unwind: '$attendance'
+      },
+      {
+        $project: {
+          attendate: "$attendance.date",
+          status: "$attendance.status"
+        }
+      }
+    ]).toArray()
+    console.log(attend);
+    resolve(attend)
+  })
+},
+getAnnounceDetails:(announceId)=>{
+  return new Promise(async (resolve, reject) => {
+  await db.get().collection(collection.ANNOUNCEMENT_COLLECTION).findOne({_id:objectId(announceId)}).then((response)=>{
+    resolve(response)
+  })
+  })
+},
+getPhotos: () => {
+  return new Promise(async (resolve, reject) => {
+    let photo = await db.get().collection(collection.PHOTO_COLLECTION).find().toArray()
+    resolve(photo)
+  })
 }
 }

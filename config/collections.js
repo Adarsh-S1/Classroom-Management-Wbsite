@@ -7,5 +7,7 @@ module.exports={
     NOTES_U_VID_COLLECTION:'notesyoutube',
     ASSIGNMENT_COLLECTION:'assignments',
     ATTENDANCE_COLLECTION:'attendance',
-    ANNOUNCEMENT_COLLECTION:'announcements'
+    ANNOUNCEMENT_COLLECTION:'announcements',
+    EVENT_COLLECTION:'events',
+    PHOTO_COLLECTION:'photos'
 }
