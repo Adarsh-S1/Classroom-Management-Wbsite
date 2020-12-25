@@ -275,6 +275,7 @@ router.post('/event', (req, res) => {
 {
   let video= req.files.video
     video.mv('./public/Events/video/' + id + '.mp4', (err) => {
+      res.redirect('/tutor/events')
     })
 }else if(req.files.file && req.files.pdf && !req.files.video){
   let pdf = req.files.pdf

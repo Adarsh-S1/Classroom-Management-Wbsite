@@ -82,7 +82,35 @@
 																	placeholder="00 - 00 - 0000">
 															</div>
 														</div>
+													</div>
+																					<div class="row">
+														<div class="col-md-12">
 
+															<div class="form-group">
+																<div class="form-check form-check-inline">
+																	<b>Type of event</b>&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;
+																	<input class="form-check-input" type="radio"
+																		 name="Type" id="inlineRadio1" onclick="freePaid()" value="Free">
+																	<label class="form-check-label"
+																		for="inlineRadio1">Free</label>
+																</div>
+																<div class="form-check form-check-inline">
+																	<input class="form-check-input" type="radio"
+																		name="Type" id="inlineRadio2" onclick="freePaid()" value="Paid">
+																	<label class="form-check-label"
+																		for="inlineRadio2">Paid</label>
+																</div>
+															</div>
+														</div>
+													</div>
+													<div id="amount" style="display: none;"  class="row">
+														<div class="col-md-12">
+															<div class="form-group">
+																<label>Amount</label>
+																<input type="number"   class="form-control" name="Amount"
+																	placeholder="Amount">
+															</div>
+														</div>
 													</div>
 													<div class="row">
 														<div class="col-md-12">
@@ -161,6 +189,7 @@
 <script src="../Template/corenav-master/coreNavigation-1.1.3.js"></script>
 <script src="../Template//vendor_components/jquery-ui/jquery-ui.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/0.8.1/cropper.min.js"></script>
+
 <script>
 	let result = document.querySelector('.result'),
 		img_result = document.querySelector('.img-result'),
@@ -345,4 +374,12 @@
 	function abortHandler(event) {
 		_("status").innerHTML = "Upload Aborted";
 	}
+
+		function freePaid() {
+    if (document.getElementById('inlineRadio2').checked) {
+        document.getElementById('amount').style.display = 'block';
+    } else {
+        document.getElementById('amount').style.display = 'none';
+    }
+		}
 </script>

@@ -21,7 +21,9 @@ router.get('/student', studentLogin, async(req, res) => {
   let attendance=await studentHelpers.attendhome(req.session.student._id)
   let stud=req.session.student
   let studo=req.session.phone
-  res.render('Student/Stud-home',{stud,studo,attendance})
+  tutorHelpers.getEvents().then((events) => {
+    res.render('Student/Stud-home',{stud,studo,events,attendance})
+  })
 })
 router.get('/login', (req, res) => {
   if (req.session.loggedstudentIn) {
@@ -200,6 +202,44 @@ res.json({status:true})
   router.get('/gallery',studentLogin,(req,res)=>{
     studentHelpers.getPhotos().then((photos) => {
       res.render("Student/gallery",{student:true,photos})
+    })
+  })
+  router.get('/event/:id',studentLogin,(req,res)=>{
+    tutorHelpers.getEventDetails(req.params.id).then((event) => {
+      const fs = require('fs')
+      let path = './public/Events/pdf/'+event._id+".pdf"
+      let path1 = './public/Events/photo/'+event._id+".jpg"
+      if(event.Type=="Free"){
+        if (fs.existsSync(path) && fs.existsSync(path1)) {
+          console.log(path,path1,"________________");
+          let pathimg="/Events/photo/"+event._id+".jpg"
+          let pathpdf="/Notes/open-document.png"
+          res.render("Student/eventfree",{student:true,event,pathimg,pathpdf})
+        }else if(fs.existsSync(path) && !fs.existsSync(path1)){
+          let pathpdf="/Notes/open-document.png"
+          res.render("Student/eventfree",{student:true,event,pathpdf})
+        }else if(!fs.existsSync(path) && fs.existsSync(path1)){
+          let pathimg="/Events/photo/"+event._id+".jpg"
+          res.render("Student/eventfree",{student:true,event,pathimg})
+        }else if(!fs.existsSync(path) && !fs.existsSync(path1)){
+          res.render("Student/eventfree",{student:true,event})
+        }
+      }else if(event.Type=="Paid"){
+        if (fs.existsSync(path) && fs.existsSync(path1)) {
+          console.log(path,path1,"________________");
+          let pathimg="/Events/photo/"+event._id+".jpg"
+          let pathpdf="/Notes/open-document.png"
+          res.render("Student/eventpaid",{student:true,event,pathimg,pathpdf})
+        }else if(fs.existsSync(path) && !fs.existsSync(path1)){
+          let pathpdf="/Notes/open-document.png"
+          res.render("Student/eventpaid",{student:true,event,pathpdf})
+        }else if(!fs.existsSync(path) && fs.existsSync(path1)){
+          let pathimg="/Events/photo/"+event._id+".jpg"
+          res.render("Student/eventpaid",{student:true,event,pathimg})
+        }else if(!fs.existsSync(path) && !fs.existsSync(path1)){
+          res.render("Student/eventpaid",{student:true,event})
+        }
+      }
     })
   })
 module.exports = router;
