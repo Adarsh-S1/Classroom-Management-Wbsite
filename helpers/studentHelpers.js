@@ -3,7 +3,11 @@ var collection = require('../config/collections')
 const { response } = require('express')
 const bcrypt = require('bcrypt')
 var objectId = require('mongodb').ObjectID
-
+const Razorpay=require('razorpay')
+var instance = new Razorpay({
+  key_id: 'rzp_test_pd71wI8aXMt1wf',
+  key_secret: 'Y6k49kYdekn5xMd9HB5gY50o',
+});
 module.exports = {
   doStudentLogin: (studentDetails) => {
     let response={}
@@ -193,7 +197,6 @@ getfullAttendance: (studId) => {
         }
       }
     ]).toArray()
-    console.log(attend);
     resolve(attend)
   })
 },
@@ -208,6 +211,61 @@ getPhotos: () => {
   return new Promise(async (resolve, reject) => {
     let photo = await db.get().collection(collection.PHOTO_COLLECTION).find().toArray()
     resolve(photo)
+  })
+},
+getEventDetails:(eventId,studId)=>{
+  return new Promise(async (resolve, reject) => {
+  await db.get().collection(collection.EVENT_COLLECTION).findOne({_id:objectId(eventId)}).then((response)=>{
+    resolve(response)
+  })
+  })
+},
+eventBook:(eventId,studId)=>{
+  console.log(eventId);
+  return new Promise(async(resolve,reject)=>{
+    let paidevent=await db.get().collection(collection.EVENT_COLLECTION).findOne({_id:objectId(eventId),Type:"Paid"})
+    if(paidevent){
+      if(await db.get().collection(collection.EVENT_COLLECTION).findOne({_id:objectId(eventId),students: objectId(studId)}))
+      {
+        console.log("FOUND________________________");
+      }else{
+        db.get().collection(collection.EVENT_COLLECTION).updateOne({ _id: objectId(eventId) },
+        {
+          $push:{students:objectId(studId)}
+        }).then    
+        }
+  }
+  resolve()
+  })
+},
+generateRazorPay: (event,total) => {
+  return new Promise((resolve, reject) => {
+    var options = {
+      amount: total * 100,
+      currency: "INR",
+      receipt: "" + event.eventId
+    }
+    instance.orders.create(options, function (err, order) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log('New Order:', order); 
+        resolve(order)
+      }
+    });
+  })
+},
+verifyPayment: (details) => {
+  return new Promise((resolve, reject) => {
+    const crypto = require('crypto');
+    let hmac = crypto.createHmac('sha256', 'Y6k49kYdekn5xMd9HB5gY50o');
+    hmac.update(details['payment[razorpay_order_id]'] + '|' + details['payment[razorpay_payment_id]']);
+    hmac = hmac.digest('hex')
+    if (hmac == details['payment[razorpay_signature]']) {
+      resolve()
+    } else {
+      reject()
+    }
   })
 }
 }

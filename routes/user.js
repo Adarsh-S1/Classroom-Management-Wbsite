@@ -184,7 +184,6 @@ res.json({status:true})
       let path = './public/Announcements/pdf/'+announcement._id+".pdf"
       let path1 = './public/Announcements/photo/'+announcement._id+".jpg"
         if (fs.existsSync(path) && fs.existsSync(path1)) {
-          console.log(path,path1,"________________");
           let pathimg="../Announcements/photo/"+announcement._id+".jpg"
           let pathpdf="../Notes/open-document.png"
           res.render("Student/announcedetails",{student:true,announcement,pathimg,pathpdf})
@@ -205,13 +204,12 @@ res.json({status:true})
     })
   })
   router.get('/event/:id',studentLogin,(req,res)=>{
-    tutorHelpers.getEventDetails(req.params.id).then((event) => {
+    studentHelpers.getEventDetails(req.params.id,req.session.student._id).then((event) => {
       const fs = require('fs')
       let path = './public/Events/pdf/'+event._id+".pdf"
       let path1 = './public/Events/photo/'+event._id+".jpg"
       if(event.Type=="Free"){
         if (fs.existsSync(path) && fs.existsSync(path1)) {
-          console.log(path,path1,"________________");
           let pathimg="/Events/photo/"+event._id+".jpg"
           let pathpdf="/Notes/open-document.png"
           res.render("Student/eventfree",{student:true,event,pathimg,pathpdf})
@@ -226,20 +224,39 @@ res.json({status:true})
         }
       }else if(event.Type=="Paid"){
         if (fs.existsSync(path) && fs.existsSync(path1)) {
-          console.log(path,path1,"________________");
           let pathimg="/Events/photo/"+event._id+".jpg"
           let pathpdf="/Notes/open-document.png"
-          res.render("Student/eventpaid",{student:true,event,pathimg,pathpdf})
+          res.render("Student/eventpaid",{student:true,event,pathimg,pathpdf,stud:req.session.student})
         }else if(fs.existsSync(path) && !fs.existsSync(path1)){
           let pathpdf="/Notes/open-document.png"
-          res.render("Student/eventpaid",{student:true,event,pathpdf})
+          res.render("Student/eventpaid",{student:true,event,pathpdf,stud:req.session.student})
         }else if(!fs.existsSync(path) && fs.existsSync(path1)){
           let pathimg="/Events/photo/"+event._id+".jpg"
-          res.render("Student/eventpaid",{student:true,event,pathimg})
+          res.render("Student/eventpaid",{student:true,event,pathimg,stud:req.session.student})
         }else if(!fs.existsSync(path) && !fs.existsSync(path1)){
-          res.render("Student/eventpaid",{student:true,event})
+          res.render("Student/eventpaid",{student:true,event,stud:req.session.student})
         }
       }
+    })
+  })
+  router.get('/success',studentLogin,(req,res)=>{
+      res.render("Student/success",{student:true})
+  })
+  router.post('/payevent',studentLogin,(req,res)=>{
+   studentHelpers.generateRazorPay(req.body,req.body.amount).then((response)=>{
+    res.json(response)
+   })
+  })
+  router.post('/verify-payment',(req,res)=>{
+    console.log(req.body);
+    userHelpers.verifyPayment(req.body).then(()=>{
+      userHelpers.eventBook(req.body['order[receipt]'],req.session.student._id).then(()=>{
+        console.log("Payment Success");
+        res.json({status:true})
+      })
+    }).catch((err)=>{
+      console.log(err);
+      res.json({status:false,errMsg:''})
     })
   })
 module.exports = router;
