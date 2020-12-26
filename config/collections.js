@@ -9,5 +9,6 @@ module.exports={
     ATTENDANCE_COLLECTION:'attendance',
     ANNOUNCEMENT_COLLECTION:'announcements',
     EVENT_COLLECTION:'events',
-    PHOTO_COLLECTION:'photos'
+    PHOTO_COLLECTION:'photos',
+    PAID_COLLECTION:'paid'
 }

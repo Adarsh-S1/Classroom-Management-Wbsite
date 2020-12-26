@@ -279,6 +279,29 @@ module.exports = {
         resolve(response)
       })
     })
+  },
+  getPaidStudents:(eventId)=>{
+   return new Promise(async(resolve, reject) => {
+   let paid= await db.get().collection(collection.PAID_COLLECTION).aggregate([
+      {
+        $match: { event: objectId(eventId) }
+      },
+      {
+        $lookup:{
+          from:collection.STUDENT_COLLECTION,
+          localField:'student',
+          foreignField:'_id',
+          as:'students'
+        }
+      },
+      {
+        $project: {
+          students: "$students",
+        }
+      }
+    ]).toArray()
+resolve(paid)
+  })
   }
 }
 

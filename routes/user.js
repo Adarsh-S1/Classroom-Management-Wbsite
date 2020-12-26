@@ -223,6 +223,49 @@ res.json({status:true})
           res.render("Student/eventfree",{student:true,event})
         }
       }else if(event.Type=="Paid"){
+        let status="false"
+        console.log("hy");
+
+        if(event.students){
+        for(var i=0;i<event.students.length;i++)
+        {
+          if(req.session.student._id==event.students[i])
+          {
+            status="true"
+            {break;}
+          }
+        }
+        console.log(status);
+        if(status=="false"){
+        if (fs.existsSync(path) && fs.existsSync(path1)) {
+          let pathimg="/Events/photo/"+event._id+".jpg"
+          let pathpdf="/Notes/open-document.png"
+          res.render("Student/eventpaid",{student:true,event,pathimg,pathpdf,stud:req.session.student})
+        }else if(fs.existsSync(path) && !fs.existsSync(path1)){
+          let pathpdf="/Notes/open-document.png"
+          res.render("Student/eventpaid",{student:true,event,pathpdf,stud:req.session.student})
+        }else if(!fs.existsSync(path) && fs.existsSync(path1)){
+          let pathimg="/Events/photo/"+event._id+".jpg"
+          res.render("Student/eventpaid",{student:true,event,pathimg,stud:req.session.student})
+        }else if(!fs.existsSync(path) && !fs.existsSync(path1)){
+          res.render("Student/eventpaid",{student:true,event,stud:req.session.student})
+        }
+      }else if(status=="true"){
+        if (fs.existsSync(path) && fs.existsSync(path1)) {
+          let pathimg="/Events/photo/"+event._id+".jpg"
+          let pathpdf="/Notes/open-document.png"
+          res.render("Student/event-done",{student:true,event,pathimg,pathpdf,stud:req.session.student})
+        }else if(fs.existsSync(path) && !fs.existsSync(path1)){
+          let pathpdf="/Notes/open-document.png"
+          res.render("Student/event-done",{student:true,event,pathpdf,stud:req.session.student})
+        }else if(!fs.existsSync(path) && fs.existsSync(path1)){
+          let pathimg="/Events/photo/"+event._id+".jpg"
+          res.render("Student/event-done",{student:true,event,pathimg,stud:req.session.student})
+        }else if(!fs.existsSync(path) && !fs.existsSync(path1)){
+          res.render("Student/event-done",{student:true,event,stud:req.session.student})
+        }
+      }
+      }else{
         if (fs.existsSync(path) && fs.existsSync(path1)) {
           let pathimg="/Events/photo/"+event._id+".jpg"
           let pathpdf="/Notes/open-document.png"
@@ -237,10 +280,11 @@ res.json({status:true})
           res.render("Student/eventpaid",{student:true,event,stud:req.session.student})
         }
       }
+    }
     })
   })
   router.get('/success',studentLogin,(req,res)=>{
-      res.render("Student/success",{student:true})
+      res.render("Student/success")
   })
   router.post('/payevent',studentLogin,(req,res)=>{
    studentHelpers.generateRazorPay(req.body,req.body.amount).then((response)=>{
@@ -249,7 +293,7 @@ res.json({status:true})
   })
   router.post('/verify-payment',(req,res)=>{
     console.log(req.body);
-    userHelpers.verifyPayment(req.body).then(()=>{
+    userHelpers.verifyPayment(req.body,req.session.student._id).then(()=>{
       userHelpers.eventBook(req.body['order[receipt]'],req.session.student._id).then(()=>{
         console.log("Payment Success");
         res.json({status:true})

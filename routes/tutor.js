@@ -347,6 +347,8 @@ else if(!req.files.file && req.files.pdf && req.files.video){
 
 router.get('/event/:id',tutorLogin,(req,res)=>{
   tutorHelpers.getEventDetails(req.params.id).then((event) => {
+    tutorHelpers.getPaidStudents(req.params.id).then((stud)=>{
+      console.log(stud);
     const fs = require('fs')
     let path = './public/Events/pdf/'+event._id+".pdf"
     let path1 = './public/Events/photo/'+event._id+".jpg"
@@ -354,16 +356,17 @@ router.get('/event/:id',tutorLogin,(req,res)=>{
         console.log(path,path1,"________________");
         let pathimg="/Events/photo/"+event._id+".jpg"
         let pathpdf="/Notes/open-document.png"
-        res.render("Tutor/eventdetails",{tutor:true,event,pathimg,pathpdf})
+        res.render("Tutor/eventdetails",{tutor:true,event,pathimg,pathpdf,stud})
       }else if(fs.existsSync(path) && !fs.existsSync(path1)){
         let pathpdf="/Notes/open-document.png"
-        res.render("Tutor/eventdetails",{tutor:true,event,pathpdf})
+        res.render("Tutor/eventdetails",{tutor:true,event,pathpdf,stud})
       }else if(!fs.existsSync(path) && fs.existsSync(path1)){
         let pathimg="/Events/photo/"+event._id+".jpg"
-        res.render("Tutor/eventdetails",{tutor:true,event,pathimg})
+        res.render("Tutor/eventdetails",{tutor:true,event,pathimg,stud})
       }else if(!fs.existsSync(path) && !fs.existsSync(path1)){
-        res.render("Tutor/eventdetails",{tutor:true,event})
+        res.render("Tutor/eventdetails",{tutor:true,event,stud})
       }
+    })
   })
 })
 router.get('/photos', tutorLogin, (req, res) => {

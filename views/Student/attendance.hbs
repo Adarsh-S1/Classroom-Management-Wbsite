@@ -27,7 +27,6 @@
                 </div>
             </div>
     <div style="margin-top: 100px;" class="d-flex flex-column flex-root">
-
 		<div class="d-flex flex-row flex-column-fluid page">
 
 			<div class="d-flex flex-column flex-row-fluid" id="kt_wrapper">
@@ -35,6 +34,9 @@
 					<h1 style=" font-family: 'Times New Roman', Times, serif;">ATTENDANCE</h1>
 				</center>
 				<center>
+					<div class="input-append date" id="datepicker" data-date="02-2012" data-date-format="mm-yyyy">   
+</div>      
+
 					<h4 >{{datecheck}}</h4>
 				</center>
 
@@ -95,10 +97,11 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script>
 <script>
 	$(function () {
-  $("#datepicker").datepicker({ 
-        autoclose: true, 
-        todayHighlight: true
-  }).datepicker('update', new Date());
+$("#datepicker").datepicker( {
+    format: "mm-yyyy",
+    startView: "months", 
+    minViewMode: "months"
+});
 });
 
 </script>

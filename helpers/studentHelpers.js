@@ -239,6 +239,7 @@ eventBook:(eventId,studId)=>{
   })
 },
 generateRazorPay: (event,total) => {
+  console.log(event,"______________________");
   return new Promise((resolve, reject) => {
     var options = {
       amount: total * 100,
@@ -255,13 +256,19 @@ generateRazorPay: (event,total) => {
     });
   })
 },
-verifyPayment: (details) => {
+verifyPayment: (details,studId) => {
+  console.log(details,"____---------__________________");
   return new Promise((resolve, reject) => {
     const crypto = require('crypto');
     let hmac = crypto.createHmac('sha256', 'Y6k49kYdekn5xMd9HB5gY50o');
     hmac.update(details['payment[razorpay_order_id]'] + '|' + details['payment[razorpay_payment_id]']);
     hmac = hmac.digest('hex')
     if (hmac == details['payment[razorpay_signature]']) {
+      let paidObj={
+        student:objectId(studId),
+        event:objectId(details['order[receipt]'])
+      }
+      db.get().collection(collection.PAID_COLLECTION).insertOne(paidObj)
       resolve()
     } else {
       reject()

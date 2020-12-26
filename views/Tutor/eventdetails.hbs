@@ -67,9 +67,49 @@
                             </div> <!-- events address -->
                         </div> <!-- events right -->
                     </div>
+                  
                 </div> <!-- row -->
+                 <h2 style="font-family: Georgia, 'Times New Roman', Times, serif; color: #ffc660;" class="text-center">PAID STUDENTS</h2>
+                     <table class="table table-bordered table-hover table-checkable " id="kt_datatable">
+										<thead>
+
+											<tr>
+												<th>
+													<center>Roll no</center>
+												</th>
+												<th>
+													<center>Name</center>
+												</th>
+												<th>
+													<center>Phone No</center>
+												</th>
+											</tr>
+										</thead>
+										<tbody>
+                                        {{#each stud}}
+                                        {{#each students}}
+											<tr>
+												<td>
+													<center>{{this.Rollno}}
+													</center>
+												</td>
+												<td>
+													<center>{{this.Name}}
+													</center>
+												</td>
+
+												<td>
+													<center> {{this.Phone}}
+													</center>
+												</td>
+											</tr>
+                                            {{/each}}
+                                        {{/each}}
+										</tbody>
+									</table>
             </div> <!-- events-area -->
         </div> <!-- container -->
+       
     </section>    
     <a href="#" class="back-to-top"><i class="fa fa-angle-up"></i></a>
  
