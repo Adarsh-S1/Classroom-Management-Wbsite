@@ -168,6 +168,12 @@ router.get('/assignments/:id',studentLogin,(req,res)=>{
 res.json({status:true})
   })
   })
+  router.get('/attendate/:id', studentLogin, async (req, res) => {
+    console.log(req.params.id,"________________________________________");
+    let attendance = await studentHelpers.getAttendDate(req.params.id,req.session.student._id)
+    let date=req.params.id
+    res.render('Student/attend-month', { student: true, attendance,date})
+  })
   router.get('/attendance',studentLogin,async(req,res)=>{
     let attendance = await studentHelpers.getfullAttendance(req.session.student._id)
     res.render("Student/attendance",{student:true,attendance})

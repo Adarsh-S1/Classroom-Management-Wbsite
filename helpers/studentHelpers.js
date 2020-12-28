@@ -105,6 +105,7 @@ attendhome:(studId)=>{
     let datecheck=new Date().getDate()+"-"+(new Date().getMonth()+1)+"-"+new Date().getFullYear()
     let attendObj = {
       date: new Date().getDate()+"-"+(new Date().getMonth()+1)+"-"+new Date().getFullYear(),
+      month:(new Date().getMonth()+1)+"-"+new Date().getFullYear(),
       status: "Absent"
     }
     let attendDetailObj = {
@@ -205,6 +206,28 @@ getAnnounceDetails:(announceId)=>{
   await db.get().collection(collection.ANNOUNCEMENT_COLLECTION).findOne({_id:objectId(announceId)}).then((response)=>{
     resolve(response)
   })
+  })
+},
+getAttendDate: (date,studId) => {
+  return new Promise(async (resolve, reject) => {
+    let attend = await db.get().collection(collection.ATTENDANCE_COLLECTION).aggregate([
+      {
+        $match:{ student: objectId(studId) }
+      },
+      {
+        $unwind: '$attendance'
+      },
+      {
+        $project: {
+          date:"$attendance.month",
+          status:"$attendance.status"
+        }
+      },
+      {
+        $match:{"date":date}
+      }
+    ]).toArray()
+    resolve(attend)
   })
 },
 getPhotos: () => {
