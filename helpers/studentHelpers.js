@@ -297,5 +297,15 @@ verifyPayment: (details,studId) => {
       reject()
     }
   })
+},
+paytmAdd: (studId,eventId) => {
+  return new Promise((resolve, reject) => {
+      let paidObj={
+        student:objectId(studId),
+        event:objectId(eventId)
+      }
+      db.get().collection(collection.PAID_COLLECTION).insertOne(paidObj)
+      resolve()
+  })
 }
 }

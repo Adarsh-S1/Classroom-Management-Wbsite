@@ -46,7 +46,7 @@
 									aria-labelledby="pills-edit-tab">
 									<div class="row">
 										<div class="col-12">
-											<form class="form" method="POST" action="/tutor/assignments" enctype="multipart/form-data">
+											<form class="form" onsubmit="notification()" method="POST" action="/tutor/assignments" enctype="multipart/form-data">
 												<div>
 													<h4 class="box-title text-primary"><i
 															class="ti-user mr-15"></i>ASSIGNMENTS</h4>
@@ -159,8 +159,21 @@
 			</div>
 		</div>
 	</div>
-	
+<script src="../Notification/push.min.js"></script>
+<script src="../Notification/serviceWorker.min.js"></script>
 <script>  
+function notification(){
+	Push.create("New Assignment Uploaded !", {
+    body:  document.getElementById('topic').value,
+    icon: '../Studtemplate/assets/images/logo.png',
+    timeout: 4000,
+	requireInteraction:true,
+    onClick: function () {
+        window.focus();
+        this.close();
+    }
+});
+}
 	      function fileValidation() { 
             var fileInput =  
                 document.getElementById('file1'); 
@@ -204,10 +217,6 @@
  }
 }		          
 
-</script>
-
-
-	<script>
 		function showDiv() {
 			document.getElementById('progress').style.display = "block";
 		}

@@ -2,9 +2,14 @@ var express = require('express');
 const studentHelpers = require('../helpers/studentHelpers');
 var router = express.Router();
 var request = require('request');
-const userHelpers = require('../helpers/studentHelpers');
 const tutorHelpers = require('../helpers/tutorHelpers');
 const { response } = require('express');
+const qs=require('querystring')
+const checksum_lib=require('../public/Paytm/checksum');
+const config=require('../public/Paytm/config');
+const { resolve } = require('path');
+const parseUrl=express.urlencoded({extended:false})
+const parseJson=express.json({extended:false})
 var text
 const studentLogin = (req, res, next) => {
   if (req.session.loggedstudentIn) {
@@ -299,8 +304,8 @@ res.json({status:true})
   })
   router.post('/verify-payment',(req,res)=>{
     console.log(req.body);
-    userHelpers.verifyPayment(req.body,req.session.student._id).then(()=>{
-      userHelpers.eventBook(req.body['order[receipt]'],req.session.student._id).then(()=>{
+    studentHelpers.verifyPayment(req.body,req.session.student._id).then(()=>{
+      studentHelpers.eventBook(req.body['order[receipt]'],req.session.student._id).then(()=>{
         console.log("Payment Success");
         res.json({status:true})
       })
@@ -309,4 +314,55 @@ res.json({status:true})
       res.json({status:false,errMsg:''})
     })
   })
+  router.post("/paytm", [parseUrl, parseJson], (req, res) => {
+    // Route for making payment
+  
+    var paymentDetails = {
+      amount: req.body.amount,
+      studId: req.body.studId,
+      eventId: req.body.eventId,
+  }
+
+      var params = {};
+      params['MID'] = config.PaytmConfig.mid;
+      params['WEBSITE'] = config.PaytmConfig.website;
+      params['CHANNEL_ID'] = 'WEB';
+      params['INDUSTRY_TYPE_ID'] = 'Retail';
+      params['ORDER_ID'] = paymentDetails.eventId+new Date().getMilliseconds();
+      params['CUST_ID'] = paymentDetails.studId;
+      params['TXN_AMOUNT'] = paymentDetails.amount;
+      params['CALLBACK_URL'] = 'http://localhost:3000/callback';
+      params['EMAIL'] = '';
+      params['MOBILE_NO'] = '';
+  
+  
+      checksum_lib.genchecksum(params, config.PaytmConfig.key, function (err, checksum) {
+          var txn_url = "https://securegw-stage.paytm.in/order/process"; // for staging
+  
+          var form_fields = "";
+          for (var x in params) {
+              form_fields += "<input type='hidden' name='" + x + "' value='" + params[x] + "' >";
+          }
+          form_fields += "<input type='hidden' name='CHECKSUMHASH' value='" + checksum + "' >";
+  
+          res.writeHead(200, { 'Content-Type': 'text/html' });
+          res.write('<html><head><title>Merchant Checkout Page</title></head><body><center><h1>Please do not refresh this page...</h1></center><form method="post" action="' + txn_url + '" name="f1">' + form_fields + '</form><script type="text/javascript">document.f1.submit();</script></body></html>');
+          res.end();
+      });
+  });
+  router.post("/callback", (req, res) => {
+    var eventId=req.body.ORDERID.substring(0,24)
+    console.log(eventId);
+    console.log(req.body);
+    if(req.body.STATUS=='TXN_SUCCESS')
+    {
+  studentHelpers.eventBook(eventId,req.session.student._id).then((response)=>{
+    studentHelpers.paytmAdd(req.session.student._id,eventId).then((response)=>{
+      res.render('Student/success')
+    })
+  })
+  }else{
+    res.render('Student/failed')
+  }
+  });
 module.exports = router;

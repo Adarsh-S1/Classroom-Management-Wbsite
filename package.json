@@ -21,8 +21,8 @@
     "node-sass": "^4.14.1",
     "nodemon": "^2.0.4",
     "objectid": "^3.2.1",
-    "razorpay": "^2.0.6",
-    "socket.io": "^3.0.4"
+    "push.js": "^1.0.12",
+    "razorpay": "^2.0.6"
   },
   "devDependencies": {
     "handlebars": "^4.7.6"

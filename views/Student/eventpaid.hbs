@@ -36,7 +36,8 @@
                             <h3>{{event.Name}}</h3>
                             <a ><img style="margin-top: -4px;" src="/Template/icons/themify-icons/SVG/calendar2.svg" alt=""> <span> {{event.Date}}</span></a>
                             <a><img style="margin-top: -4px;" src="/Template/icons/themify-icons/SVG/time.svg" alt=""> <span> 10:00 Am - 3:00 Pm</span></a>
-                           			
+                           	  <a style="color: #ddad01;">{{event.Type}}</a>
+
                <center><a href="{{pathimg}}"  class="MagicThumb" data-options="expandEasing:cubic-bezier(.09,.63,0,.99);"><img  src="{{pathimg}}" /></a></center>
 			<center><a href="{{event.im}}"  class="MagicThumb" data-options="expandEasing:cubic-bezier(.09,.63,0,.99);"><img src="{{event.im}}"  id="img" /></a></center>
 			<center class="mt-5"><a href="/Events/video/{{event._id}}.mp4" data-options="hint:always;" class="MagicThumb"></a></center>
@@ -55,8 +56,19 @@
                                         <input type="text" name="studId" hidden value="{{stud._id}}">
                                         <input type="text" name="eventId" hidden value="{{event._id}}">
                                          <input type="number" name="amount" hidden value="{{event.Amount}}">
-                                    <button type="submit" class="main-btn">Book Your Seat</button>
+                                    <button style="background-color: #ffc600; color: #07294d; margin-bottom: 10px" type="submit" class="main-btn">Book Your Seat through <br><img style=" margin-top: -90px; margin-bottom: -60px;" src="../eventdetails/razorpay.png" alt="" srcset=""><br><b style="color: white; ">OR</b></button>   
                                     </form>
+                                     <form action="/paytm" method="POST" >
+                                        <input type="text" name="studId" hidden value="{{stud._id}}">
+                                        <input type="text" name="eventId" hidden value="{{event._id}}">
+                                         <input type="number" name="amount" hidden value="{{event.Amount}}">
+                                    <button style="background-color: #ffc600; color: #07294d; margin-bottom: 10px;" type="submit" class="main-btn">Book Your Seat through <br><img style=" margin-top: -90px; margin-bottom: -60px; height: 40px; width: auto;" src="../eventdetails/ezgif-3-55a0994a3e7b.jpg" alt="" srcset=""></button>
+                                    </form>
+                                       <form action=""  >
+                                        <input type="text" name="studId" hidden value="{{stud._id}}">
+                                        <input type="text" name="eventId" hidden value="{{event._id}}">
+                                         <input type="number" name="amount" hidden value="{{event.Amount}}">
+  <button style="background-color: #ffc600; color: #07294d; margin-bottom: 10px;" type="submit" class="main-btn">Book Your Seat through <br><img style=" margin-top: -90px; margin-bottom: -60px; height: 40px; width: auto;" src="../eventdetails/pp-logo-150px.png" alt="" srcset=""><br><b style="color: white; ">OR</b></button>
                                 </div>
                             </div> <!-- events coundwon -->
                             <div class="events-address mt-30">
@@ -93,7 +105,7 @@
     </section>    
     <a href="#" class="back-to-top"><i class="fa fa-angle-up"></i></a>
  
-</body>
+</body> 
 <script>
     $("#eventbook").submit((e) => {
         e.preventDefault()
