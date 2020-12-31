@@ -401,7 +401,7 @@ router.get('/studetails/:id', tutorLogin, async (req, res) => {
 router.get('/editstud/:id', tutorLogin, async (req, res) => {
   let student = await tutorHelpers.getStudentDetails(req.params.id)
   res.render('Tutor/Edit-Student', { tutor: true, student })
-})
+} )
 router.post('/editstud/:id', tutorLogin, (req, res) => {
   console.log(req.body);
   let id = req.params.id
