@@ -21,6 +21,7 @@
     "node-sass": "^4.14.1",
     "nodemon": "^2.0.4",
     "objectid": "^3.2.1",
+    "paypal-rest-sdk": "^1.8.1",
     "push.js": "^1.0.12",
     "razorpay": "^2.0.6"
   },

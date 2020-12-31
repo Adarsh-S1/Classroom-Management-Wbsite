@@ -378,6 +378,7 @@ router.get('/addstudent', tutorLogin, (req, res) => {
   res.render('Tutor/add-student', { tutor: true })
 })
 router.post('/addstudent', (req, res) => {
+  console.log(req.body);
   tutorHelpers.addStudent(req.body, (id) => {
     let image = req.files.Image
     image.mv('./public/student-images/' + id + '.jpg', (err) => {
@@ -402,6 +403,7 @@ router.get('/editstud/:id', tutorLogin, async (req, res) => {
   res.render('Tutor/Edit-Student', { tutor: true, student })
 })
 router.post('/editstud/:id', tutorLogin, (req, res) => {
+  console.log(req.body);
   let id = req.params.id
   tutorHelpers.updateStudDetails(req.params.id, req.body).then(() => {
     res.redirect('/tutor/students')

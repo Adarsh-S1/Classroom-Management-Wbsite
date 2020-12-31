@@ -7,10 +7,17 @@ const { response } = require('express');
 const qs=require('querystring')
 const checksum_lib=require('../public/Paytm/checksum');
 const config=require('../public/Paytm/config');
+const paypal = require('paypal-rest-sdk');
 const { resolve } = require('path');
 const parseUrl=express.urlencoded({extended:false})
 const parseJson=express.json({extended:false})
-var text
+var text;
+var paypalamount;
+paypal.configure({
+  'mode': 'sandbox', //sandbox or live
+  'client_id': 'AbX74hUUI9XSnWdLirx8m30xyIUptCo_6Om_4zMM3ooAiWFmwaeNGRiSokNqffNCb4GQ2bv2xHdmYFhY',
+  'client_secret': 'EABtW--UjDatoF5DATsr8FtwqyoPYisrELA-L85WDsz_JMg9B05Uz_9poRdhJiHCNIT08lGphd56egOg'
+});
 const studentLogin = (req, res, next) => {
   if (req.session.loggedstudentIn) {
     next()
@@ -297,6 +304,9 @@ res.json({status:true})
   router.get('/success',studentLogin,(req,res)=>{
       res.render("Student/success")
   })
+  router.get('/failed',studentLogin,(req,res)=>{
+    res.render("Student/failed")
+})
   router.post('/payevent',studentLogin,(req,res)=>{
    studentHelpers.generateRazorPay(req.body,req.body.amount).then((response)=>{
     res.json(response)
@@ -358,11 +368,86 @@ res.json({status:true})
     {
   studentHelpers.eventBook(eventId,req.session.student._id).then((response)=>{
     studentHelpers.paytmAdd(req.session.student._id,eventId).then((response)=>{
-      res.render('Student/success')
+      res.redirect('/success')
     })
   })
   }else{
     res.render('Student/failed')
   }
   });
+  router.post('/paypal', (req, res) => {
+paypalamount=req.body.amount
+    const create_payment_json = {
+      "intent": "sale",
+      "payer": {
+          "payment_method": "paypal"
+      },
+      "redirect_urls": {
+          "return_url": "http://localhost:3000/paypalsuccess",
+          "cancel_url": "http://localhost:3000/failed"
+      },
+      "transactions": [{
+          "item_list": {
+              "items": [{
+                  "name": " ",
+                  "sku": "001",
+                  "price": paypalamount,
+                  "currency": "INR",
+                  "quantity": 1
+              }]
+          },
+          "amount": {
+              "currency": "INR",
+              "total": paypalamount
+          },
+          "description": req.body.eventId
+      }]
+      
+  };
+  
+  paypal.payment.create(create_payment_json, function (error, payment) {
+    console.log(payment);
+    if (error) {
+        throw error;
+    } else {
+        for(let i = 0;i < payment.links.length;i++){
+          if(payment.links[i].rel === 'approval_url'){
+            res.redirect(payment.links[i].href);
+          }
+        }
+    }
+  });
+  
+  });
+router.get('/paypalsuccess', (req, res) => {
+  console.log(req.query);
+  const payerId = req.query.PayerID;
+  const paymentId = req.query.paymentId;
+
+  const execute_payment_json = {
+    "payer_id": payerId,
+    "transactions": [{
+        "amount": {
+            "currency": "INR",
+            "total": paypalamount
+        }
+    }]
+  };
+  paypal.payment.execute(paymentId, execute_payment_json, function (error, payment) {
+    
+    console.log(payment,"_____________________________");
+    if (error) {
+        console.log(error.response);
+        res.redirect('/failed')
+        throw error;
+    } else {
+      studentHelpers.eventBook(payment.transactions[0].description,req.session.student._id).then((response)=>{
+    studentHelpers.paytmAdd(req.session.student._id,payment.transactions[0].description).then((response)=>{
+      res.redirect('/success')
+    })
+  })
+    }
+});
+});
+
 module.exports = router;

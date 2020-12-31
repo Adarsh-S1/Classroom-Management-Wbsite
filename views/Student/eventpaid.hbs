@@ -56,19 +56,21 @@
                                         <input type="text" name="studId" hidden value="{{stud._id}}">
                                         <input type="text" name="eventId" hidden value="{{event._id}}">
                                          <input type="number" name="amount" hidden value="{{event.Amount}}">
-                                    <button style="background-color: #ffc600; color: #07294d; margin-bottom: 10px" type="submit" class="main-btn">Book Your Seat through <br><img style=" margin-top: -90px; margin-bottom: -60px;" src="../eventdetails/razorpay.png" alt="" srcset=""><br><b style="color: white; ">OR</b></button>   
+                                    <button style="background-color: #ffc600; color: #07294d; margin-bottom: 10px" type="submit" class="main-btn">Book Your Seat through <br><img style=" margin-top: -90px; margin-bottom: -60px;" src="../eventdetails/razorpay.png" alt="" srcset=""></button>   
                                     </form>
                                      <form action="/paytm" method="POST" >
                                         <input type="text" name="studId" hidden value="{{stud._id}}">
                                         <input type="text" name="eventId" hidden value="{{event._id}}">
                                          <input type="number" name="amount" hidden value="{{event.Amount}}">
                                     <button style="background-color: #ffc600; color: #07294d; margin-bottom: 10px;" type="submit" class="main-btn">Book Your Seat through <br><img style=" margin-top: -90px; margin-bottom: -60px; height: 40px; width: auto;" src="../eventdetails/ezgif-3-55a0994a3e7b.jpg" alt="" srcset=""></button>
+
                                     </form>
-                                       <form action=""  >
+                                       <form action="/paypal" method="POST" >
                                         <input type="text" name="studId" hidden value="{{stud._id}}">
                                         <input type="text" name="eventId" hidden value="{{event._id}}">
                                          <input type="number" name="amount" hidden value="{{event.Amount}}">
-  <button style="background-color: #ffc600; color: #07294d; margin-bottom: 10px;" type="submit" class="main-btn">Book Your Seat through <br><img style=" margin-top: -90px; margin-bottom: -60px; height: 40px; width: auto;" src="../eventdetails/pp-logo-150px.png" alt="" srcset=""><br><b style="color: white; ">OR</b></button>
+                                         <button style="background-color: #ffc600; color: #07294d; margin-bottom: 10px;" type="submit" class="main-btn">Book Your Seat through <br><img style=" margin-top: -90px; margin-bottom: -60px; height: 40px; width: auto;" src="../eventdetails/pp-logo-150px.png" alt="" srcset=""></button>
+
                                 </div>
                             </div> <!-- events coundwon -->
                             <div class="events-address mt-30">
