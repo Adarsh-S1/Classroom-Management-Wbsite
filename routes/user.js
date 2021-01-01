@@ -312,7 +312,7 @@ res.json({status:true})
     res.json(response)
    })
   })
-  router.post('/verify-payment',(req,res)=>{
+  router.post('/verify-payment',studentLogin,(req,res)=>{
     console.log(req.body);
     studentHelpers.verifyPayment(req.body,req.session.student._id).then(()=>{
       studentHelpers.eventBook(req.body['order[receipt]'],req.session.student._id).then(()=>{
@@ -324,7 +324,7 @@ res.json({status:true})
       res.json({status:false,errMsg:''})
     })
   })
-  router.post("/paytm", [parseUrl, parseJson], (req, res) => {
+  router.post("/paytm",studentLogin, [parseUrl, parseJson], (req, res) => {
     // Route for making payment
   
     var paymentDetails = {
@@ -360,7 +360,7 @@ res.json({status:true})
           res.end();
       });
   });
-  router.post("/callback", (req, res) => {
+  router.post("/callback",studentLogin, (req, res) => {
     var eventId=req.body.ORDERID.substring(0,24)
     console.log(eventId);
     console.log(req.body);
@@ -375,7 +375,7 @@ res.json({status:true})
     res.render('Student/failed')
   }
   });
-  router.post('/paypal', (req, res) => {
+  router.post('/paypal',studentLogin, (req, res) => {
 paypalamount=req.body.amount
     const create_payment_json = {
       "intent": "sale",
@@ -419,7 +419,7 @@ paypalamount=req.body.amount
   });
   
   });
-router.get('/paypalsuccess', (req, res) => {
+router.get('/paypalsuccess',studentLogin, (req, res) => {
   console.log(req.query);
   const payerId = req.query.PayerID;
   const paymentId = req.query.paymentId;
