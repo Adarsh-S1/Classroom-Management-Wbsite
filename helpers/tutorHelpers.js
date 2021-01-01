@@ -65,6 +65,7 @@ module.exports = {
   },
   deleteStudent: (studId) => {
     return new Promise((resolve, reject) => {
+      db.get().collection(collection.ATTENDANCE_COLLECTION).removeOne({ student: objectId(studId) })
       db.get().collection(collection.STUDENT_COLLECTION).removeOne({ _id: objectId(studId) }).then((response) => {
         resolve(response)
       })
@@ -128,7 +129,8 @@ module.exports = {
   },
   viewAssign: () => {
     return new Promise(async (resolve, reject) => {
-      let assign = await db.get().collection(collection.ASSIGNMENT_COLLECTION).find().toArray()
+      let assign = await db.get().collection(collection.ASSIGNMENT_COLLECTION).find().sort({_id:-1}).toArray()
+      console.log(assign);
       resolve(assign)
     })
   },
@@ -246,13 +248,13 @@ module.exports = {
   },
   getAnnouncements: () => {
     return new Promise(async (resolve, reject) => {
-      let announcement = await db.get().collection(collection.ANNOUNCEMENT_COLLECTION).find().toArray()
+      let announcement = await db.get().collection(collection.ANNOUNCEMENT_COLLECTION).find().sort({_id:-1}).toArray()
       resolve(announcement)
     })
   },
   getEvents: () => {
     return new Promise(async (resolve, reject) => {
-      let event = await db.get().collection(collection.EVENT_COLLECTION).find().toArray()
+      let event = await db.get().collection(collection.EVENT_COLLECTION).find().sort({_id:-1}).toArray()
       resolve(event)
     })
   },

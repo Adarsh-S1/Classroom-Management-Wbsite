@@ -34,7 +34,9 @@ router.get('/student', studentLogin, async(req, res) => {
   let stud=req.session.student
   let studo=req.session.phone
   tutorHelpers.getEvents().then((events) => {
-    res.render('Student/Stud-home',{stud,studo,events,attendance})
+    tutorHelpers.getAnnouncements().then((announcement) => {
+    res.render('Student/Stud-home',{stud,studo,events,attendance,announcement})
+  })
   })
 })
 router.get('/login', (req, res) => {
@@ -133,6 +135,10 @@ router.post('/login', (req, res) => {
     }
   })
 });
+router.get('/profile', studentLogin, function (req, res) {
+    let studentDetails=req.session.student
+    res.render('Student/Profile', { student: true,studentDetails})
+})
 router.get('/studentout', function (req, res) {
   req.session.destroy()
   res.redirect('/login')

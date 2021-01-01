@@ -51,25 +51,25 @@ module.exports = {
   },
   Notes: () => {
     return new Promise(async (resolve, reject) => {
-      let doc = await db.get().collection(collection.NOTES_DOC_COLLECTION).find().toArray()
+      let doc = await db.get().collection(collection.NOTES_DOC_COLLECTION).find().sort({_id:-1}).toArray()
       resolve(doc)
     })
   },
   videoNotes: () => {
     return new Promise(async (resolve, reject) => {
-      let video = await db.get().collection(collection.NOTES_VID_COLLECTION).find().toArray()
+      let video = await db.get().collection(collection.NOTES_VID_COLLECTION).find().sort({_id:-1}).toArray()
       resolve(video)
     })
   },
   utubeNotes: () => {
     return new Promise(async (resolve, reject) => {
-      let uvideo = await db.get().collection(collection.NOTES_U_VID_COLLECTION).find().toArray()
+      let uvideo = await db.get().collection(collection.NOTES_U_VID_COLLECTION).find().sort({_id:-1}).toArray()
       resolve(uvideo)
     })
   },
   viewAssign: () => {
     return new Promise(async (resolve, reject) => {
-      let assign = await db.get().collection(collection.ASSIGNMENT_COLLECTION).find().toArray()
+      let assign = await db.get().collection(collection.ASSIGNMENT_COLLECTION).find().sort({_id:-1}).toArray()
       resolve(assign)
     })
   },
@@ -105,7 +105,7 @@ attendhome:(studId)=>{
     let datecheck=new Date().getDate()+"-"+(new Date().getMonth()+1)+"-"+new Date().getFullYear()
     let attendObj = {
       date: new Date().getDate()+"-"+(new Date().getMonth()+1)+"-"+new Date().getFullYear(),
-      month:(new Date().getMonth()+1)+"-"+new Date().getFullYear(),
+      month:("0" + (new Date().getMonth() + 1)).slice(-2)+"-"+new Date().getFullYear(),
       status: "Absent"
     }
     let attendDetailObj = {
@@ -227,12 +227,13 @@ getAttendDate: (date,studId) => {
         $match:{"date":date}
       }
     ]).toArray()
+    console.log(attend);
     resolve(attend)
   })
 },
 getPhotos: () => {
   return new Promise(async (resolve, reject) => {
-    let photo = await db.get().collection(collection.PHOTO_COLLECTION).find().toArray()
+    let photo = await db.get().collection(collection.PHOTO_COLLECTION).find().sort({_id:-1}).toArray()
     resolve(photo)
   })
 },

@@ -396,7 +396,9 @@ router.get('/quiz', tutorLogin, (req, res) => {
 router.get('/studetails/:id', tutorLogin, async (req, res) => {
   let attendance = await tutorHelpers.getstudAttend(req.params.id)
   let assignments = await tutorHelpers.getAssignments(req.params.id)
-  res.render('Tutor/studetails', { assignments, tutor: true, attendance })
+  let stud = await tutorHelpers.getStudentDetails(req.params.id)
+  res.render('Tutor/studetails', { assignments, tutor: true, attendance,stud })
+
 })
 router.get('/editstud/:id', tutorLogin, async (req, res) => {
   let student = await tutorHelpers.getStudentDetails(req.params.id)
