@@ -87,31 +87,7 @@
         <!-- Footer END ==== -->
         <button class="back-to-top fa fa-chevron-up"></button>
     </div>
-    <style>
-        .myVideo:hover{
-            cursor: default;
-        }
-    </style>
-    <script type="text/javascript" src="../Image enlarge/magicthumb-trial/magicthumb/magicthumb.js"></script>
-<script>
-    function end(date) {
-  $.ajax({
-   url:'/attendvideo',
-               data:{
-                Date:date
-            },
-   method:'post',
-   success:(response)=>{
-         if(response.status)
-         {
-             console.log("STATUS")
-         }  else{
-             console.log("hi")
-         }    
-      }
-})
-}
-</script>
+
 </body>
 
 </html>

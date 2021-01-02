@@ -26,7 +26,6 @@ router.get('/announcement/:id',tutorLogin,(req,res)=>{
     let path = './public/Announcements/pdf/'+announcement._id+".pdf"
     let path1 = './public/Announcements/photo/'+announcement._id+".jpg"
       if (fs.existsSync(path) && fs.existsSync(path1)) {
-        console.log(path,path1,"________________");
         let pathimg="/Announcements/photo/"+announcement._id+".jpg"
         let pathpdf="/Notes/open-document.png"
         res.render("Tutor/announcedetails",{tutor:true,announcement,pathimg,pathpdf})
@@ -75,7 +74,6 @@ router.get('/students', tutorLogin, function (req, res) {
 })
 router.get('/profile', tutorLogin, function (req, res) {
   tutorHelpers.tutorProfileDetails().then((teacher) => {
-    console.log(teacher);
     res.render('Tutor/profile', { tutor: true, teacher })
   })
 })
@@ -101,20 +99,25 @@ router.post('/editutor/:id', tutorLogin, (req, res) => {
     }
   })
 })
+router.post('/manualattend', (req, res) => {
+  tutorHelpers.manualAttend(req.body.studId).then((response) => {
+    res.json(response)
+  })
+})
 router.get('/attendance', tutorLogin, async (req, res) => {
-  let datecheck = new Date().getDate() + "-" + (new Date().getMonth() + 1) + "-" + new Date().getFullYear()
+  let datecheck = ("0" + (new Date().getDate())).slice(-2) + "-" + ("0" + (new Date().getMonth() + 1)).slice(-2) + "-" + new Date().getFullYear()
   let attendance = await tutorHelpers.getAttendance()
   res.render('Tutor/Attendance', { tutor: true, attendance, datecheck })
 })
 router.get('/attendate/:id', tutorLogin, async (req, res) => {
-  console.log(req.params.id,"________________________________________");
   let attendance = await tutorHelpers.getAttendDate(req.params.id)
   let date=req.params.id
   res.render('Tutor/attend-date', { tutor: true, attendance,date})
 })
 router.get('/assignments', tutorLogin, (req, res) => {
+  let date = ("0" + (new Date().getDate())).slice(-2) + "-" + ("0" + (new Date().getMonth() + 1)).slice(-2) + "-" + new Date().getFullYear()
   tutorHelpers.viewAssign().then((assign) => {
-    res.render('Tutor/assignment', { tutor: true, assign })
+    res.render('Tutor/assignment', { tutor: true, assign,date })
   })
 })
 router.post('/assignments', (req, res) => {
@@ -136,13 +139,19 @@ router.get('/delete-assign/:id', tutorLogin, (req, res) => {
   })
 })
 router.get('/notes', tutorLogin, (req, res) => {
-  res.render('Tutor/notes', { tutor: true })
+  studentHelpers.Notes().then((doc)=>{
+    studentHelpers.utubeNotes().then((uvideo)=>{
+    studentHelpers.videoNotes().then((video)=>{
+      res.render('Tutor/notes', { tutor: true,doc,video,stud:req.session.student,uvideo })
+    })
+    })
+    })
 })
 router.get('/announcement', tutorLogin, (req, res) => {
-  res.render('Tutor/announcement', { tutor: true })
+  let date= ("0" + (new Date().getDate())).slice(-2) + "-" + ("0" + (new Date().getMonth() + 1)).slice(-2) + "-" + new Date().getFullYear()
+  res.render('Tutor/announcement', { tutor: true,date })
 })
 router.post('/announcement', (req, res) => {
-  console.log(req.files);
   tutorHelpers.addAnnouncement(req.body, (id) => {
     if(req.files.file && !req.files.pdf && !req.files.video){
     if(req.body.im=="")
@@ -348,12 +357,10 @@ else if(!req.files.file && req.files.pdf && req.files.video){
 router.get('/event/:id',tutorLogin,(req,res)=>{
   tutorHelpers.getEventDetails(req.params.id).then((event) => {
     tutorHelpers.getPaidStudents(req.params.id).then((stud)=>{
-      console.log(stud);
     const fs = require('fs')
     let path = './public/Events/pdf/'+event._id+".pdf"
     let path1 = './public/Events/photo/'+event._id+".jpg"
       if (fs.existsSync(path) && fs.existsSync(path1)) {
-        console.log(path,path1,"________________");
         let pathimg="/Events/photo/"+event._id+".jpg"
         let pathpdf="/Notes/open-document.png"
         res.render("Tutor/eventdetails",{tutor:true,event,pathimg,pathpdf,stud})
@@ -369,6 +376,7 @@ router.get('/event/:id',tutorLogin,(req,res)=>{
     })
   })
 })
+
 router.get('/photos', tutorLogin, (req, res) => {
   studentHelpers.getPhotos().then((photos) => {
     res.render('Tutor/photos', { tutor: true ,photos})
@@ -378,7 +386,6 @@ router.get('/addstudent', tutorLogin, (req, res) => {
   res.render('Tutor/add-student', { tutor: true })
 })
 router.post('/addstudent', (req, res) => {
-  console.log(req.body);
   tutorHelpers.addStudent(req.body, (id) => {
     let image = req.files.Image
     image.mv('./public/student-images/' + id + '.jpg', (err) => {
@@ -389,9 +396,6 @@ router.post('/addstudent', (req, res) => {
       }
     })
   })
-})
-router.get('/quiz', tutorLogin, (req, res) => {
-  res.render('Tutor/Quiz', { tutor: true })
 })
 router.get('/studetails/:id', tutorLogin, async (req, res) => {
   let attendance = await tutorHelpers.getstudAttend(req.params.id)
@@ -405,7 +409,6 @@ router.get('/editstud/:id', tutorLogin, async (req, res) => {
   res.render('Tutor/Edit-Student', { tutor: true, student })
 } )
 router.post('/editstud/:id', tutorLogin, (req, res) => {
-  console.log(req.body);
   let id = req.params.id
   tutorHelpers.updateStudDetails(req.params.id, req.body).then(() => {
     res.redirect('/tutor/students')
@@ -417,16 +420,17 @@ router.post('/editstud/:id', tutorLogin, (req, res) => {
 })
 router.get('/delete-student/:id', tutorLogin, (req, res) => {
   let studId = req.params.id
-  tutorHelpers.deleteStudent(studId).then((response) => {
+  tutorHelpers.deleteStudent(studId).then(() => {
     res.redirect('/tutor/students')
   })
 })
 router.get('/doc', tutorLogin, (req, res) => {
-  res.render('Tutor/doc', { tutor: true })
+  let date= ("0" + (new Date().getDate())).slice(-2) + "-" + ("0" + (new Date().getMonth() + 1)).slice(-2) + "-" + new Date().getFullYear()
+  res.render('Tutor/doc', { tutor: true,date })
 })
 router.post('/doc', (req, res) => {
+  console.log(req.body);
   tutorHelpers.docNotes(req.body, (id) => {
-    console.log(req.body);
     let image = req.files.file
     image.mv('./public/Notes/doc/' + id + '.pdf', (err) => {
       if (!err) {
@@ -438,12 +442,11 @@ router.post('/doc', (req, res) => {
   })
 })
 router.get('/vid', tutorLogin, (req, res) => {
-  let date= new Date().getDate() + "-" + (new Date().getMonth() + 1) + "-" + new Date().getFullYear()
+  let date= ("0" + (new Date().getDate())).slice(-2) + "-" + ("0" + (new Date().getMonth() + 1)).slice(-2)+ "-" + new Date().getFullYear()
   res.render('Tutor/video', { tutor: true ,date})
 })
 router.post('/vid', (req, res) => {
   tutorHelpers.vidNotes(req.body, (id) => {
-    console.log(req.body);
     let video = req.files.file
     video.mv('./public/Notes/videos/' + id + '.mp4', (err) => {
       if (!err) {
@@ -455,7 +458,8 @@ router.post('/vid', (req, res) => {
   })
 })
 router.get('/uvid', tutorLogin, (req, res) => {
-  res.render('Tutor/Utubevid', { tutor: true })
+  let date= ("0" + (new Date().getDate())).slice(-2) + "-" + ("0" + (new Date().getMonth() + 1)).slice(-2) + "-" + new Date().getFullYear()
+  res.render('Tutor/Utubevid', { tutor: true ,date})
 })
 router.post('/uvid', (req, res) => {
   tutorHelpers.uvidNotes(req.body).then((response) => {

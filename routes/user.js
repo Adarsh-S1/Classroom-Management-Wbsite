@@ -20,18 +20,25 @@ paypal.configure({
 });
 const studentLogin = (req, res, next) => {
   if (req.session.loggedstudentIn) {
+    studentHelpers.userTest(req.session.student._id).then((response)=>{
+      if(response.status){
+        console.log("");
+      }else{
+        req.session.destroy()
+        res.redirect('/login')
+      }
+    })
     next()
   } else {
     res.redirect('/login')
   }
 }
-
 router.get('/', (req, res) => {
   res.render('home')
 });
 router.get('/student', studentLogin, async(req, res) => {
   let attendance=await studentHelpers.attendhome(req.session.student._id)
-  let stud=req.session.student
+  let stud=req.session. student
   let studo=req.session.phone
   tutorHelpers.getEvents().then((events) => {
     tutorHelpers.getAnnouncements().then((announcement) => {
@@ -143,20 +150,25 @@ router.get('/studentout', function (req, res) {
   req.session.destroy()
   res.redirect('/login')
 })
+router.get('/today', studentLogin, (req, res) => {
+  studentHelpers.todayNotes().then((doc)=>{
+    studentHelpers.todayUtube().then((uvideo)=>{
+     studentHelpers.todayVideo().then((video)=>{
+      studentHelpers.todayAssignments().then((assignments)=>{
+      res.render('Student/todays-task',{student:true,doc,video,stud:req.session.student,uvideo,assignments})
+     })
+    })
+    })
+    })
+})
 router.get('/notes', studentLogin, (req, res) => {
   studentHelpers.Notes().then((doc)=>{
-    res.render('Student/notes',{student:true,doc})
-    })
-})
-router.get('/video', studentLogin, (req, res) => {
+    studentHelpers.utubeNotes().then((uvideo)=>{
     studentHelpers.videoNotes().then((video)=>{
-      res.render('Student/video',{student:true,video,stud:req.session.student})
+      res.render('Student/notes',{student:true,doc,video,stud:req.session.student,uvideo})
     })
-})
-router.get('/uvideo', studentLogin, (req, res) => {
-  studentHelpers.utubeNotes().then((uvideo)=>{
-    res.render('Student/Utubevid',{student:true,uvideo})
-  })
+    })
+    })
 })
 router.get('/assignments', studentLogin, (req, res) => {
   studentHelpers.viewAssign().then((assign)=>{
@@ -187,7 +199,6 @@ res.json({status:true})
   })
   })
   router.get('/attendate/:id', studentLogin, async (req, res) => {
-    console.log(req.params.id,"________________________________________");
     let attendance = await studentHelpers.getAttendDate(req.params.id,req.session.student._id)
     let date=req.params.id
     res.render('Student/attend-month', { student: true, attendance,date})
@@ -248,7 +259,6 @@ res.json({status:true})
         }
       }else if(event.Type=="Paid"){
         let status="false"
-        console.log("hy");
 
         if(event.students){
         for(var i=0;i<event.students.length;i++)
@@ -259,7 +269,6 @@ res.json({status:true})
             {break;}
           }
         }
-        console.log(status);
         if(status=="false"){
         if (fs.existsSync(path) && fs.existsSync(path1)) {
           let pathimg="/Events/photo/"+event._id+".jpg"
@@ -319,10 +328,8 @@ res.json({status:true})
    })
   })
   router.post('/verify-payment',studentLogin,(req,res)=>{
-    console.log(req.body);
     studentHelpers.verifyPayment(req.body,req.session.student._id).then(()=>{
       studentHelpers.eventBook(req.body['order[receipt]'],req.session.student._id).then(()=>{
-        console.log("Payment Success");
         res.json({status:true})
       })
     }).catch((err)=>{
@@ -368,8 +375,6 @@ res.json({status:true})
   });
   router.post("/callback",studentLogin, (req, res) => {
     var eventId=req.body.ORDERID.substring(0,24)
-    console.log(eventId);
-    console.log(req.body);
     if(req.body.STATUS=='TXN_SUCCESS')
     {
   studentHelpers.eventBook(eventId,req.session.student._id).then((response)=>{
@@ -412,7 +417,6 @@ paypalamount=req.body.amount
   };
   
   paypal.payment.create(create_payment_json, function (error, payment) {
-    console.log(payment);
     if (error) {
         throw error;
     } else {
@@ -426,7 +430,6 @@ paypalamount=req.body.amount
   
   });
 router.get('/paypalsuccess',studentLogin, (req, res) => {
-  console.log(req.query);
   const payerId = req.query.PayerID;
   const paymentId = req.query.paymentId;
 
@@ -440,9 +443,7 @@ router.get('/paypalsuccess',studentLogin, (req, res) => {
     }]
   };
   paypal.payment.execute(paymentId, execute_payment_json, function (error, payment) {
-    
-    console.log(payment,"_____________________________");
-    if (error) {
+        if (error) {
         console.log(error.response);
         res.redirect('/failed')
         throw error;

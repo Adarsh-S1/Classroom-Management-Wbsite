@@ -49,6 +49,16 @@ module.exports = {
           resolve(studentDetails.otp)
         })
   },
+  userTest: (studId) => {
+    return new Promise(async (resolve, reject) => {
+      let userexist = await db.get().collection(collection.STUDENT_COLLECTION).findOne({ _id:objectId(studId) })
+      if(userexist){
+        resolve({status:true})
+      }else{
+        resolve({status:false})
+      }
+    })
+  },
   Notes: () => {
     return new Promise(async (resolve, reject) => {
       let doc = await db.get().collection(collection.NOTES_DOC_COLLECTION).find().sort({_id:-1}).toArray()
@@ -102,9 +112,9 @@ module.exports = {
   
 attendhome:(studId)=>{
   return new Promise(async(resolve,reject)=>{
-    let datecheck=new Date().getDate()+"-"+(new Date().getMonth()+1)+"-"+new Date().getFullYear()
+    let datecheck=("0" + (new Date().getDate())).slice(-2)+"-"+("0" + (new Date().getMonth() + 1)).slice(-2)+"-"+new Date().getFullYear()
     let attendObj = {
-      date: new Date().getDate()+"-"+(new Date().getMonth()+1)+"-"+new Date().getFullYear(),
+      date: ("0" + (new Date().getDate())).slice(-2)+"-"+("0" + (new Date().getMonth() + 1)).slice(-2)+"-"+new Date().getFullYear(),
       month:("0" + (new Date().getMonth() + 1)).slice(-2)+"-"+new Date().getFullYear(),
       status: "Absent"
     }
@@ -152,7 +162,7 @@ attendhome:(studId)=>{
   })  
   },
   attendance: (date,studId) => {
-    let datecheck=new Date().getDate()+"-"+(new Date().getMonth()+1)+"-"+new Date().getFullYear()
+    let datecheck=("0" + (new Date().getDate())).slice(-2)+"-"+("0" + (new Date().getMonth() + 1)).slice(-2)+"-"+new Date().getFullYear()
    return new Promise(async(resolve,reject)=>{
      if(date.Date==datecheck){
     await db.get().collection(collection.ATTENDANCE_COLLECTION).updateOne({ student: objectId(studId), 'attendance.date': datecheck },
@@ -183,7 +193,6 @@ attendhome:(studId)=>{
 },
 getfullAttendance: (studId) => {
   return new Promise(async (resolve, reject) => {
-    let datecheck = new Date().getDate() + "-" + (new Date().getMonth() + 1) + "-" + new Date().getFullYear()
     let attend = await db.get().collection(collection.ATTENDANCE_COLLECTION).aggregate([
       {
         $match: { student: objectId(studId) }
@@ -307,6 +316,39 @@ paytmAdd: (studId,eventId) => {
       }
       db.get().collection(collection.PAID_COLLECTION).insertOne(paidObj)
       resolve()
+  })
+},
+todayNotes: () => {
+  let datecheck = ("0" + (new Date().getDate())).slice(-2) + "-" + ("0" + (new Date().getMonth() + 1)).slice(-2) + "-" + new Date().getFullYear()
+  return new Promise((resolve, reject) => {
+    db.get().collection(collection.NOTES_DOC_COLLECTION).find({Date:datecheck}).toArray().then((response)=>{
+      resolve(response)
+    })
+  })
+},
+todayUtube: () => {
+  let datecheck = ("0" + (new Date().getDate())).slice(-2) + "-" + ("0" + (new Date().getMonth() + 1)).slice(-2) + "-" + new Date().getFullYear()
+  return new Promise((resolve, reject) => {
+    db.get().collection(collection.NOTES_U_VID_COLLECTION).find({Date:datecheck}).toArray().then((response)=>{
+      resolve(response)
+    })
+  })
+},
+todayVideo: () => {
+  let datecheck = ("0" + (new Date().getDate())).slice(-2) + "-" + ("0" + (new Date().getMonth() + 1)).slice(-2) + "-" + new Date().getFullYear()
+  return new Promise((resolve, reject) => {
+    db.get().collection(collection.NOTES_VID_COLLECTION).find({Date:datecheck}).toArray().then((response)=>{
+      resolve(response)
+    })
+  })
+},
+todayAssignments: () => {
+  let datecheck = ("0" + (new Date().getDate())).slice(-2) + "-" + ("0" + (new Date().getMonth() + 1)).slice(-2) + "-" + new Date().getFullYear()
+  return new Promise((resolve, reject) => {
+    db.get().collection(collection.ASSIGNMENT_COLLECTION).find({'Topic.Date':datecheck}).toArray().then((response)=>{
+
+      resolve(response)
+    })
   })
 }
 }

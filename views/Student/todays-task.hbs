@@ -74,7 +74,7 @@
                                             </div>
                                             <div class="info-bx text-center">
                                                 <h5><a href="#">{{this.Topic}}</a></h5>
-                                                <span>{{this.Date}}</span>
+                                                <span>Programming</span>
                                             </div>
             
                                         </div>
@@ -139,6 +139,34 @@
 <video controls   src="../Notes/videos/{{this._id}}.mp4" class="MagicThumb" onended="end('{{this.Date}}')"></video></div>
                                             <div class="info-bx text-center">
                                                 <h5>{{this.Topic}}</h5>
+                                            </div>
+            
+                                        </div>
+
+                                    </div>
+                                        {{/each}}
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                                                     <div class="container">
+                        <div class="row">
+                            <div class="col-md-12 heading-bx left">
+                                <h2 class="title-head">Assignments</h2>
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-lg-12 col-md-8 col-sm-12">
+                                <div class="row">                                                     
+                                      {{#each assignments}}
+                                    <div class="col-md-6 col-lg-4 col-sm-6 m-b30">
+                                        <div class="cours-bx">
+                                            <div class="action-box">
+                                     <a href="../Assignments/{{this._id}}.pdf " > <center><img style="height: 100px; width: auto;" src="../Notes/open-document.png" alt="W3Schools" width="104" height="142"><br><small>Click to download the file</small></center</a>
+                                            <div class="info-bx text-center">
+                                                <h5>{{this.Topic.Topic}}</h5>
                                             </div>
             
                                         </div>

@@ -27,6 +27,7 @@ module.exports = {
     })
   },
   addStudent: async (student, callback) => {
+    student.Rollno = parseInt(student.Rollno)
     student.Password = await bcrypt.hash(student.Password, 10)
     db.get().collection('student').insertOne(student).then((data) => {
       callback(data.ops[0]._id)
@@ -34,7 +35,8 @@ module.exports = {
   },
   getAllStudents: () => {
     return new Promise(async (resolve, reject) => {
-      let students = await db.get().collection(collection.STUDENT_COLLECTION).find().toArray()
+      let students = await db.get().collection(collection.STUDENT_COLLECTION).find().sort({Rollno:1}).toArray()
+      console.log(students);
       resolve(students)
     })
   },
@@ -52,7 +54,7 @@ module.exports = {
           $set: {
             Name: studDetails.Name,
             Gender: studDetails.Gender,
-            Rollno: studDetails.Rollno,
+            Rollno: parseInt(studDetails.Rollno),
             Phone: studDetails.Phone,
             Email: studDetails.Email,
             Address: studDetails.Address,
@@ -163,9 +165,25 @@ module.exports = {
       resolve(assignments)
     })
   },
+  manualAttend: (studId) => {
+    let datecheck=("0" + (new Date().getDate())).slice(-2)+"-"+("0" + (new Date().getMonth() + 1)).slice(-2)+"-"+new Date().getFullYear()
+   return new Promise(async(resolve,reject)=>{
+    let studattend = await db.get().collection(collection.ATTENDANCE_COLLECTION).findOne({ student: objectId(studId) })
+    if(studattend){
+    await db.get().collection(collection.ATTENDANCE_COLLECTION).updateOne({ student: objectId(studId), 'attendance.date': datecheck },
+    {
+      $set: { 'attendance.$.status': "Present" }
+    }
+    )
+    resolve({status:true})
+  }else{
+    let res="Student was not logged in today. So attendance was not recorded"
+    resolve(res)
+  }
+})
+},
   getstudAttend: (studId) => {
     return new Promise(async (resolve, reject) => {
-      let datecheck = new Date().getDate() + "-" + (new Date().getMonth() + 1) + "-" + new Date().getFullYear()
       let attend = await db.get().collection(collection.ATTENDANCE_COLLECTION).aggregate([
         {
           $match: { student: objectId(studId) }
@@ -185,7 +203,7 @@ module.exports = {
   },
   getAttendance: () => {
     return new Promise(async (resolve, reject) => {
-      let datecheck = new Date().getDate() + "-" + (new Date().getMonth() + 1) + "-" + new Date().getFullYear()
+      let datecheck = ("0" + (new Date().getDate())).slice(-2) + "-" + ("0" + (new Date().getMonth() + 1)).slice(-2) + "-" + new Date().getFullYear()
       let attend = await db.get().collection(collection.ATTENDANCE_COLLECTION).aggregate([
         {
           $unwind: '$attendance'

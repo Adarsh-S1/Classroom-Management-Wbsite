@@ -68,7 +68,7 @@
 							<ul class="nav navbar-nav">
 								<li class="active"><a href="/">Home</a>
 								</li>
-								<li><a href="javascript:;">Today's Task</a>
+								<li><a href="/today">Today's Task</a>
 								</li>
 								<li class="add-mega-menu"><a href="/attendance">Attendance</a>
 								</li>
@@ -208,8 +208,8 @@
 										<div class="feature-box-sm radius bg-white">
 											<i class="fa fa-book text-primary"></i>
 										</div>
-										<h4><a href="#">Notes</a></h4>
-										<a href="#" class="btn radius-xl">View Notes</a>
+										<h4><a>Notes</a></h4>
+										<a href="/notes" class="btn radius-xl">View Notes</a>
 									</div>
 								</div>
 							</div>
@@ -222,8 +222,8 @@
 										<div class="feature-box-sm radius bg-white">
 											<i class="fa fa-bank text-primary"></i>
 										</div>
-										<h4><a href="#">Attendance</a></h4>
-										<a href="#" class="btn radius-xl">Submit Attendance</a>
+										<h4><a>Attendance</a></h4>
+										<a href="/attendance" class="btn radius-xl">View Attendance</a>
 									</div>
 								</div>
 							</div>
@@ -236,8 +236,8 @@
 										<div class="feature-box-sm radius bg-white">
 											<i class="fa fa-file-text-o text-primary"></i>
 										</div>
-										<h4><a href="#">Today's Task</a></h4>
-										<a href="#" class="btn radius-xl">View Tasks</a>
+										<h4><a >Today's Task</a></h4>
+										<a href="/today" class="btn radius-xl">View Tasks</a>
 									</div>
 								</div>
 							</div>
@@ -297,10 +297,10 @@
 								<div class="recent-news">
 									<div class="info-bx">
 
-										<h5 class="post-title"><a href="blog-details.html">{{this.Message}}</a></h5>
-										<p>{{this.Description}}..</p>
+										<h5 class="post-title"><a href="/announcement/{{this._id}}">{{this.Message}}</a></h5>
+										<p id="description">{{this.Description}}..</p>
 										<style>
-											p {
+											#description {
 												width: 300px;
 												white-space: nowrap;
 												overflow: hidden;
@@ -309,6 +309,7 @@
 										</style>
 										<div class="post-extra">
 											<a href="/announcement/{{this._id}}" class="btn-link">READ MORE</a>
+											<a  class="comments-bx">{{this.Date}}</a>
 										</div>
 
 									</div>
