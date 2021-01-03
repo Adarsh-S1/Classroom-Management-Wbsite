@@ -1,3 +1,4 @@
+const { response } = require('express');
 var express = require('express');
 var router = express.Router();
 const studentHelpers = require('../helpers/studentHelpers');
@@ -45,12 +46,32 @@ router.get('/login', (req, res) => {
     res.redirect('/')
   }
   else {
-    res.render('Tutor/tutorlogin', { "loginErr": req.session.tutorLoginErr })
-    req.session.tutorLoginErr = false
+    tutorHelpers.tutorCheck().then((response)=>{
+      if(response){
+        console.log(req.session);
+      res.render('Tutor/tutorlogin', { "loginErr": req.session.tutorLoginErr })
+      req.session.tutorLoginErr = false
+      }else{
+        res.render('Tutor/register')
+      }
+    })
 
   }
 
 });
+router.post('/register', (req, res) => {
+  tutorHelpers.tutorRegister(req.body).then((id)=>{
+    id=id.insertedId
+    let image = req.files.Image
+    image.mv('./public/Tutor-image/' + id + '.jpg', (err) => {
+      if (!err) {
+        res.redirect('/tutor/login')
+      } else {
+        console.log(err);
+      }
+    })
+  })
+})
 router.post('/login', (req, res) => {
   tutorHelpers.doTutorLogin(req.body).then((response) => {
     if (response.status) {
@@ -482,6 +503,36 @@ router.get('/delete-photo/:id', tutorLogin, (req, res) => {
   let photoId = req.params.id
   tutorHelpers.deletePhoto(photoId).then((response) => {
     res.redirect('/tutor/photos')
+  })
+})
+router.get('/announcedelete/:id', tutorLogin, (req, res) => {
+  let announceId = req.params.id
+  tutorHelpers.deleteAnnounce(announceId).then((response) => {
+    res.redirect('/tutor')
+  })
+})
+router.get('/eventdelete/:id', tutorLogin, (req, res) => {
+  let eventId = req.params.id
+  tutorHelpers.deleteEvent(eventId).then((response) => {
+    res.redirect('/tutor')
+  })
+})
+router.get('/notesdocdelete/:id', tutorLogin, (req, res) => {
+  let docId = req.params.id
+  tutorHelpers.deleteDoc(docId).then((response) => {
+    res.redirect('/tutor/notes')
+  })
+})
+router.get('/notesviddelete/:id', tutorLogin, (req, res) => {
+  let vidId = req.params.id
+  tutorHelpers.deleteVid(vidId).then((response) => {
+    res.redirect('/tutor/notes')
+  })
+})
+router.get('/notesyoudelete/:id', tutorLogin, (req, res) => {
+  let youId = req.params.id
+  tutorHelpers.deleteYou(youId).then((response) => {
+    res.redirect('/tutor/notes')
   })
 })
 router.post('/test', (req, res) => {

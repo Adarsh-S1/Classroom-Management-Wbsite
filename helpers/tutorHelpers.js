@@ -6,6 +6,21 @@ const { log } = require('handlebars')
 var objectId = require('mongodb').ObjectID
 
 module.exports = {
+  tutorRegister: (tutor) => {
+    return new Promise(async(resolve, reject) => {
+      tutor.Password = await bcrypt.hash(tutor.Password, 10)
+      db.get().collection(collection.TUTOR_COLLECTION).insertOne(tutor).then((tutor) => {
+        resolve(tutor)
+      })
+    })
+  },
+  tutorCheck: () => {
+    return new Promise(async(resolve, reject) => {
+      db.get().collection(collection.TUTOR_COLLECTION).findOne({ Status: "inserted" }).then((response) => {
+        resolve(response)
+      })
+    })
+  },
   doTutorLogin: (tutorData) => {
     let response = {}
     return new Promise(async (resolve, reject) => {
@@ -74,19 +89,19 @@ module.exports = {
     })
   },
   tutorProfile: (tutor, callback) => {
-    db.get().collection(collection.TUTOR_PROFILE_COLLECTION).insertOne(tutor).then((data) => {
+    db.get().collection(collection.TUTOR_COLLECTION).insertOne(tutor).then((data) => {
       callback(data.ops[0]._id)
     })
   },
   tutorProfileDetails: () => {
     return new Promise(async (resolve, reject) => {
-      let teacher = await db.get().collection(collection.TUTOR_PROFILE_COLLECTION).findOne()
+      let teacher = await db.get().collection(collection.TUTOR_COLLECTION).findOne()
       resolve(teacher)
     })
   },
   updateTutDetails: (tutId, tutDetails) => {
     return new Promise((resolve, reject) => {
-      db.get().collection(collection.TUTOR_PROFILE_COLLECTION)
+      db.get().collection(collection.TUTOR_COLLECTION)
         .updateOne({ _id: objectId(tutId) }, {
           $set: {
             Firstname: tutDetails.Firstname,
@@ -296,6 +311,42 @@ module.exports = {
   deletePhoto: (photoId) => {
     return new Promise((resolve, reject) => {
       db.get().collection(collection.PHOTO_COLLECTION).removeOne({ _id: objectId(photoId) }).then((response) => {
+        resolve(response)
+      })
+    })
+  },
+  deleteAnnounce: (announceId) => {
+    return new Promise((resolve, reject) => {
+      db.get().collection(collection.ANNOUNCEMENT_COLLECTION).removeOne({ _id: objectId(announceId) }).then((response) => {
+        resolve(response)
+      })
+    })
+  },
+  deleteEvent: (eventId) => {
+    return new Promise((resolve, reject) => {
+      db.get().collection(collection.PAID_COLLECTION).removeOne({ event: objectId(eventId) })
+      db.get().collection(collection.EVENT_COLLECTION).removeOne({ _id: objectId(eventId) }).then((response) => {
+        resolve(response)
+      })
+    })
+  },
+  deleteDoc: (docId) => {
+    return new Promise((resolve, reject) => {
+      db.get().collection(collection.NOTES_DOC_COLLECTION).removeOne({ _id: objectId(docId) }).then((response) => {
+        resolve(response)
+      })
+    })
+  },
+  deleteVid: (vidId) => {
+    return new Promise((resolve, reject) => {
+      db.get().collection(collection.NOTES_VID_COLLECTION).removeOne({ _id: objectId(vidId) }).then((response) => {
+        resolve(response)
+      })
+    })
+  },
+  deleteYou: (youId) => {
+    return new Promise((resolve, reject) => {
+      db.get().collection(collection.NOTES_U_VID_COLLECTION).removeOne({ _id: objectId(youId) }).then((response) => {
         resolve(response)
       })
     })

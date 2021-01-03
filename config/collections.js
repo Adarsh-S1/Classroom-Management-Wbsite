@@ -1,7 +1,6 @@
 module.exports={
     TUTOR_COLLECTION:'tutor',
     STUDENT_COLLECTION:'student',
-    TUTOR_PROFILE_COLLECTION:'tutorprofile',
     NOTES_DOC_COLLECTION:'notesdoc',
     NOTES_VID_COLLECTION:'notesvideo',
     NOTES_U_VID_COLLECTION:'notesyoutube',

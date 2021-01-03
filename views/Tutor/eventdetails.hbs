@@ -65,7 +65,7 @@
                                     </li>
                                 </ul>
                             </div> <!-- events address -->
-                                                    	<center><a style="margin-top    : 20px;" href=""><button class="btn btn-success">Delete</button></a></center>
+                         	<center><a style="margin-top : 20px;" onclick="return confirm('Do you want to delete {{event.Name}}?')" href="/tutor/eventdelete/{{event._id}}"><button class="btn btn-success">Delete</button></a></center>
 
                         </div> <!-- events right -->
                     </div>

@@ -122,8 +122,9 @@ attendhome:(studId)=>{
       student: objectId(studId),
       attendance: [attendObj]
     }
-  
+    let userexist = await db.get().collection(collection.STUDENT_COLLECTION).findOne({ _id:objectId(studId) })
     let studattend = await db.get().collection(collection.ATTENDANCE_COLLECTION).findOne({ student: objectId(studId) })
+    if(userexist){
     if(studattend){
       let attendExist = studattend.attendance.findIndex(attendanc => attendanc.date == attendObj.date)
       if(attendExist==-1)
@@ -136,11 +137,13 @@ attendhome:(studId)=>{
         resolve()
        })
     }
-  }else{
+  }
+  else{
       db.get().collection(collection.ATTENDANCE_COLLECTION).insertOne(attendDetailObj).then((response) => {
         resolve()
       })
     }  
+  }
     let attend =await db.get().collection(collection.ATTENDANCE_COLLECTION).aggregate([
       {
         $match:{student:objectId(studId)}
