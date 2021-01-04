@@ -1,4 +1,3 @@
-
 <head>
 
     <!--====== Required meta tags ======-->
@@ -26,25 +25,35 @@
                     <div class="col-lg-8">
                         <div class="events-left">
                             <h3>{{event.Name}}</h3>
-                            <a ><img style="margin-top: -4px;" src="/Template/icons/themify-icons/SVG/calendar2.svg" alt=""> <span> {{event.Date}}</span></a>
-                            <a><img style="margin-top: -4px;" src="/Template/icons/themify-icons/SVG/time.svg" alt=""> <span> 10:00 Am - 3:00 Pm</span></a>
-                           			
-               <center><a href="{{pathimg}}"  class="MagicThumb" data-options="expandEasing:cubic-bezier(.09,.63,0,.99);"><img  src="{{pathimg}}" /></a></center>
-			<center><a href="{{event.im}}"  class="MagicThumb" data-options="expandEasing:cubic-bezier(.09,.63,0,.99);"><img src="{{event.im}}"  id="img" /></a></center>
-			<center class="mt-5"><a href="/Events/video/{{event._id}}.mp4" data-options="hint:always;" class="MagicThumb"></a></center>
-		  <center> <a href="/Events/pdf/{{event._id}}.pdf "><img style="height: 100px; width: auto; margin-top: 10px;" src="{{pathpdf}}" alt="" width="104" height="142"><br></a></center>
+                            <a><img style="margin-top: -4px;" src="/Template/icons/themify-icons/SVG/calendar2.svg"
+                                    alt=""> <span> {{event.Date}}</span></a>
+                            <a><img style="margin-top: -4px;" src="/Template/icons/themify-icons/SVG/time.svg" alt="">
+                                <span> 10:00 Am - 3:00 Pm</span></a>
+
+                            <center><a href="{{pathimg}}" class="MagicThumb"
+                                    data-options="expandEasing:cubic-bezier(.09,.63,0,.99);"><img
+                                        src="{{pathimg}}" /></a></center>
+                            <center><a href="{{event.im}}" class="MagicThumb"
+                                    data-options="expandEasing:cubic-bezier(.09,.63,0,.99);"><img src="{{event.im}}"
+                                        id="img" /></a></center>
+                            <center class="mt-5"><a href="/Events/video/{{event._id}}.mp4" data-options="hint:always;"
+                                    class="MagicThumb"></a></center>
+                            <center> <a href="/Events/pdf/{{event._id}}.pdf "><img
+                                        style="height: 100px; width: auto; margin-top: 10px;" src="{{pathpdf}}" alt=""
+                                        width="104" height="142"><br></a></center>
                             <p>{{event.Topic}}</p>
                         </div> <!-- events left -->
                     </div>
                     <div class="col-lg-4">
                         <div class="events-right">
-                            
+
                             <div class="events-address mt-30">
                                 <ul>
                                     <li>
                                         <div class="singel-address">
                                             <div class="icon">
-<img style="margin-top: -4px;" src="/Template/icons/themify-icons/SVG/time.svg" alt="">
+                                                <img style="margin-top: -4px;"
+                                                    src="/Template/icons/themify-icons/SVG/time.svg" alt="">
                                             </div>
                                             <div class="cont">
                                                 <h6>Time</h6>
@@ -55,7 +64,8 @@
                                     <li>
                                         <div class="singel-address">
                                             <div class="icon">
-<img style="margin-top: -4px;" src="/Template/icons/themify-icons/SVG/user.svg" alt="">
+                                                <img style="margin-top: -4px;"
+                                                    src="/Template/icons/themify-icons/SVG/user.svg" alt="">
                                             </div>
                                             <div class="cont">
                                                 <h6>Speaker</h6>
@@ -65,56 +75,60 @@
                                     </li>
                                 </ul>
                             </div> <!-- events address -->
-                         	<center><a style="margin-top : 20px;" onclick="return confirm('Do you want to delete {{event.Name}}?')" href="/tutor/eventdelete/{{event._id}}"><button class="btn btn-success">Delete</button></a></center>
+                            <center><a style="margin-top : 20px;"
+                                    onclick="return confirm('Do you want to delete {{event.Name}}?')"
+                                    href="/tutor/eventdelete/{{event._id}}"><button
+                                        class="btn btn-success">Delete</button></a></center>
 
                         </div> <!-- events right -->
                     </div>
-                  
+
                 </div> <!-- row -->
 
-                 <h2 style="font-family: Georgia, 'Times New Roman', Times, serif; color: #ffc660;" class="text-center">PAID STUDENTS</h2>
-                     <table class="table table-bordered table-hover table-checkable " id="kt_datatable">
-										<thead>
+                <h2 style="font-family: Georgia, 'Times New Roman', Times, serif; color: #ffc660;" class="text-center">
+                    PAID STUDENTS</h2>
+                <table class="table table-bordered table-hover table-checkable " id="kt_datatable">
+                    <thead>
 
-											<tr>
-												<th>
-													<center>Roll no</center>
-												</th>
-												<th>
-													<center>Name</center>
-												</th>
-												<th>
-													<center>Phone No</center>
-												</th>
-											</tr>
-										</thead>
-										<tbody>
-                                        {{#each stud}}
-                                        {{#each students}}
-											<tr>
-												<td>
-													<center>{{this.Rollno}}
-													</center>
-												</td>
-												<td>
-													<center>{{this.Name}}
-													</center>
-												</td>
+                        <tr>
+                            <th>
+                                <center>Roll no</center>
+                            </th>
+                            <th>
+                                <center>Name</center>
+                            </th>
+                            <th>
+                                <center>Phone No</center>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each stud}}
+                        {{#each students}}
+                        <tr>
+                            <td>
+                                <center>{{this.Rollno}}
+                                </center>
+                            </td>
+                            <td>
+                                <center>{{this.Name}}
+                                </center>
+                            </td>
 
-												<td>
-													<center> {{this.Phone}}
-													</center>
-												</td>
-											</tr>
-                                            {{/each}}
-                                        {{/each}}
-										</tbody>
-									</table>
+                            <td>
+                                <center> {{this.Phone}}
+                                </center>
+                            </td>
+                        </tr>
+                        {{/each}}
+                        {{/each}}
+                    </tbody>
+                </table>
             </div> <!-- events-area -->
         </div> <!-- container -->
-       
-    </section>    
+
+    </section>
     <a href="#" class="back-to-top"><i class="fa fa-angle-up"></i></a>
- 
+
 </body>
-    <script type="text/javascript" src="/Image enlarge/magicthumb-trial/magicthumb/magicthumb.js"></script>
+<script type="text/javascript" src="/Image enlarge/magicthumb-trial/magicthumb/magicthumb.js"></script>

@@ -37,8 +37,8 @@
 									aria-labelledby="pills-edit-tab">
 									<div class="row">
 										<div class="col-12">
-											<form class="form"  onsubmit="notification()" action="/tutor/announcement" method="POST"
-												enctype="multipart/form-data">
+											<form class="form" onsubmit="notification()" action="/tutor/announcement"
+												method="POST" enctype="multipart/form-data">
 												<div>
 													<h4 class="box-title text-primary"><i
 															class="ti-user mr-15"></i>ANNOUNCEMENTS</h4>
@@ -53,7 +53,7 @@
 																	placeholder="Message">
 															</div>
 														</div>
-<input type="text" name="Date" value="{{date}}" hidden id="">
+														<input type="text" name="Date" value="{{date}}" hidden id="">
 
 													</div>
 													<div class="row">
@@ -90,51 +90,51 @@
 																	<button
 																		class="mt-5 btn btn-success save hide">Crop</button>
 																	<!-- download btn -->
-																	<a hidden href="" class="btn download hide">Download</a>
+																	<a hidden href=""
+																		class="btn download hide">Download</a>
 																</div>
 															</div>
 														</div>
 													</div>
-														<div class="row">
+													<div class="row">
 														<div class="col-md-12">
 															<div class="form-group">
 																<label>Document</label>
 																<input type="file" class="form-control" id="pdf"
 																	name="pdf" onchange="return pdfValidation()">
-																</div>
 															</div>
 														</div>
 													</div>
-												<div class="row">
-														<div class="col-md-12">
-															<div class="form-group">
-															<label>Video</label>
-																<input type="file" class="form-control" id="video"
-																	name="video" onchange="return videoValidation()">
-																</div>
-															</div>
-														</div>
-													</div>
-													<div id="progress" style="display: none; height:18px; width: 310px;"
-														class="progress progress-bar-striped active">
-														<progress id="progressBar" value="0" max="100"
-															style="margin-top: -7.5px;  width: 310px;  height: 30px;"></progress>
-													</div>
-													<h4 class="box-title text-primary" id="status"></h4>
-													<p style="font-family:monospace;" id="loaded_n_total"></p>
-													<button id="button" style="display: none;"
-														onclick="uploadFile();showDiv();" type="submit"
-														class="btn btn-success">Upload</button>
 												</div>
-											</form>
+												<div class="row">
+													<div class="col-md-12">
+														<div class="form-group">
+															<label>Video</label>
+															<input type="file" class="form-control" id="video"
+																name="video" onchange="return videoValidation()">
+														</div>
+													</div>
+												</div>
 										</div>
+										<div id="progress" style="display: none; height:18px; width: 310px;"
+											class="progress progress-bar-striped active">
+											<progress id="progressBar" value="0" max="100"
+												style="margin-top: -7.5px;  width: 310px;  height: 30px;"></progress>
+										</div>
+										<h4 class="box-title text-primary" id="status"></h4>
+										<p style="font-family:monospace;" id="loaded_n_total"></p>
+										<button id="button" style="display: none;" onclick="uploadFile();showDiv();"
+											type="submit" class="btn btn-success">Upload</button>
 									</div>
+									</form>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
+		</div>
+		</div>
 		</div>
 	</section>
 </body>
@@ -144,19 +144,19 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/0.8.1/cropper.min.js"></script>
 <script src="../Notification/push.min.js"></script>
 <script src="../Notification/serviceWorker.min.js"></script>
-<script>  
-function notification(){
-	Push.create("New Announcement Uploaded !", {
-    body:  document.getElementById('topic').value,
-    icon: '../Studtemplate/assets/images/logo.png',
-    timeout: 4000,
-	requireInteraction:true,
-    onClick: function () {
-        window.focus();
-        this.close();
-    }
-});
-}
+<script>
+	function notification() {
+		Push.create("New Announcement Uploaded !", {
+			body: document.getElementById('topic').value,
+			icon: '../Studtemplate/assets/images/logo.png',
+			timeout: 4000,
+			requireInteraction: true,
+			onClick: function () {
+				window.focus();
+				this.close();
+			}
+		});
+	}
 </script>
 <script>
 	let result = document.querySelector('.result'),

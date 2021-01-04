@@ -1,4 +1,3 @@
-
 <head>
 
     <!--====== Required meta tags ======-->
@@ -19,14 +18,13 @@
 </head>
 
 <body>
-    <div class="page-banner ovbl-dark"
-                style="background-image:url(../Studtemplate/assets/images/banner/banner3.jpg);">
-                <div class="container">
-                    <div class="page-banner-entry">
-                        <h1 class="text-white">NOTES</h1>
-                    </div>
-                </div>
+    <div class="page-banner ovbl-dark" style="background-image:url(../Studtemplate/assets/images/banner/banner3.jpg);">
+        <div class="container">
+            <div class="page-banner-entry">
+                <h1 class="text-white">NOTES</h1>
             </div>
+        </div>
+    </div>
     <section id="event-singel" class="pt-120 pb-120 gray-bg">
         <div class="container">
             <div class="events-area">
@@ -34,32 +32,48 @@
                     <div class="col-lg-8">
                         <div class="events-left">
                             <h3>{{event.Name}}</h3>
-                            <a ><img style="margin-top: -4px;" src="/Template/icons/themify-icons/SVG/calendar2.svg" alt=""> <span> {{event.Date}}</span></a>
-                            <a><img style="margin-top: -4px;" src="/Template/icons/themify-icons/SVG/time.svg" alt=""> <span> 10:00 Am - 3:00 Pm</span></a>
-                           			
-               <center><a href="{{pathimg}}"  class="MagicThumb" data-options="expandEasing:cubic-bezier(.09,.63,0,.99);"><img  src="{{pathimg}}" /></a></center>
-			<center><a href="{{event.im}}"  class="MagicThumb" data-options="expandEasing:cubic-bezier(.09,.63,0,.99);"><img src="{{event.im}}"  id="img" /></a></center>
-			<center class="mt-5"><a href="/Events/video/{{event._id}}.mp4" data-options="hint:always;" class="MagicThumb"></a></center>
-		  <center> <a href="/Events/pdf/{{event._id}}.pdf "><img style="height: 100px; width: auto; margin-top: 10px;" src="{{pathpdf}}" alt="" width="104" height="142"><br></a></center>
+                            <a><img style="margin-top: -4px;" src="/Template/icons/themify-icons/SVG/calendar2.svg"
+                                    alt=""> <span> {{event.Date}}</span></a>
+                            <a><img style="margin-top: -4px;" src="/Template/icons/themify-icons/SVG/time.svg" alt="">
+                                <span> 10:00 Am - 3:00 Pm</span></a>
+
+                            <center><a href="{{pathimg}}" class="MagicThumb"
+                                    data-options="expandEasing:cubic-bezier(.09,.63,0,.99);"><img
+                                        src="{{pathimg}}" /></a></center>
+                            <center><a href="{{event.im}}" class="MagicThumb"
+                                    data-options="expandEasing:cubic-bezier(.09,.63,0,.99);"><img src="{{event.im}}"
+                                        id="img" /></a></center>
+                            <center class="mt-5"><a href="/Events/video/{{event._id}}.mp4" data-options="hint:always;"
+                                    class="MagicThumb"></a></center>
+                            <center> <a href="/Events/pdf/{{event._id}}.pdf "><img
+                                        style="height: 100px; width: auto; margin-top: 10px;" src="{{pathpdf}}" alt=""
+                                        width="104" height="142"><br></a></center>
                             <p>{{event.Topic}}</p>
                         </div> <!-- events left -->
                     </div>
                     <div class="col-lg-4">
                         <div class="events-right">
-                                 <center><h3 style="margin-top: 10px; margin-bottom: -60px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #ffc600;">₹ {{event.Amount}}</h3></center> 
+                            <center>
+                                <h3
+                                    style="margin-top: 10px; margin-bottom: -60px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #ffc600;">
+                                    ₹ {{event.Amount}}</h3>
+                            </center>
 
-                                <div class="events-coundwon bg_cover" >
-                                <div  data-countdown="2020/03/12"></div>
-                                    <center><img src="../eventdetails/download1.jpg" alt="" srcset=""></center><br>
-                                    <center style="color: green; font-size: 20px; font-family: Georgia, 'Times New Roman', Times, serif;">PAYMENT DONE</center>
-                                
+                            <div class="events-coundwon bg_cover">
+                                <div data-countdown="2020/03/12"></div>
+                                <center><img src="../eventdetails/download1.jpg" alt="" srcset=""></center><br>
+                                <center
+                                    style="color: green; font-size: 20px; font-family: Georgia, 'Times New Roman', Times, serif;">
+                                    PAYMENT DONE</center>
+
                             </div> <!-- events coundwon -->
                             <div class="events-address mt-30">
                                 <ul>
                                     <li>
                                         <div class="singel-address">
                                             <div class="icon">
-<img style="margin-top: -4px;" src="/Template/icons/themify-icons/SVG/time.svg" alt="">
+                                                <img style="margin-top: -4px;"
+                                                    src="/Template/icons/themify-icons/SVG/time.svg" alt="">
                                             </div>
                                             <div class="cont">
                                                 <h6>Time</h6>
@@ -70,7 +84,8 @@
                                     <li>
                                         <div class="singel-address">
                                             <div class="icon">
-<img style="margin-top: -4px;" src="/Template/icons/themify-icons/SVG/user.svg" alt="">
+                                                <img style="margin-top: -4px;"
+                                                    src="/Template/icons/themify-icons/SVG/user.svg" alt="">
                                             </div>
                                             <div class="cont">
                                                 <h6>Speaker</h6>
@@ -85,8 +100,8 @@
                 </div> <!-- row -->
             </div> <!-- events-area -->
         </div> <!-- container -->
-    </section>    
+    </section>
     <a href="#" class="back-to-top"><i class="fa fa-angle-up"></i></a>
- 
+
 </body>
-    <script type="text/javascript" src="/Image enlarge/magicthumb-trial/magicthumb/magicthumb.js"></script>
+<script type="text/javascript" src="/Image enlarge/magicthumb-trial/magicthumb/magicthumb.js"></script>

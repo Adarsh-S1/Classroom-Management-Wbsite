@@ -15,7 +15,7 @@
 
 			<div class="d-flex flex-column flex-row-fluid" id="kt_wrapper">
 				<center>
-					<h1 style="margin-top: -90px;">STUDENTS DETAILS</h1>
+					<h1 style="margin-top: -50px;">STUDENTS DETAILS</h1>
 				</center>
 				<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
 
@@ -27,8 +27,8 @@
 
 							<div class="card card-custom">
 								<a style="" href="/tutor/addstudent"><button id="add"
-										style="margin-top: -60px; float: right;" class="btn btn-success">Add
-										Student</button></a>
+										style=" margin-right: 30px;  margin-top: 10px; float: right;"
+										class="btn btn-success">Add Student</button></a>
 
 								<div class="card-body">
 									<!--begin: Datatable-->
@@ -52,28 +52,31 @@
 											</tr>
 										</thead>
 										<tbody>
-                                        {{#each students}}
+											{{#each students}}
 											<tr>
 												<td>
 													<center>{{this.Rollno}}
 													</center>
 												</td>
 												<td>
-													<center><a style="color: black;" href="/tutor/studetails/{{this._id}}">{{this.Name}}</a>
+													<center><a style="color: black;"
+															href="/tutor/studetails/{{this._id}}">{{this.Name}}</a>
 													</center>
 												</td>
 												<td>
 													<center><a href="/tutor/editstud/{{this._id}}"><img
-															src="../Template/icons/themify-icons/SVG/pencil-alt.svg"
-															alt="" srcset=""></a></center>
+																src="../Template/icons/themify-icons/SVG/pencil-alt.svg"
+																alt="" srcset=""></a></center>
 												</td>
 												<td>
-													<center> <a onclick="return confirm('Do you want to delete {{this.Name}}?')" href="/tutor/delete-student/{{this._id}}"><img
+													<center> <a
+															onclick="return confirm('Do you want to delete {{this.Name}}?')"
+															href="/tutor/delete-student/{{this._id}}"><img
 																src="../Studtable/trash-9-24.ico" alt="" srcset=""></a>
 													</center>
 												</td>
 											</tr>
-                                        {{/each}}
+											{{/each}}
 										</tbody>
 									</table>
 								</div>

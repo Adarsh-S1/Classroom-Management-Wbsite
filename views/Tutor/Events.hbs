@@ -17,6 +17,7 @@
 	<link rel="stylesheet" href="../Template/css/style.css">
 
 </head>
+
 <body class="theme-primary">
 	<section style="margin-top: -500px;" class="py-50">
 		<div class="container">
@@ -34,10 +35,10 @@
 									aria-labelledby="pills-edit-tab">
 									<div class="row">
 										<div class="col-12">
-											<form class="form"  onsubmit="notification()" action="/tutor/event" method="POST"
-												enctype="multipart/form-data">
+											<form class="form" onsubmit="notification()" action="/tutor/event"
+												method="POST" enctype="multipart/form-data">
 												<div>
-														<h4 class="box-title text-primary"><i
+													<h4 class="box-title text-primary"><i
 															class="ti-user mr-15"></i>EVENTS</h4>
 													<hr class="my-15">
 													<div class="row">
@@ -45,8 +46,8 @@
 
 															<div class="form-group">
 																<label>Event</label>
-																<input type="text" class="form-control" name="Name" id="topic"
-																	placeholder="Name of the event">
+																<input type="text" class="form-control" name="Name"
+																	id="topic" placeholder="Name of the event">
 															</div>
 														</div>
 
@@ -78,35 +79,38 @@
 
 															<div class="form-group">
 																<label>Date</label>
-																<input type="date" class="form-control" name="Date" >
+																<input type="date" class="form-control" name="Date">
 															</div>
 														</div>
 													</div>
-																					<div class="row">
+													<div class="row">
 														<div class="col-md-12">
 
 															<div class="form-group">
 																<div class="form-check form-check-inline">
-																	<b style="font-size: 14.5px;">Type of event</b>&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;
+																	<b style="font-size: 14.5px;">Type of
+																		event</b>&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;
 																	<input class="form-check-input" type="radio"
-																		 name="Type" id="inlineRadio1" onclick="freePaid()" value="Free" >
+																		name="Type" id="inlineRadio1"
+																		onclick="freePaid()" value="Free" checked>
 																	<label class="form-check-label"
 																		for="inlineRadio1">Free</label>
 																</div>
 																<div class="form-check form-check-inline">
 																	<input class="form-check-input" type="radio"
-																		name="Type" id="inlineRadio2" onclick="freePaid()" value="Paid">
+																		name="Type" id="inlineRadio2"
+																		onclick="freePaid()" value="Paid">
 																	<label class="form-check-label"
 																		for="inlineRadio2">Paid</label>
 																</div>
 															</div>
 														</div>
 													</div>
-													<div id="amount" style="display: none;"  class="row">
+													<div id="amount" style="display: none;" class="row">
 														<div class="col-md-12">
 															<div class="form-group">
 																<label>Amount</label>
-																<input type="number"   class="form-control" name="Amount" 
+																<input type="number" class="form-control" name="Amount"
 																	placeholder="Amount">
 															</div>
 														</div>
@@ -136,51 +140,51 @@
 																	<button
 																		class="mt-5 btn btn-success save hide">Crop</button>
 																	<!-- download btn -->
-																	<a hidden href="" class="btn download hide">Download</a>
+																	<a hidden href=""
+																		class="btn download hide">Download</a>
 																</div>
 															</div>
 														</div>
 													</div>
-														<div class="row">
+													<div class="row">
 														<div class="col-md-12">
 															<div class="form-group">
 																<label>Document</label>
 																<input type="file" class="form-control" id="pdf"
 																	name="pdf" onchange="return pdfValidation()">
-																</div>
 															</div>
 														</div>
 													</div>
-												<div class="row">
-														<div class="col-md-12">
-															<div class="form-group">
-															<label>Video</label>
-																<input type="file" class="form-control" id="video"
-																	name="video" onchange="return videoValidation()">
-																</div>
-															</div>
-														</div>
-													</div>
-													<div id="progress" style="display: none; height:18px; width: 310px;"
-														class="progress progress-bar-striped active">
-														<progress id="progressBar" value="0" max="100"
-															style="margin-top: -7.5px;  width: 310px;  height: 30px;"></progress>
-													</div>
-													<h4 class="box-title text-primary" id="status"></h4>
-													<p style="font-family:monospace;" id="loaded_n_total"></p>
-													<button id="button" style="display: none;"
-														onclick="uploadFile();showDiv();" type="submit"
-														class="btn btn-success">Upload</button>
 												</div>
-											</form>
+												<div class="row">
+													<div class="col-md-12">
+														<div class="form-group">
+															<label>Video</label>
+															<input type="file" class="form-control" id="video"
+																name="video" onchange="return videoValidation()">
+														</div>
+													</div>
+												</div>
 										</div>
+										<div id="progress" style="display: none; height:18px; width: 310px;"
+											class="progress progress-bar-striped active">
+											<progress id="progressBar" value="0" max="100"
+												style="margin-top: -7.5px;  width: 310px;  height: 30px;"></progress>
+										</div>
+										<h4 class="box-title text-primary" id="status"></h4>
+										<p style="font-family:monospace;" id="loaded_n_total"></p>
+										<button id="button" style="display: none;" onclick="uploadFile();showDiv();"
+											type="submit" class="btn btn-success">Upload</button>
 									</div>
+									</form>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
+		</div>
+		</div>
 		</div>
 	</section>
 </body>
@@ -190,19 +194,19 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/0.8.1/cropper.min.js"></script>
 <script src="../Notification/push.min.js"></script>
 <script src="../Notification/serviceWorker.min.js"></script>
-<script>  
-function notification(){
-	Push.create("New Event Uploaded !", {
-    body:  document.getElementById('topic').value,
-    icon: '../Studtemplate/assets/images/logo.png',
-    timeout: 4000,
-	requireInteraction:true,
-    onClick: function () {
-        window.focus();
-        this.close();
-    }
-});
-}
+<script>
+	function notification() {
+		Push.create("New Event Uploaded !", {
+			body: document.getElementById('topic').value,
+			icon: '../Studtemplate/assets/images/logo.png',
+			timeout: 4000,
+			requireInteraction: true,
+			onClick: function () {
+				window.focus();
+				this.close();
+			}
+		});
+	}
 </script>
 <script>
 	let result = document.querySelector('.result'),
@@ -389,11 +393,11 @@ function notification(){
 		_("status").innerHTML = "Upload Aborted";
 	}
 
-		function freePaid() {
-    if (document.getElementById('inlineRadio2').checked) {
-        document.getElementById('amount').style.display = 'block';
-    } else {
-        document.getElementById('amount').style.display = 'none';
-    }
+	function freePaid() {
+		if (document.getElementById('inlineRadio2').checked) {
+			document.getElementById('amount').style.display = 'block';
+		} else {
+			document.getElementById('amount').style.display = 'none';
 		}
+	}
 </script>

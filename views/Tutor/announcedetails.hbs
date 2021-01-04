@@ -1,23 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<title>WebUni - Education Template</title>
 	<meta charset="UTF-8">
 	<meta name="description" content="WebUni Education Template">
 	<meta name="keywords" content="webuni, education, creative, html">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<!-- Favicon -->   
-	<link href="img/favicon.ico" rel="shortcut icon"/>
+	<!-- Favicon -->
+	<link href="img/favicon.ico" rel="shortcut icon" />
 
 	<!-- Google Fonts -->
-	<link href="https://fonts.googleapis.com/css?family=Raleway:400,400i,500,500i,600,600i,700,700i,800,800i" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Raleway:400,400i,500,500i,600,600i,700,700i,800,800i"
+		rel="stylesheet">
 
 	<!-- Stylesheets -->
-	<link rel="stylesheet" href="/announcedetails/font-awesome.min.css"/>
-	<link rel="stylesheet" href="/announcedetails/style.css"/>
-    <link href="/Image enlarge/magicthumb-trial/magicthumb/magicthumb.css" rel="stylesheet" type="text/css" />
+	<link rel="stylesheet" href="/announcedetails/font-awesome.min.css" />
+	<link rel="stylesheet" href="/announcedetails/style.css" />
+	<link href="/Image enlarge/magicthumb-trial/magicthumb/magicthumb.css" rel="stylesheet" type="text/css" />
 
 </head>
+
 <body>
 
 	<section style="margin-top: -490px;" class="course-meta-area">
@@ -30,14 +33,21 @@
 					</div>
 				</div>
 			</div>
-			<center><a href="{{pathimg}}"  class="MagicThumb" data-options="expandEasing:cubic-bezier(.09,.63,0,.99);"><img  src="{{pathimg}}" /></a></center>
-			<center><a href="{{announcement.im}}"  class="MagicThumb" data-options="expandEasing:cubic-bezier(.09,.63,0,.99);"><img src="{{announcement.im}}"  id="img" /></a></center>
-			<center class="mt-5"><a href="/Announcements/video/{{announcement._id}}.mp4" data-options="hint:always;" class="MagicThumb"></a></center>
-		  <center> <a href="/Announcements/pdf/{{announcement._id}}.pdf "><img style="height: 100px; width: auto; margin-top: 10px;" src="{{pathpdf}}"  width="104" height="142"><br></a></center>
-        	<center> <a onclick="return confirm('Do you want to delete {{announcement.Message}}?')" href="/tutor/announcedelete/{{announcement._id}}"><button class="btn btn-success">Delete</button></a></center>
+			<center><a href="{{pathimg}}" class="MagicThumb"
+					data-options="expandEasing:cubic-bezier(.09,.63,0,.99);"><img src="{{pathimg}}" /></a></center>
+			<center><a href="{{announcement.im}}" class="MagicThumb"
+					data-options="expandEasing:cubic-bezier(.09,.63,0,.99);"><img src="{{announcement.im}}"
+						id="img" /></a></center>
+			<center class="mt-5"><a href="/Announcements/video/{{announcement._id}}.mp4" data-options="hint:always;"
+					class="MagicThumb"></a></center>
+			<center> <a href="/Announcements/pdf/{{announcement._id}}.pdf "><img
+						style="height: 100px; width: auto; margin-top: 10px;" src="{{pathpdf}}" width="104"
+						height="142"><br></a></center>
+			<center> <a onclick="return confirm('Do you want to delete {{announcement.Message}}?')"
+					href="/tutor/announcedelete/{{announcement._id}}"><button
+						class="btn btn-success">Delete</button></a></center>
 		</div>
-		
-	</section>
-    </body>
-    <script type="text/javascript" src="/Image enlarge/magicthumb-trial/magicthumb/magicthumb.js"></script>
 
+	</section>
+</body>
+<script type="text/javascript" src="/Image enlarge/magicthumb-trial/magicthumb/magicthumb.js"></script>

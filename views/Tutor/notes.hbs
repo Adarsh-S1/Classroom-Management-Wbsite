@@ -61,7 +61,7 @@
 										<thead>
 
 											<tr>
-															<th>
+												<th>
 													<center>Date</center>
 												</th>
 												<th>
@@ -78,7 +78,7 @@
 										<tbody>
 											{{#each doc}}
 											<tr>
-															<td>
+												<td>
 													<center>{{this.Date}}</center>
 												</td>
 												<td>
@@ -92,7 +92,10 @@
 
 												</td>
 												<td>
-													<center><a onclick="return confirm('Do you want to delete {{this.Topic}}?')" href="/tutor/notesdocdelete/{{this._id}}"><img src="../Studtable/trash-9-24.ico" alt="" srcset=""></a>
+													<center><a
+															onclick="return confirm('Do you want to delete {{this.Topic}}?')"
+															href="/tutor/notesdocdelete/{{this._id}}"><img
+																src="../Studtable/trash-9-24.ico" alt="" srcset=""></a>
 													</center>
 												</td>
 												<td hidden nowrap="nowrap"></td>
@@ -115,7 +118,7 @@
 										<thead>
 
 											<tr>
-															<th>
+												<th>
 													<center>Date</center>
 												</th>
 												<th>
@@ -132,7 +135,7 @@
 										<tbody>
 											{{#each video}}
 											<tr>
-															<td>
+												<td>
 													<center>{{this.Date}}</center>
 												</td>
 												<td>
@@ -147,7 +150,10 @@
 												</td>
 
 												<td>
-													<center><a onclick="return confirm('Do you want to delete {{this.Topic}}?')" href="/tutor/notesviddelete/{{this._id}}"><img src="../Studtable/trash-9-24.ico" alt="" srcset=""></a>
+													<center><a
+															onclick="return confirm('Do you want to delete {{this.Topic}}?')"
+															href="/tutor/notesviddelete/{{this._id}}"><img
+																src="../Studtable/trash-9-24.ico" alt="" srcset=""></a>
 													</center>
 												</td>
 												<td hidden nowrap="nowrap"></td>
@@ -169,7 +175,7 @@
 										<thead>
 
 											<tr>
-													<th>
+												<th>
 													<center>Date</center>
 												</th>
 												<th>
@@ -184,27 +190,29 @@
 											</tr>
 										</thead>
 										<tbody>
-{{#each uvideo}}
+											{{#each uvideo}}
 											<tr>
-													<td>
+												<td>
 													<center>{{this.Date}}</center>
 												</td>
 												<td>
 													<center>{{this.Topic}}</center>
 												</td>
 												<td>
-												<center><a href="{{this.Youtube}}"
-															data-thumb-id="hello" class="MagicThumb"><img
-																style="height: 80px; width: auto;"
+													<center><a href="{{this.Youtube}}" data-thumb-id="hello"
+															class="MagicThumb"><img style="height: 80px; width: auto;"
 																src="../Image enlarge/images.png" /></a></center>
 												</td>
 												<td>
-													<center><a onclick="return confirm('Do you want to delete {{this.Topic}}?')" href="/tutor/notesyoudelete/{{this._id}}"><img src="../Studtable/trash-9-24.ico" alt="" srcset=""></a>
+													<center><a
+															onclick="return confirm('Do you want to delete {{this.Topic}}?')"
+															href="/tutor/notesyoudelete/{{this._id}}"><img
+																src="../Studtable/trash-9-24.ico" alt="" srcset=""></a>
 													</center>
 												</td>
 												<td hidden nowrap="nowrap"></td>
 											</tr>
-{{/each}}
+											{{/each}}
 										</tbody>
 									</table>
 								</div>
