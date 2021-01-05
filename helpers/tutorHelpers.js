@@ -59,6 +59,80 @@ module.exports = {
         callback(data.ops[0]._id);
       });
   },
+  singleattendance: (studId) => {
+    console.log(studId);
+    return new Promise(async (resolve, reject) => {
+      if (new Date().getDay() == 0) {
+        attendObj = {
+          date:
+            ("0" + new Date().getDate()).slice(-2) +
+            "-" +
+            ("0" + (new Date().getMonth() + 1)).slice(-2) +
+            "-" +
+            new Date().getFullYear(),
+          month:
+            ("0" + (new Date().getMonth() + 1)).slice(-2) +
+            "-" +
+            new Date().getFullYear(),
+          status: "Holiday",
+        };
+      } else {
+        attendObj = {
+          date:
+            ("0" + new Date().getDate()).slice(-2) +
+            "-" +
+            ("0" + (new Date().getMonth() + 1)).slice(-2) +
+            "-" +
+            new Date().getFullYear(),
+          month:
+            ("0" + (new Date().getMonth() + 1)).slice(-2) +
+            "-" +
+            new Date().getFullYear(),
+          status: "Absent",
+          percentage: 0,
+        };
+      }
+      let attendDetailObj = {
+        student: objectId(studId),
+        attendance: [attendObj],
+      };
+      let userexist = await db
+        .get()
+        .collection(collection.STUDENT_COLLECTION)
+        .findOne({ _id: objectId(studId) });
+      let studattend = await db
+        .get()
+        .collection(collection.ATTENDANCE_COLLECTION)
+        .findOne({ student: objectId(studId) });
+      if (userexist) {
+        if (studattend) {
+          let attendExist = studattend.attendance.findIndex(
+            (attendanc) => attendanc.date == attendObj.date
+          );
+          if (attendExist == -1) {
+            db.get()
+              .collection(collection.ATTENDANCE_COLLECTION)
+              .updateOne(
+                { student: objectId(studId) },
+                {
+                  $push: { attendance: attendObj },
+                }
+              )
+              .then((response) => {
+                resolve();
+              });
+          }
+        } else {
+          db.get()
+            .collection(collection.ATTENDANCE_COLLECTION)
+            .insertOne(attendDetailObj)
+            .then((response) => {
+              resolve();
+            });
+        }
+      }
+    });
+  },
   getAllStudents: () => {
     return new Promise(async (resolve, reject) => {
       let students = await db
@@ -260,9 +334,10 @@ module.exports = {
           .updateOne(
             { student: objectId(studId), "attendance.date": datecheck },
             {
-              $set: { "attendance.$.status": "Present",
-              "attendance.$.percentage": 100,
-            },
+              $set: {
+                "attendance.$.status": "Present",
+                "attendance.$.percentage": 100,
+              },
             }
           );
         resolve({ status: true });

@@ -418,6 +418,7 @@ router.get("/addstudent", tutorLogin, (req, res) => {
 });
 router.post("/addstudent", (req, res) => {
   tutorHelpers.addStudent(req.body, (id) => {
+    tutorHelpers.singleattendance(id);
     let image = req.files.Image;
     image.mv("./public/student-images/" + id + ".jpg", (err) => {
       if (!err) {

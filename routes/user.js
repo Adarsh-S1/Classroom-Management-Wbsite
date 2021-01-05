@@ -149,7 +149,6 @@ router.post("/login", (req, res) => {
     if (response.status) {
       req.session.student = response.student;
       req.session.loggedstudentIn = true;
-      studentHelpers.singleattendance(req.session.student._id);
       res.redirect("/student");
     } else {
       req.session.studentLoginErr = "Invalid Username or Password";
@@ -236,7 +235,34 @@ router.get("/attendate/:id", studentLogin, async (req, res) => {
     req.session.student._id
   );
   let date = req.params.id;
-  res.render("Student/attend-month", { student: true, attendance, date });
+  studentHelpers
+    .totalMonthDayPresent(req.session.student._id, date)
+    .then((days) => {
+      studentHelpers
+        .totalMonthDays(req.session.student._id, date)
+        .then((totalDays) => {
+          studentHelpers
+            .totalMonthDayAbsent(req.session.student._id, date)
+            .then((totalabs) => {
+              studentHelpers
+                .totalMonthPercentage(req.session.student._id, date)
+                .then((percentage) => {
+                  if ((percentage = "NaN")) {
+                    percentage = 0;
+                  }
+                  res.render("Student/attend-month", {
+                    student: true,
+                    attendance,
+                    date,
+                    days,
+                    totalDays,
+                    totalabs,
+                    percentage,
+                  });
+                });
+            });
+        });
+    });
 });
 router.get("/attendance", studentLogin, async (req, res) => {
   let attendance = await studentHelpers.getfullAttendance(
@@ -577,8 +603,10 @@ router.post("/paypal", studentLogin, (req, res) => {
   };
 
   paypal.payment.create(create_payment_json, function (error, payment) {
+    console.log(payment);
     if (error) {
-      throw error;
+      console.log(error);
+      res.redirect("/failed");
     } else {
       for (let i = 0; i < payment.links.length; i++) {
         if (payment.links[i].rel === "approval_url") {
@@ -608,10 +636,10 @@ router.get("/paypalsuccess", studentLogin, (req, res) => {
     execute_payment_json,
     function (error, payment) {
       if (error) {
-        console.log(error.response);
+        console.log(error);
         res.redirect("/failed");
-        throw error;
       } else {
+        console.log(payment);
         studentHelpers
           .eventBook(
             payment.transactions[0].description,
