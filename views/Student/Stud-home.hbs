@@ -82,8 +82,8 @@
 								</li>
 								<li class="nav-dashboard"><a href="/profile">Profile</a>
 								</li>
-								<li class="nav-dashboard"><a href="/studentout"><button
-												style="margin-top: -10px;" class="btn btn-warning">Logout</button></a>
+								<li class="nav-dashboard"><a href="/studentout"><button style="margin-top: -10px;"
+											class="btn btn-warning">Logout</button></a>
 								</li>
 							</ul>
 						</div>
@@ -147,17 +147,37 @@
 
 							<!-- SLIDE  -->
 						</ul>
+
+
+
 					</div><!-- END REVOLUTION SLIDER -->
 				</div>
+
+
+
 			</div>
+			<div style="margin-bottom: -130px;" class="scroll">
+
+				<a href="#schedule">
+					<div class="mouse">
+						<div style="margin-top: -7px;" class="wheel"></div>
+					</div>
+				</a>
+
+			</div>
+
+
 			<!-- Main Slider -->
 			<div class="content-block">
 
 				<!-- Our Services -->
 				<div class="section-area content-inner service-info-bx">
 					<div class="container">
+
 						<div class="row">
+
 							<div class="col-lg-4 col-md-4 col-sm-6">
+
 								<div class="service-bx">
 									<div class="action-box">
 										<img src="../Studtemplate/assets/images/our-services/pic1.jpg" alt="">
@@ -333,6 +353,54 @@
 			</div>
 		</footer>
 		<style>
+			.scroll {
+				width: 20px;
+				height: 30px;
+				position: absolute;
+				bottom: 50%;
+				left: 50%;
+				cursor: pointer;
+				margin-left: -15px;
+			}
+
+			.scroll .mouse {
+				width: 100%;
+				height: 100%;
+				position: absolute;
+				top: 0;
+				left: 0;
+				display: block;
+				border: 2px solid #ffff;
+				border-radius: 20px;
+			}
+
+			.scroll .wheel {
+				width: 4px;
+				height: 4px;
+				top: 10px;
+				left: 50%;
+				position: absolute;
+				background: #fff;
+				display: block;
+				border-radius: 50%;
+				margin-left: -2px;
+				animation-name: scroll-wheel;
+				animation-duration: 3s;
+				animation-iteration-count: infinite;
+			}
+
+			@keyframes scroll-wheel {
+				from {
+					transform: translate3d(0, 0, 0);
+					opacity: 1;
+				}
+
+				to {
+					transform: translate3d(0, 10px, 0);
+					opacity: 0;
+				}
+			}
+
 			.site-footer {
 				background-color: #26272b;
 				padding: 45px 0 20px;

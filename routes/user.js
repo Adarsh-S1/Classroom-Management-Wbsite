@@ -247,9 +247,6 @@ router.get("/attendate/:id", studentLogin, async (req, res) => {
               studentHelpers
                 .totalMonthPercentage(req.session.student._id, date)
                 .then((percentage) => {
-                  if ((percentage = "NaN")) {
-                    percentage = 0;
-                  }
                   res.render("Student/attend-month", {
                     student: true,
                     attendance,

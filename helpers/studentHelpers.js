@@ -502,6 +502,9 @@ module.exports = {
         numeratorTotal += numerator[i].attendance.percentage;
       }
       let percentage = numeratorTotal / totalOpenDays;
+      if (percentage != Number) {
+        percentage = 0;
+      }
       resolve(percentage);
     });
   },
@@ -647,6 +650,9 @@ module.exports = {
         numeratorTotal += numerator[i].attendance.percentage;
       }
       let percentage = numeratorTotal / totalOpenDays;
+      if (percentage != Number) {
+        percentage = 0;
+      }
       resolve(percentage);
     });
   },
