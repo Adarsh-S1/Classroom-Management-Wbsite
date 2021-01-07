@@ -10,6 +10,9 @@
                 {{#if otpErr}}
                 <p style="color: red;" class="error">{{otpErr}}</p>
                 {{/if}}
+                {{#if otpInvalid}}
+                <p style="color: red;" class="mt-2 error">{{otpInvalid}}</p>
+                {{/if}}
                 <center><button type="submit" class="mt-2 btn btn-success">Send Otp</button></center>
         </div>
     </div>

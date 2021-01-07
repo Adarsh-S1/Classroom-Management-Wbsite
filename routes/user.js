@@ -44,13 +44,11 @@ router.get("/", (req, res) => {
 });
 router.get("/student", studentLogin, (req, res) => {
   let stud = req.session.student;
-  let studo = req.session.phone;
   studentHelpers.attendhome(req.session.student._id).then((attendance) => {
     tutorHelpers.getEvents().then((events) => {
       tutorHelpers.getAnnouncements().then((announcement) => {
         res.render("Student/Stud-home", {
           stud,
-          studo,
           events,
           attendance,
           announcement,
@@ -73,20 +71,26 @@ router.get("/otpnumber", (req, res) => {
   if (req.session.loggedstudentIn) {
     res.redirect("/student");
   } else {
-    res.render("Student/otp-number", { otpErr: req.session.studentNumErr });
+    res.render("Student/otp-number", { otpErr: req.session.studentNumErr,otpInvalid: req.session.studentOtpInvalid});
+    req.session.studentOtpInvalid = false;
     req.session.studentNumErr = false;
+    if(req.session.studentOtpInvalid){
+      console.log("______");
+    }else{
+      req.session.destroy()
+    }
   }
 });
 router.post("/otpnumber", (req, res) => {
   studentHelpers.phoneNoCheck(req.body).then((response) => {
     if (response.status == true) {
-      req.session.phone = response.phone;
+      req.session.student = response.phone;
       var request = require("request");
       var options = {
         method: "POST",
         url: "https://d7networks.com/api/verifier/send",
         headers: {
-          Authorization: "Token a9a74e9b05a5aeeaf9f3f27e889e48ee0efc5f31",
+          Authorization: "Token f66f1c31c8cd42263c609d933e96a6dfe81e5ccd",
         },
         formData: {
           mobile: "91" + req.body.Phone,
@@ -108,14 +112,15 @@ router.post("/otpnumber", (req, res) => {
 });
 router.get("/otplogin", (req, res) => {
   studentHelpers.attendAllPage();
+  if(req.session.student){
   if (req.session.loggedstudentIn) {
     res.redirect("/");
   } else {
-    res.render("Student/otp-login", {
-      otpInvalid: req.session.studentOtpInvalid,
-    });
-    req.session.studentOtpInvalid = false;
+    res.render("Student/otp-login");
   }
+}else{
+  res.redirect('/otpnumber')
+}
 });
 router.post("/otplogin", (req, res) => {
   studentHelpers.OtpCheck(req.body).then((response) => {
@@ -123,7 +128,7 @@ router.post("/otplogin", (req, res) => {
       method: "POST",
       url: "https://d7networks.com/api/verifier/verify",
       headers: {
-        Authorization: "Token a9a74e9b05a5aeeaf9f3f27e889e48ee0efc5f31",
+        Authorization: "Token f66f1c31c8cd42263c609d933e96a6dfe81e5ccd",
       },
       formData: {
         otp_id: text,
@@ -134,8 +139,8 @@ router.post("/otplogin", (req, res) => {
       if (error) throw new Error(error);
       var status = response.body.substring(11, 17);
       if (status == "failed") {
-        req.session.studentOtpInvalid = "Invalid OTP";
-        res.redirect("/otplogin");
+        req.session.studentOtpInvalid = "Invalid OTP.Enter mobile number Once again";
+        res.redirect("/otpnumber");
       } else {
         req.session.loggedstudentIn = true;
         res.redirect("/student");
