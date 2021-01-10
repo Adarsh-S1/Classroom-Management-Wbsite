@@ -55,7 +55,7 @@
 
 															<div class="form-group">
 																<label>Topic</label>
-																<input type="text" class="form-control"
+																<input type="text" class="form-control" id="topic"
 																	placeholder="Topic" name="Topic" required>
 															</div>
 														</div>
@@ -97,7 +97,17 @@
 		</div>
 	</section>
 
-
+	   	 <script src="../socket.io/socket.io.js"></script>
+	<script>
+		var socket=io();
+		document.getElementById("button").addEventListener("click",function(){
+          var topic=document.getElementById("topic").value;
+		  		  let type="Notes"
+			socket.emit("message",topic,type)
+		})
+			
+		
+	</script>
 
 	<!-- Vendor JS -->
 	<script src="../Template/js/vendors.min.js"></script>

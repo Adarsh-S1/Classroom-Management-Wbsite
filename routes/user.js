@@ -20,9 +20,13 @@ paypal.configure({
     "AbX74hUUI9XSnWdLirx8m30xyIUptCo_6Om_4zMM3ooAiWFmwaeNGRiSokNqffNCb4GQ2bv2xHdmYFhY",
   client_secret:
     "EABtW--UjDatoF5DATsr8FtwqyoPYisrELA-L85WDsz_JMg9B05Uz_9poRdhJiHCNIT08lGphd56egOg",
-});
+});let notifications
+console.log(notifications);
 const studentLogin = (req, res, next) => {
   if (req.session.loggedstudentIn) {
+    studentHelpers.getNotifications().then((response)=>{
+      notifications=response
+      })
     studentHelpers.attendAllPage();
     studentHelpers.userTest(req.session.student._id).then((response) => {
       if (response.status) {
@@ -47,12 +51,13 @@ router.get("/student", studentLogin, (req, res) => {
   studentHelpers.attendhome(req.session.student._id).then((attendance) => {
     tutorHelpers.getEvents().then((events) => {
       tutorHelpers.getAnnouncements().then((announcement) => {
-        res.render("Student/Stud-home", {
-          stud,
-          events,
-          attendance,
-          announcement,
-        });
+          res.render("Student/Stud-home", {
+            stud,
+            events,
+            attendance,
+            announcement,
+            notifications
+        })
       });
     });
   });
@@ -163,7 +168,7 @@ router.post("/login", (req, res) => {
 });
 router.get("/profile", studentLogin, function (req, res) {
   let studentDetails = req.session.student;
-  res.render("Student/Profile", { student: true, studentDetails });
+  res.render("Student/Profile", { student: true, studentDetails,notifications });
 });
 router.get("/studentout", function (req, res) {
   req.session.destroy();
@@ -181,6 +186,7 @@ router.get("/today", studentLogin, (req, res) => {
             stud: req.session.student,
             uvideo,
             assignments,
+            notifications
           });
         });
       });
@@ -197,6 +203,7 @@ router.get("/notes", studentLogin, (req, res) => {
           video,
           stud: req.session.student,
           uvideo,
+          notifications
         });
       });
     });
@@ -204,13 +211,13 @@ router.get("/notes", studentLogin, (req, res) => {
 });
 router.get("/assignments", studentLogin, (req, res) => {
   studentHelpers.viewAssign().then((assign) => {
-    res.render("Student/assignments", { student: true, assign });
+    res.render("Student/assignments", { student: true, assign,notifications });
   });
 });
 router.get("/assignments/:id", studentLogin, (req, res) => {
   let assignId = req.params.id;
   studentHelpers.subAssign(assignId).then((response) => {
-    res.render("Student/subassign", { student: true, assignId });
+    res.render("Student/subassign", { student: true, assignId,notifications });
   });
 }),
   router.post("/assignments/:id", (req, res) => {
@@ -260,6 +267,7 @@ router.get("/attendate/:id", studentLogin, async (req, res) => {
                     totalDays,
                     totalabs,
                     percentage,
+                    notifications
                   });
                 });
             });
@@ -285,6 +293,7 @@ router.get("/attendance", studentLogin, async (req, res) => {
                 totalDays,
                 totalabs,
                 percentage,
+                notifications
               });
             });
         });
@@ -293,7 +302,7 @@ router.get("/attendance", studentLogin, async (req, res) => {
 });
 router.get("/announcement", studentLogin, (req, res) => {
   tutorHelpers.getAnnouncements().then((announcement) => {
-    res.render("Student/announcement", { student: true, announcement });
+    res.render("Student/announcement", { student: true, announcement,notifications });
   });
 });
 router.get("/announcement/:id", studentLogin, (req, res) => {
@@ -317,6 +326,7 @@ router.get("/announcement/:id", studentLogin, (req, res) => {
         student: true,
         announcement,
         pathpdf,
+        notifications
       });
     } else if (!fs.existsSync(path) && fs.existsSync(path1)) {
       let pathimg = "../Announcements/photo/" + announcement._id + ".jpg";
@@ -324,6 +334,7 @@ router.get("/announcement/:id", studentLogin, (req, res) => {
         student: true,
         announcement,
         pathimg,
+        notifications
       });
     } else if (!fs.existsSync(path) && !fs.existsSync(path1)) {
       res.render("Student/announcedetails", { student: true, announcement });
@@ -332,7 +343,7 @@ router.get("/announcement/:id", studentLogin, (req, res) => {
 });
 router.get("/gallery", studentLogin, (req, res) => {
   studentHelpers.getPhotos().then((photos) => {
-    res.render("Student/gallery", { student: true, photos });
+    res.render("Student/gallery", { student: true, photos,notifications });
   });
 });
 router.get("/event/:id", studentLogin, (req, res) => {
@@ -351,15 +362,16 @@ router.get("/event/:id", studentLogin, (req, res) => {
             event,
             pathimg,
             pathpdf,
+            notifications
           });
         } else if (fs.existsSync(path) && !fs.existsSync(path1)) {
           let pathpdf = "/Notes/open-document.png";
-          res.render("Student/eventfree", { student: true, event, pathpdf });
+          res.render("Student/eventfree", { student: true, event, pathpdf,notifications });
         } else if (!fs.existsSync(path) && fs.existsSync(path1)) {
           let pathimg = "/Events/photo/" + event._id + ".jpg";
-          res.render("Student/eventfree", { student: true, event, pathimg });
+          res.render("Student/eventfree", { student: true, event, pathimg,notifications });
         } else if (!fs.existsSync(path) && !fs.existsSync(path1)) {
-          res.render("Student/eventfree", { student: true, event });
+          res.render("Student/eventfree", { student: true, event ,notifications});
         }
       } else if (event.Type == "Paid") {
         let status = "false";
@@ -383,6 +395,7 @@ router.get("/event/:id", studentLogin, (req, res) => {
                 pathimg,
                 pathpdf,
                 stud: req.session.student,
+                notifications
               });
             } else if (fs.existsSync(path) && !fs.existsSync(path1)) {
               let pathpdf = "/Notes/open-document.png";
@@ -399,6 +412,7 @@ router.get("/event/:id", studentLogin, (req, res) => {
                 event,
                 pathimg,
                 stud: req.session.student,
+                notifications
               });
             } else if (!fs.existsSync(path) && !fs.existsSync(path1)) {
               res.render("Student/eventpaid", {
@@ -417,6 +431,7 @@ router.get("/event/:id", studentLogin, (req, res) => {
                 pathimg,
                 pathpdf,
                 stud: req.session.student,
+                notifications
               });
             } else if (fs.existsSync(path) && !fs.existsSync(path1)) {
               let pathpdf = "/Notes/open-document.png";
@@ -425,6 +440,7 @@ router.get("/event/:id", studentLogin, (req, res) => {
                 event,
                 pathpdf,
                 stud: req.session.student,
+                notifications
               });
             } else if (!fs.existsSync(path) && fs.existsSync(path1)) {
               let pathimg = "/Events/photo/" + event._id + ".jpg";
@@ -433,12 +449,14 @@ router.get("/event/:id", studentLogin, (req, res) => {
                 event,
                 pathimg,
                 stud: req.session.student,
+                notifications
               });
             } else if (!fs.existsSync(path) && !fs.existsSync(path1)) {
               res.render("Student/event-done", {
                 student: true,
                 event,
                 stud: req.session.student,
+                notifications
               });
             }
           }
@@ -452,6 +470,7 @@ router.get("/event/:id", studentLogin, (req, res) => {
               pathimg,
               pathpdf,
               stud: req.session.student,
+              notifications
             });
           } else if (fs.existsSync(path) && !fs.existsSync(path1)) {
             let pathpdf = "/Notes/open-document.png";
@@ -460,6 +479,7 @@ router.get("/event/:id", studentLogin, (req, res) => {
               event,
               pathpdf,
               stud: req.session.student,
+              notifications
             });
           } else if (!fs.existsSync(path) && fs.existsSync(path1)) {
             let pathimg = "/Events/photo/" + event._id + ".jpg";
@@ -468,12 +488,14 @@ router.get("/event/:id", studentLogin, (req, res) => {
               event,
               pathimg,
               stud: req.session.student,
+              notifications
             });
           } else if (!fs.existsSync(path) && !fs.existsSync(path1)) {
             res.render("Student/eventpaid", {
               student: true,
               event,
               stud: req.session.student,
+              notifications
             });
           }
         }
@@ -525,7 +547,7 @@ router.post("/paytm", studentLogin, [parseUrl, parseJson], (req, res) => {
   params["ORDER_ID"] = paymentDetails.eventId + new Date().getMilliseconds();
   params["CUST_ID"] = paymentDetails.studId;
   params["TXN_AMOUNT"] = paymentDetails.amount;
-  params["CALLBACK_URL"] = "http://localhost:3000/callback";
+  params["CALLBACK_URL"] = "http://adarshs.in/callback";
   params["EMAIL"] = "";
   params["MOBILE_NO"] = "";
 
@@ -555,7 +577,7 @@ router.post("/paytm", studentLogin, [parseUrl, parseJson], (req, res) => {
     }
   );
 });
-router.post("/callback", studentLogin, (req, res) => {
+router.post("/callback", (req, res) => {
   var eventId = req.body.ORDERID.substring(0, 24);
   if (req.body.STATUS == "TXN_SUCCESS") {
     studentHelpers
@@ -568,7 +590,7 @@ router.post("/callback", studentLogin, (req, res) => {
           });
       });
   } else {
-    res.render("Student/failed");
+    res.redirect("/failed");
   }
 });
 router.post("/paypal", studentLogin, (req, res) => {
@@ -579,8 +601,8 @@ router.post("/paypal", studentLogin, (req, res) => {
       payment_method: "paypal",
     },
     redirect_urls: {
-      return_url: "http://localhost:3000/paypalsuccess",
-      cancel_url: "http://localhost:3000/failed",
+      return_url: "http://adarshs.in/paypalsuccess",
+      cancel_url: "http://adarshs.in/failed",
     },
     transactions: [
       {

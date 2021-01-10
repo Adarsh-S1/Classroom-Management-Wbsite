@@ -46,7 +46,7 @@
 
 			<div class="sticky-header navbar-expand-lg">
 				<div class="menu-bar clearfix">
-					<div class="container clearfix">
+					<div class="container col-md-12  clearfix">
 						<!-- Header Logo ==== -->
 						<div class="menu-logo">
 							<a href="/student"><img src="../Studtemplate/assets/images/logo.png" alt=""></a>
@@ -82,6 +82,15 @@
 								</li>
 								<li class="nav-dashboard"><a href="/profile">Profile</a>
 								</li>
+															<li class=""><a href="javascript:;"><img style="height: 25px; width: auto;" 
+									src="../Template/icons/themify-icons/SVG/bell.svg" alt="" srcset=""></a>
+							<ul class="sub-menu">
+								{{#each notifications}}
+								
+								<li><a style="color: #fc1864;">{{this.Date}} - {{this.type}}</a><br><a style="margin-top: -35px;">{{this.topic}}</a></li>
+								{{/each}}
+							</ul>
+						</li>
 								<li class="nav-dashboard"><a href="/studentout"><button style="margin-top: -10px;"
 											class="btn btn-warning">Logout</button></a>
 								</li>

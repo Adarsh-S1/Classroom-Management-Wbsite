@@ -1,71 +1,71 @@
-const db = require('../config/connection')
-const collection = require('../config/collections')
-const { response } = require('express')
-const bcrypt = require('bcrypt')
-const objectId = require('mongodb').ObjectID
-const Razorpay = require('razorpay')
+const db = require("../config/connection");
+const collection = require("../config/collections");
+const { response } = require("express");
+const bcrypt = require("bcrypt");
+const objectId = require("mongodb").ObjectID;
+const Razorpay = require("razorpay");
 const instance = new Razorpay({
-  key_id: 'rzp_test_pd71wI8aXMt1wf',
-  key_secret: 'Y6k49kYdekn5xMd9HB5gY50o'
-})
+  key_id: "rzp_test_pd71wI8aXMt1wf",
+  key_secret: "Y6k49kYdekn5xMd9HB5gY50o",
+});
 module.exports = {
   doStudentLogin: (studentDetails) => {
-    const response = {}
+    const response = {};
     return new Promise(async (resolve, reject) => {
       const student = await db
         .get()
         .collection(collection.STUDENT_COLLECTION)
-        .findOne({ Username: studentDetails.Username })
+        .findOne({ Username: studentDetails.Username });
       if (student) {
         bcrypt
           .compare(studentDetails.Password, student.Password)
           .then((status) => {
             if (status) {
-              response.student = student
-              response.status = true
-              resolve(response)
+              response.student = student;
+              response.status = true;
+              resolve(response);
             } else {
-              resolve({ status: false })
+              resolve({ status: false });
             }
           });
       } else {
-        resolve({ status: false })
+        resolve({ status: false });
       }
     });
   },
   phoneNoCheck: (studentDetails) => {
     return new Promise(async (resolve, reject) => {
-      const response = {}
-      let status
+      const response = {};
+      let status;
       const phone = await db
         .get()
         .collection(collection.STUDENT_COLLECTION)
         .findOne({ Phone: studentDetails.Phone });
       if (phone) {
-        response.phone = phone
-        response.status = true
-        resolve(response)
+        response.phone = phone;
+        response.status = true;
+        resolve(response);
       } else {
-        status = false
+        status = false;
       }
-      resolve(status)
-    })
+      resolve(status);
+    });
   },
   OtpCheck: (studentDetails) => {
     return new Promise(async (resolve, reject) => {
-      resolve(studentDetails.otp)
-    })
+      resolve(studentDetails.otp);
+    });
   },
   userTest: (studId) => {
     return new Promise(async (resolve, reject) => {
       const userexist = await db
         .get()
         .collection(collection.STUDENT_COLLECTION)
-        .findOne({ _id: objectId(studId) })
+        .findOne({ _id: objectId(studId) });
       if (userexist) {
-        resolve({ status: true })
+        resolve({ status: true });
       } else {
-        resolve({ status: false })
+        resolve({ status: false });
       }
     });
   },
@@ -76,9 +76,9 @@ module.exports = {
         .collection(collection.NOTES_DOC_COLLECTION)
         .find()
         .sort({ _id: -1 })
-        .toArray()
-      resolve(doc)
-    })
+        .toArray();
+      resolve(doc);
+    });
   },
   videoNotes: () => {
     return new Promise(async (resolve, reject) => {
@@ -87,9 +87,9 @@ module.exports = {
         .collection(collection.NOTES_VID_COLLECTION)
         .find()
         .sort({ _id: -1 })
-        .toArray()
-      resolve(video)
-    })
+        .toArray();
+      resolve(video);
+    });
   },
   utubeNotes: () => {
     return new Promise(async (resolve, reject) => {
@@ -496,8 +496,17 @@ module.exports = {
               attendance: "$attendance",
             },
           },
+          {
+            $match: {
+              $or: [
+                { "attendance.status": "Present" },
+                { "attendance.status": "Absent" },
+              ],
+            },
+          },
         ])
         .toArray();
+      console.log(numerator);
       for (var i = 0; i < numerator.length; i++) {
         numeratorTotal += numerator[i].attendance.percentage;
       }
@@ -854,4 +863,15 @@ module.exports = {
         });
     });
   },
+  getNotifications:()=>{
+    return new Promise(async (resolve, reject) => {
+      let notifications = await db
+        .get()
+        .collection(collection.NOTI_COLLECTION)
+        .find()
+        .sort({ _id: -1 })
+        .toArray();
+      resolve(notifications);
+    });
+  }
 };

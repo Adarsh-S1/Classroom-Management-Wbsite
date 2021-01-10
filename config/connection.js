@@ -3,7 +3,7 @@ const state = {
   db: null,
 };
 module.exports.connect = function (done) {
-  const url = "mongodb+srv://adarsh:adarsh@classroom-mangement.palw3.mongodb.net/classroom?retryWrites=true&w=majority"
+  const url = "mongodb://localhost:27017"
   const dbname = "classroom";
   mongoClient.connect(url, {useUnifiedTopology: true} ,(err, data) => {
     if (err) return done(err);
