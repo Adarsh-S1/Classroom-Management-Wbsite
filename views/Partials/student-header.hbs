@@ -48,24 +48,23 @@
 					<span></span>
 					<span></span>
 				</button>
-
 				<div class="menu-links navbar-collapse collapse justify-content-start" id="menuDropdown">
 					<div class="menu-logo">
 						<a href="/student"><img style="width: AUTO;" src="../Studtemplate/assets/images/logo.png"
 								alt=""></a>
 					</div>
 					<ul class="nav navbar-nav">
-						<li class="active"><a href="/">Home</a>
+						<li class="active"><a href="/student">Home</a>
 						</li>
 						<li><a href="/today">Today's Task</a>
 						</li>
 						<li class="add-mega-menu"><a href="/attendance">Attendance</a>
-
 						</li>
 						<li><a href="/assignments">Assignments</a>
-
 						</li>
 						<li class="nav-dashboard"><a href="/announcement">Announcement</a>
+						</li>
+						<li class="nav-dashboard"><a href="/events">Events</a>
 						</li>
 						<li class="nav-dashboard"><a href="/notes">Notes</a>
 						</li>
@@ -73,28 +72,53 @@
 						</li>
 						<li class="nav-dashboard"><a href="/profile">Profile</a>
 						</li>
-						<li class="nav-dashboard"><a href="/profile"></a>
-						</li>
-							<li class=""><a href="javascript:;"><img style="height: 25px; width: auto;" 
-									src="../Template/icons/themify-icons/SVG/bell.svg" alt="" srcset=""></a>
-							<ul class="sub-menu">
-								<li>{{#each notifications}}
-								<li><a style="color: #fc1864;">{{this.Date}} - {{this.type}}</a><br><a style="margin-top: -25px;">{{this.topic}}</a></li>
-								{{/each}}</li>
-							</ul>
-						</li>
-							<li class="nav-dashboard"><a href="/studentout"><button style="margin-top: -10px;"
-									class="btn btn-warning">Logout</button></a>
-						</li>
-					
-					
-					</ul>
+						<li class=""><a href="javascript:;"><img onmouseover="notihide()" id="bell"
+									style="height: 25px; width: auto;"
+									src="../Template/icons/themify-icons/SVG/bell.svg" alt="" srcset=""><span
+									id="notify"
+									style="display: none; position: absolute; padding: 5px 5px;border-radius: 50%; background-color: red; margin-left: 17px; margin-top: -25px;"></span>
+							</a>
 
+							<ul style="width: 200px; margin-left: -15px; height: 200px; overflow: auto"
+								class="sub-menu">
+								<li id="display" style="display: none;"><a id="date" style="color: #fc1864;"> -
+									</a><span
+										style="margin-top: -30px; font-size: 14px; margin-right: 30px; text-transform: none; color: #fc1864; float: right;"
+										id="type"></span><br><a id="topic" style="margin-top: -35px;"></a></li>
+
+								{{#each notifications}}
+
+								<li><a style="color: #fc1864;">{{this.Date}} - {{this.type}}</a><br><a
+										style="margin-top: -35px;">{{this.topic}}</a></li>
+								{{/each}}
+							</ul>
+						<li style=" margin-right: -50px;" class="nav-dashboard"><a href="/studentout"><button
+									style="margin-top: -10px;" class="btn btn-warning">Logout</button></a>
+						</li>
 				</div>
 				<!-- Navigation Menu END ==== -->
 			</div>
 		</div>
 	</div>
 </header>
+<audio hidden controls id="sound">
+	<source src="../Notification/notification.mp3" type="audio/mp3">
+</audio>
+<script src="../socket.io/socket.io.js"></script>
+
+<script>
+	function notihide() {
+		document.getElementById("notify").style.display = "none"
+	}
+	var socket = io()
+	socket.on("topicassign", function (topic, type, date) {
+		document.getElementById("sound").autoplay = true;
+		document.getElementById("notify").style.display = "block"
+		document.getElementById("display").style.display = "block"
+		document.getElementById("date").innerHTML = date
+		document.getElementById("type").innerHTML = type
+		document.getElementById("topic").innerHTML = topic
+	})
+</script>
 <script src="../Studtemplate/assets/js/jquery.min.js"></script>
 <script src="../Studtemplate/assets/js/functions.js"></script>

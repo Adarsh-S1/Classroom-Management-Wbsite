@@ -46,8 +46,8 @@
 									aria-labelledby="pills-edit-tab">
 									<div class="row">
 										<div class="col-12">
-											<form class="form" method="POST"
-												action="/tutor/assignments" enctype="multipart/form-data">
+											<form id="form" class="form" method="POST" action="/tutor/assignments"
+												enctype="multipart/form-data">
 												<div>
 													<h4 class="box-title text-primary"><i
 															class="ti-user mr-15"></i>ASSIGNMENTS</h4>
@@ -273,15 +273,15 @@
 	<!-- Corenav Master JavaScript -->
 	<script src="../Template/corenav-master/coreNavigation-1.1.3.js"></script>
 	<script src="../Template/vendor_components/jquery-ui/jquery-ui.min.js"></script>
-   	 <script src="../socket.io/socket.io.js"></script>
+	<script src="../socket.io/socket.io.js"></script>
 	<script>
-		var socket=io();
-		document.getElementById("button").addEventListener("click",function(){
-          var topic=document.getElementById("topic").value;
-		  let type="Assignment"
-			socket.emit("message",topic,type)
-		})
-			
-		
+		var socket = io();
+		document.getElementById("form").onsubmit = function () {
+			var topic = document.getElementById("topic").value;
+			let type = "Assignment"
+			socket.emit("message", topic, type)
+		}
+
+
 	</script>
 </body>

@@ -132,7 +132,6 @@
                     </div>
                 </div>
                 <div class="row">
-
                     <div class="col-lg-12 col-md-8 col-sm-12">
                         <div class="row">
                             {{#each video}}
@@ -162,7 +161,6 @@
                     </div>
                 </div>
                 <div class="row">
-
                     <div class="col-lg-12 col-md-8 col-sm-12">
                         <div class="row">
                             {{#each assignments}}
@@ -172,50 +170,50 @@
                                         <a href="../Assignments/{{this._id}}.pdf ">
                                             <center><img style="height: 100px; width: auto;"
                                                     src="../Notes/open-document.png" alt="W3Schools" width="104"
-                                                    height="142"><br><small>Click to download the file</small></center<
-                                                    /a>
-                                                <div class="info-bx text-center">
-                                                    <h5>{{this.Topic.Topic}}</h5>
-                                                </div>
-
+                                                    height="142"><br><small>Click to download the file</small></center>
+                                        </a>
                                     </div>
-
+                                    <div class="info-bx text-center">
+                                        <h5>{{this.Topic.Topic}}</h5>
+                                    </div>
                                 </div>
-                                {{/each}}
 
                             </div>
+                            {{/each}}
+
                         </div>
                     </div>
                 </div>
             </div>
-            <button class="back-to-top fa fa-chevron-up"></button>
         </div>
-        <!-- External JavaScripts -->
+        <button class="back-to-top fa fa-chevron-up"></button>
+    </div>
+    <!-- External JavaScripts -->
 
-        <script type="text/javascript" src="../Image enlarge/magicthumb-trial/magicthumb/magicthumb.js"></script>
-        <style>
-            .myVideo:hover {
-                cursor: default;
-            }
-        </style>
-        <script>
-            function end(date) {
-                $.ajax({
-                    url: '/attendvideo',
-                    data: {
-                        Date: date
-                    },
-                    method: 'post',
-                    success: (response) => {
-                        if (response.status) {
-                            console.log("STATUS")
-                        } else {
-                            console.log("hi")
-                        }
+    <script type="text/javascript" src="../Image enlarge/magicthumb-trial/magicthumb/magicthumb.js"></script>
+    <style>
+        .myVideo:hover {
+            cursor: default;
+        }
+    </style>
+    <script>
+        function end(date) {
+            $.ajax({
+                url: '/attendvideo',
+                data: {
+                    Date: date
+                },
+                method: 'post',
+                success: (response) => {
+                    if (response.status) {
+                        console.log("STATUS")
+                    } else {
+                        console.log("hi")
                     }
-                })
-            }
-        </script>
+                }
+            })
+        }
+    </script>
 </body>
 
 </html>

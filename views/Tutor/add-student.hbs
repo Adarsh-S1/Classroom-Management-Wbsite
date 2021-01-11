@@ -44,6 +44,13 @@
 													<div class="row">
 														<div class="col-md-12">
 
+
+															{{#if rollstatus}}
+															<p style="color: red; font-family: Arial, Helvetica, sans-serif; font-size: 17px; font-weight: bolder;"
+																class="text-center error">WARNING : Added Student is not
+																recorded since The Roll Number is already registered in
+																an account!!!</p>
+															{{/if}}
 															<div class="form-group">
 																<label>Name</label>
 																<input type="text" name="Name" class="form-control"
@@ -152,7 +159,6 @@
 															</div>
 														</div>
 													</div>
-
 
 
 

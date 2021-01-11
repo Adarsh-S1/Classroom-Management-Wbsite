@@ -19,13 +19,6 @@
 
 <body class="theme-primary">
 
-	<!-- The social media icon bar -->
-
-
-
-	<!---page Title --->
-
-	<!--Page content -->
 
 	<section style="margin-top: -500px;" class="py-50">
 		<div class="container">
@@ -101,16 +94,16 @@
 			</div>
 		</div>
 	</section>
-	   	 <script src="../socket.io/socket.io.js"></script>
+	<script src="../socket.io/socket.io.js"></script>
 	<script>
-		var socket=io();
-		document.getElementById("button").addEventListener("click",function(){
-          var topic=document.getElementById("topic").value;
-		  		  let type="Notes"
-			socket.emit("message",topic)
+		var socket = io();
+		document.getElementById("button").addEventListener("click", function () {
+			var topic = document.getElementById("topic").value;
+			let type = "Notes"
+			socket.emit("message", topic, type)
 		})
-			
-		
+
+
 	</script>
 	<script>
 

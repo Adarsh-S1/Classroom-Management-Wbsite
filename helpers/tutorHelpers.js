@@ -4,6 +4,7 @@ const { response } = require("express");
 const bcrypt = require("bcrypt");
 const { log } = require("handlebars");
 var objectId = require("mongodb").ObjectID;
+const collections = require("../config/collections");
 
 module.exports = {
   tutorRegister: (tutor) => {
@@ -49,15 +50,27 @@ module.exports = {
       }
     });
   },
-  addStudent: async (student, callback) => {
-    student.Rollno = parseInt(student.Rollno);
-    student.Password = await bcrypt.hash(student.Password, 10);
-    db.get()
-      .collection("student")
-      .insertOne(student)
-      .then((data) => {
-        callback(data.ops[0]._id);
-      });
+  addStudent: (student) => {
+    return new Promise(async (resolve, reject) => {
+      student.Rollno = parseInt(student.Rollno);
+      student.Password = await bcrypt.hash(student.Password, 10);
+      console.log(student.Rollno);
+      let rollno = await db
+        .get()
+        .collection(collection.STUDENT_COLLECTION)
+        .findOne({ Rollno: student.Rollno });
+      console.log(rollno);
+      if (rollno) {
+        resolve({ status: true });
+      } else {
+        db.get()
+          .collection("student")
+          .insertOne(student)
+          .then((data) => {
+            resolve(data.ops[0]._id);
+          });
+      }
+    });
   },
   singleattendance: (studId) => {
     console.log(studId);
@@ -587,6 +600,72 @@ module.exports = {
         ])
         .toArray();
       resolve(paid);
+    });
+  },
+  addHoliday: (datecheck) => {
+    return new Promise(async (resolve, reject) => {
+      let attendObj = {
+        date: datecheck,
+        month: datecheck.substring(3, 10),
+        status: "Holiday",
+      };
+      let userfind = await db
+        .get()
+        .collection(collection.STUDENT_COLLECTION)
+        .aggregate([
+          {
+            $project: {
+              _id: "$_id",
+            },
+          },
+        ])
+        .toArray();
+      let dateexist = await db
+        .get()
+        .collection(collection.ATTENDANCE_COLLECTION)
+        .findOne({ "attendance.date": datecheck });
+      for (var i = 0; i < userfind.length; i++) {
+        if (dateexist) {
+          await db
+            .get()
+            .collection(collection.ATTENDANCE_COLLECTION)
+            .updateOne(
+              {
+                student: objectId(userfind[i]._id),
+                "attendance.date": datecheck,
+              },
+              {
+                $set: {
+                  "attendance.$.status": "Holiday",
+                },
+                $unset: { "attendance.$.percentage": { percentage: 0 } },
+              }
+            );
+          resolve();
+        } else {
+          if (
+            db
+              .get()
+              .collection(collection.ATTENDANCE_COLLECTION)
+              .findOne({
+                student: objectId(userfind[i]._id),
+                "attendance.date": datecheck,
+              })
+          ) {
+            db.get()
+              .collection(collection.ATTENDANCE_COLLECTION)
+              .updateOne(
+                { student: objectId(userfind[i]._id) },
+                {
+                  $push: { attendance: attendObj },
+                }
+              )
+              .then((response) => {
+                resolve();
+              });
+          }
+        }
+      }
     });
   },
 };

@@ -413,20 +413,31 @@ router.get("/photos", tutorLogin, (req, res) => {
     res.render("Tutor/photos", { tutor: true, photos });
   });
 });
+var rollstatus = false;
 router.get("/addstudent", tutorLogin, (req, res) => {
-  res.render("Tutor/add-student", { tutor: true });
+  console.log(rollstatus);
+  res.render("Tutor/add-student", { tutor: true, rollstatus });
+  rollstatus = false;
 });
+
 router.post("/addstudent", (req, res) => {
-  tutorHelpers.addStudent(req.body, (id) => {
-    tutorHelpers.singleattendance(id);
-    let image = req.files.Image;
-    image.mv("./public/student-images/" + id + ".jpg", (err) => {
-      if (!err) {
-        res.redirect("/tutor/addstudent");
-      } else {
-        console.log(err);
-      }
-    });
+  tutorHelpers.addStudent(req.body).then((id) => {
+    console.log(id);
+    if (id.status != true) {
+      tutorHelpers.singleattendance(id);
+      let image = req.files.Image;
+      image.mv("./public/student-images/" + id + ".jpg", (err) => {
+        if (!err) {
+          res.redirect("/tutor/addstudent");
+        } else {
+          console.log(err);
+        }
+      });
+    } else {
+      rollstatus = true;
+      console.log(rollstatus);
+      res.redirect("/tutor/addstudent");
+    }
   });
 });
 router.get("/studetails/:id", tutorLogin, async (req, res) => {
@@ -562,6 +573,14 @@ router.get("/notesyoudelete/:id", tutorLogin, (req, res) => {
   let youId = req.params.id;
   tutorHelpers.deleteYou(youId).then((response) => {
     res.redirect("/tutor/notes");
+  });
+});
+router.get("/holiday", tutorLogin, (req, res) => {
+  res.render("Tutor/holiday", { tutor: true });
+});
+router.post("/holiday", tutorLogin, (req, res) => {
+  tutorHelpers.addHoliday(req.body.Date).then((response) => {
+    res.redirect("/tutor/holiday");
   });
 });
 router.post("/test", (req, res) => {});

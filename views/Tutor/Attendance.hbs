@@ -34,6 +34,11 @@
 
 
 							<div class="card card-custom">
+
+								<a href='/tutor/holiday'><button
+										style="margin-bottom: -80px; margin-top: 20px; float: right; margin-right: 10px;"
+										class="btn btn-success" type="submit">Give Holiday</button></a>
+
 								<div style="margin-top: 50px;" class="container">
 									<div class="row styling">
 										<h3><strong
@@ -51,12 +56,14 @@
 													</div>
 
 												</div>
+
 											</div>
 											<p class="help-block"><strong>Date format:</strong> dd-mm-yyyy</p>
 											<a href=''
 												onclick="this.href='/tutor/attendate/'+document.getElementById('date').value;"><button
 													class="btn btn-success" type="submit">Submit</button></a>
 										</div>
+
 									</div><br>
 									<hr>
 
@@ -88,7 +95,8 @@
 												</td>
 												<td>
 													<center><a style="color: black;"
-															href="/tutor/studetails/{{../studId}}">{{this.Name}}</a></center>
+															href="/tutor/studetails/{{../studId}}">{{this.Name}}</a>
+													</center>
 												</td>
 												{{/each}}
 												<td>

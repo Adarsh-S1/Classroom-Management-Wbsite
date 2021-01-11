@@ -707,7 +707,7 @@ module.exports = {
       resolve(photo);
     });
   },
-  getEventDetails: (eventId, studId) => {
+  getEventDetails: (eventId) => {
     return new Promise(async (resolve, reject) => {
       await db
         .get()
@@ -863,7 +863,7 @@ module.exports = {
         });
     });
   },
-  getNotifications:()=>{
+  getNotifications: () => {
     return new Promise(async (resolve, reject) => {
       let notifications = await db
         .get()
@@ -873,5 +873,5 @@ module.exports = {
         .toArray();
       resolve(notifications);
     });
-  }
+  },
 };
