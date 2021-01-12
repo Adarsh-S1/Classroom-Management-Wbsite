@@ -506,7 +506,6 @@ module.exports = {
           },
         ])
         .toArray();
-      console.log(numerator);
       for (var i = 0; i < numerator.length; i++) {
         numeratorTotal += numerator[i].attendance.percentage;
       }
@@ -653,7 +652,9 @@ module.exports = {
         ])
         .toArray();
       for (var i = 0; i < numerator.length; i++) {
-        numeratorTotal += numerator[i].attendance.percentage;
+        if (numerator[i].attendance.status != "Holiday") {
+          numeratorTotal += numerator[i].attendance.percentage;
+        }
       }
       let percentage = numeratorTotal / totalOpenDays;
       resolve(percentage);

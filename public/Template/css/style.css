@@ -22949,7 +22949,7 @@ nav {
     outline: none; }
 
 .core-nav.nav-core-sticky.on-scroll {
-  z-index: 9999999999; }
+  z-index: 9; }
 .core-nav .dropdown > .dropdown-menu > li > a {
   text-transform: capitalize;
   font-size: 1rem;

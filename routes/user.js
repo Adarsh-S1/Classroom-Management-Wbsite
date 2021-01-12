@@ -81,7 +81,7 @@ router.get("/otpnumber", (req, res) => {
     req.session.studentOtpInvalid = false;
     req.session.studentNumErr = false;
     if (req.session.studentOtpInvalid) {
-      console.log("______");
+      console.log("");
     } else {
       req.session.destroy();
     }
@@ -247,12 +247,18 @@ router.get("/assignments/:id", studentLogin, (req, res) => {
         res.json({ status: true });
       });
   });
-router.get("/attendate/:id", studentLogin, async (req, res) => {
+let datee;
+router.post("/attendmonth", studentLogin, (req, res) => {
+  datee = req.body.Date;
+  res.redirect("/attendate");
+});
+router.get("/attendate", studentLogin, async (req, res) => {
   let attendance = await studentHelpers.getAttendDate(
-    req.params.id,
+    datee,
     req.session.student._id
   );
-  let date = req.params.id;
+  let date = datee;
+  console.log(datee);
   studentHelpers
     .totalMonthDayPresent(req.session.student._id, date)
     .then((days) => {
@@ -526,10 +532,10 @@ router.get("/event/:id", studentLogin, (req, res) => {
       }
     });
 });
-router.get("/success", studentLogin, (req, res) => {
+router.get("/success", (req, res) => {
   res.render("Student/success");
 });
-router.get("/failed", studentLogin, (req, res) => {
+router.get("/failed", (req, res) => {
   res.render("Student/failed");
 });
 router.post("/payevent", studentLogin, (req, res) => {
@@ -571,7 +577,7 @@ router.post("/paytm", studentLogin, [parseUrl, parseJson], (req, res) => {
   params["ORDER_ID"] = paymentDetails.eventId + new Date().getMilliseconds();
   params["CUST_ID"] = paymentDetails.studId;
   params["TXN_AMOUNT"] = paymentDetails.amount;
-  params["CALLBACK_URL"] = "http://adarshs.in/callback";
+  params["CALLBACK_URL"] = "https://adarshs.in/callback";
   params["EMAIL"] = "";
   params["MOBILE_NO"] = "";
 
@@ -601,6 +607,7 @@ router.post("/paytm", studentLogin, [parseUrl, parseJson], (req, res) => {
     }
   );
 });
+
 router.post("/callback", (req, res) => {
   var eventId = req.body.ORDERID.substring(0, 24);
   if (req.body.STATUS == "TXN_SUCCESS") {

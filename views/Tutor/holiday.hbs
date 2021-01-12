@@ -59,14 +59,10 @@
                                                         </div>
                                                         <p class="help-block"><strong>Date format:</strong> dd-mm-yyyy
                                                         </p>
-                                                        <a href=''
-                                                            onclick="this.href='/tutor/attendate/'+document.getElementById('date').value;"><button
-                                                                class="btn btn-success"
-                                                                type="submit">Submit</button></a>
+
                                                     </div>
 
-                                                    <button id="button" style="display: none;" type="submit"
-                                                        class="btn btn-success">
+                                                    <button id="button" type="submit" class="btn btn-success">
                                                         Save
                                                     </button>
                                                 </div>
@@ -86,7 +82,7 @@
     <script>
         var socket = io();
         document.getElementById("button").addEventListener("click", function () {
-            var topic = document.getElementById("date").value + "is a HOLIDAY";
+            var topic = document.getElementById("date").value + "     is a HOLIDAY";
             let type = "Holiday"
             socket.emit("message", topic, type)
         })

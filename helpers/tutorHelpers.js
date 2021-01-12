@@ -54,12 +54,10 @@ module.exports = {
     return new Promise(async (resolve, reject) => {
       student.Rollno = parseInt(student.Rollno);
       student.Password = await bcrypt.hash(student.Password, 10);
-      console.log(student.Rollno);
       let rollno = await db
         .get()
         .collection(collection.STUDENT_COLLECTION)
         .findOne({ Rollno: student.Rollno });
-      console.log(rollno);
       if (rollno) {
         resolve({ status: true });
       } else {
@@ -73,7 +71,6 @@ module.exports = {
     });
   },
   singleattendance: (studId) => {
-    console.log(studId);
     return new Promise(async (resolve, reject) => {
       if (new Date().getDay() == 0) {
         attendObj = {

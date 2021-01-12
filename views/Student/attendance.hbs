@@ -44,26 +44,29 @@
 								<div class="container">
 
 									<center>
+										<form action="/attendmonth" method="POST">
 
-										<div class='col-sm-offset-4 col-sm-4'>
-											<div class="form-group">
-												<div class='input-group date' id='datetimepicker1'>
-													<label>Select Date: </label>
-													<div id="datepicker" class="input-group date"
-														data-date-format="mm-yyyy">
-														<input id="date" class="form-control" type="text" readonly />
-														<span class="input-group-addon"><i
-																class="glyphicon glyphicon-calendar"></i></span>
+											<div class='col-sm-offset-4 col-sm-4'>
+												<div class="form-group">
+													<div class='input-group date' id='datetimepicker1'>
+														<label>Select Date: </label>
+														<div id="datepicker" class="input-group date"
+															data-date-format="mm-yyyy">
+															<input id="date" name="Date" class="form-control"
+																type="text" readonly />
+															<span class="input-group-addon"><i
+																	class="glyphicon glyphicon-calendar"></i></span>
+														</div>
+
 													</div>
-
 												</div>
+												<p class="help-block"><strong>Date format:</strong> mm-yyyy</p>
+
+												<button style="margin-bottom: 20px;" class="btn btn-success"
+													type="submit">Submit</button>
 											</div>
-											<p class="help-block"><strong>Date format:</strong> mm-yyyy</p>
-											<a href=''
-												onclick="this.href='/attendate/'+document.getElementById('date').value;"><button
-													style="margin-bottom: 20px;" class="btn btn-success"
-													type="submit">Submit</button></a>
-										</div>
+										</form>
+
 									</center>
 									<div class="card card-custom">
 										<div class="card-body">

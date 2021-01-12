@@ -415,14 +415,12 @@ router.get("/photos", tutorLogin, (req, res) => {
 });
 var rollstatus = false;
 router.get("/addstudent", tutorLogin, (req, res) => {
-  console.log(rollstatus);
   res.render("Tutor/add-student", { tutor: true, rollstatus });
   rollstatus = false;
 });
 
 router.post("/addstudent", (req, res) => {
   tutorHelpers.addStudent(req.body).then((id) => {
-    console.log(id);
     if (id.status != true) {
       tutorHelpers.singleattendance(id);
       let image = req.files.Image;
@@ -435,7 +433,6 @@ router.post("/addstudent", (req, res) => {
       });
     } else {
       rollstatus = true;
-      console.log(rollstatus);
       res.redirect("/tutor/addstudent");
     }
   });
