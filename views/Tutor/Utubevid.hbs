@@ -97,16 +97,16 @@
 		</div>
 	</section>
 
-	   	 <script src="../socket.io/socket.io.js"></script>
+	<script src="../socket.io/socket.io.js"></script>
 	<script>
-		var socket=io();
-		document.getElementById("button").addEventListener("click",function(){
-          var topic=document.getElementById("topic").value;
-		  		  let type="Notes"
-			socket.emit("message",topic,type)
+		var socket = io();
+		document.getElementById("button").addEventListener("click", function () {
+			var topic = document.getElementById("topic").value;
+			let type = "Notes"
+			socket.emit("message", topic, type)
 		})
-			
-		
+
+
 	</script>
 
 	<!-- Vendor JS -->

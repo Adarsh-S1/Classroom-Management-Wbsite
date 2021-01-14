@@ -10,5 +10,6 @@ module.exports = {
   EVENT_COLLECTION: "events",
   PHOTO_COLLECTION: "photos",
   PAID_COLLECTION: "paid",
-  NOTI_COLLECTION:"notification"
+  NOTI_COLLECTION: "notification",
+  HOLIDAY_COLLECTION: "holidays",
 };

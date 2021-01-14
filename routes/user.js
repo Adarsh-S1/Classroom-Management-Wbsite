@@ -217,7 +217,14 @@ router.get("/notes", studentLogin, (req, res) => {
 });
 router.get("/assignments", studentLogin, (req, res) => {
   studentHelpers.viewAssign().then((assign) => {
-    res.render("Student/assignments", { student: true, assign, notifications });
+    studentHelpers.assignMarks(req.session.student._id).then((submarks) => {
+      res.render("Student/assignments", {
+        student: true,
+        assign,
+        notifications,
+        submarks,
+      });
+    });
   });
 });
 router.get("/assignments/:id", studentLogin, (req, res) => {
@@ -226,18 +233,23 @@ router.get("/assignments/:id", studentLogin, (req, res) => {
     res.render("Student/subassign", { student: true, assignId, notifications });
   });
 }),
-  router.post("/assignments/:id", (req, res) => {
+  router.post("/assignments/:id", studentLogin, (req, res) => {
     studentHelpers
       .submitAssignment(req.params.id, req.session.student._id)
       .then((response) => {
-        let file = req.files.file;
-        file.mv("./public/studentAssignment/" + response + ".pdf", (err) => {
-          if (!err) {
-            res.redirect("/assignments");
-          } else {
-            console.log(err);
-          }
-        });
+        console.log(response);
+        if (!response.status) {
+          let file = req.files.file;
+          file.mv("./public/studentAssignment/" + response + ".pdf", (err) => {
+            if (!err) {
+              res.redirect("/assignments");
+            } else {
+              console.log(err);
+            }
+          });
+        } else {
+          res.render("Student/submitted");
+        }
       });
   }),
   router.post("/attendvideo", studentLogin, (req, res) => {

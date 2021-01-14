@@ -37,8 +37,8 @@
 									aria-labelledby="pills-edit-tab">
 									<div class="row">
 										<div class="col-12">
-											<form class="form"  action="/tutor/announcement"
-												method="POST" enctype="multipart/form-data">
+											<form class="form" action="/tutor/announcement" method="POST"
+												enctype="multipart/form-data">
 												<div>
 													<h4 class="box-title text-primary"><i
 															class="ti-user mr-15"></i>ANNOUNCEMENTS</h4>
@@ -49,11 +49,12 @@
 															<div class="form-group">
 																<label>Message</label>
 																<input type="text" class="form-control" name="Message"
-																	id="topic" required onchange="buttonValidation()" required
-																	placeholder="Message">
+																	id="topic" required onchange="buttonValidation()"
+																	required placeholder="Message">
 															</div>
 														</div>
-														<input type="text" name="Date" value="{{date}}" hidden id="" required>
+														<input type="text" name="Date" value="{{date}}" hidden id=""
+															required>
 
 													</div>
 													<div class="row">
@@ -61,7 +62,8 @@
 															<div class="form-group">
 																<label>Description</label>
 																<textarea class="form-control" name="Description"
-																	placeholder="Description" rows="4" required></textarea>
+																	placeholder="Description" rows="4"
+																	required></textarea>
 															</div>
 														</div>
 													</div>
@@ -142,17 +144,19 @@
 <script src="../Template/corenav-master/coreNavigation-1.1.3.js"></script>
 <script src="../Template//vendor_components/jquery-ui/jquery-ui.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/0.8.1/cropper.min.js"></script>
-	   	 <script src="../socket.io/socket.io.js"></script>
-	<script>
-		var socket=io();
-		document.getElementById("button").addEventListener("click",function(){
-          var topic=document.getElementById("topic").value;
-		  		  let type="Announcement"
-			socket.emit("message",topic,type)
-		})
-			
-		
-	</script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+<script src="../socket.io/socket.io.js"></script>
+<script>
+	var socket = io();
+	document.getElementById("button").addEventListener("click", function () {
+		var topic = document.getElementById("topic").value;
+		let type = "Announcement"
+		socket.emit("message", topic, type)
+	})
+
+
+</script>
 <script>
 	let result = document.querySelector('.result'),
 		img_result = document.querySelector('.img-result'),
@@ -219,7 +223,7 @@
 			/(\.jpg)$/i;
 
 		if (!allowedExtensions.exec(filePath)) {
-			alert('WARNING : Upload Photos Only');
+			swal("Error!", "Upload JPG Photos only", "error");
 			fileInput.value = '';
 			return false;
 		} else {
@@ -240,7 +244,7 @@
 			/(\.pdf)$/i;
 
 		if (!allowedExtensions.exec(filePath)) {
-			alert('WARNING : Upload PDF Only');
+			swal("Error!", "Upload PDF only", "error");
 			fileInput.value = '';
 			return false;
 		} else {
@@ -261,7 +265,7 @@
 			/(\.mp4)$/i;
 
 		if (!allowedExtensions.exec(filePath)) {
-			alert('WARNING : Upload Videos Only');
+			swal("Error!", "Upload Videos only", "error");
 			fileInput.value = '';
 			return false;
 		} else {
@@ -302,7 +306,7 @@
 		return document.getElementById(el);
 	}
 
-	function uploadFile() {		
+	function uploadFile() {
 		var file = _("file-input").files[0];
 		var file2 = _("pdf").files[0];
 		var file3 = _("video").files[0];

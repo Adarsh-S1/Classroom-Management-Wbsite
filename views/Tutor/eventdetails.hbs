@@ -27,8 +27,7 @@
                             <h3>{{event.Name}}</h3>
                             <a><img style="margin-top: -4px;" src="/Template/icons/themify-icons/SVG/calendar2.svg"
                                     alt=""> <span> {{event.Date}}</span></a>
-                            <a><img style="margin-top: -4px;" src="/Template/icons/themify-icons/SVG/time.svg" alt="">
-                                <span> 10:00 Am - 3:00 Pm</span></a>
+
 
                             <center><a href="{{pathimg}}" class="MagicThumb"
                                     data-options="expandEasing:cubic-bezier(.09,.63,0,.99);"><img
@@ -47,20 +46,9 @@
                     <div class="col-lg-4">
                         <div class="events-right">
 
-                            <div class="events-address mt-30">
+                            <div style="margin-top: 100px;" class="events-address ">
                                 <ul>
-                                    <li>
-                                        <div class="singel-address">
-                                            <div class="icon">
-                                                <img style="margin-top: -4px;"
-                                                    src="/Template/icons/themify-icons/SVG/time.svg" alt="">
-                                            </div>
-                                            <div class="cont">
-                                                <h6>Time</h6>
-                                                <span>12:00 Am</span>
-                                            </div>
-                                        </div> <!-- singel address -->
-                                    </li>
+
                                     <li>
                                         <div class="singel-address">
                                             <div class="icon">
@@ -75,10 +63,8 @@
                                     </li>
                                 </ul>
                             </div> <!-- events address -->
-                            <center><a style="margin-top : 20px;"
-                                    onclick="return confirm('Do you want to delete {{event.Name}}?')"
-                                    href="/tutor/eventdelete/{{event._id}}"><button
-                                        class="btn btn-success">Delete</button></a></center>
+                            <center><button onclick="delconfirm('{{event._id}}')"
+                                    class="mt-5 btn btn-danger">Delete</button></center>
 
                         </div> <!-- events right -->
                     </div>
@@ -132,3 +118,28 @@
 
 </body>
 <script type="text/javascript" src="/Image enlarge/magicthumb-trial/magicthumb/magicthumb.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+<script>
+    function delconfirm(eventid) {
+        swal({
+            title: "Are you sure?",
+            text: "Once deleted, you will not be able to recover this Event!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    window.location = "/tutor/eventdelete/" + eventid
+                } else {
+                    swal("Your Event is safe!");
+                }
+            });
+    }
+</script>
+<style>
+    .swal-modal .swal-text {
+        text-align: center;
+    }
+</style>

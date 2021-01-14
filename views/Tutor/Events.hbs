@@ -35,8 +35,8 @@
 									aria-labelledby="pills-edit-tab">
 									<div class="row">
 										<div class="col-12">
-											<form class="form"  action="/tutor/event"
-												method="POST" enctype="multipart/form-data">
+											<form class="form" action="/tutor/event" method="POST"
+												enctype="multipart/form-data">
 												<div>
 													<h4 class="box-title text-primary"><i
 															class="ti-user mr-15"></i>EVENTS</h4>
@@ -46,8 +46,8 @@
 
 															<div class="form-group">
 																<label>Event</label>
-																<input type="text" class="form-control" name="Name" required
-																	id="topic" placeholder="Name of the event">
+																<input type="text" class="form-control" name="Name"
+																	required id="topic" placeholder="Name of the event">
 															</div>
 														</div>
 
@@ -57,8 +57,8 @@
 
 															<div class="form-group">
 																<label>Conducting By:</label>
-																<input type="text" class="form-control" name="Person" required
-																	placeholder="Name of the person">
+																<input type="text" class="form-control" name="Person"
+																	required placeholder="Name of the person">
 															</div>
 														</div>
 
@@ -68,8 +68,8 @@
 
 															<div class="form-group">
 																<label>Topic</label>
-																<input type="text" class="form-control" name="Topic" id="topic" required
-																	placeholder="Topic">
+																<input type="text" class="form-control" name="Topic"
+																	id="topic" required placeholder="Topic">
 															</div>
 														</div>
 
@@ -79,7 +79,8 @@
 
 															<div class="form-group">
 																<label>Date</label>
-																<input type="date" class="form-control" name="Date" required>
+																<input type="date" class="form-control" name="Date"
+																	required>
 															</div>
 														</div>
 													</div>
@@ -192,17 +193,19 @@
 <script src="../Template/corenav-master/coreNavigation-1.1.3.js"></script>
 <script src="../Template//vendor_components/jquery-ui/jquery-ui.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/0.8.1/cropper.min.js"></script>
-	   	 <script src="../socket.io/socket.io.js"></script>
-	<script>
-		var socket=io();
-		document.getElementById("button").addEventListener("click",function(){
-          var topic=document.getElementById("topic").value;
-		  		  let type="Event"
-			socket.emit("message",topic,type)
-		})
-			
-		
-	</script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+<script src="../socket.io/socket.io.js"></script>
+<script>
+	var socket = io();
+	document.getElementById("button").addEventListener("click", function () {
+		var topic = document.getElementById("topic").value;
+		let type = "Event"
+		socket.emit("message", topic, type)
+	})
+
+
+</script>
 <script>
 	let result = document.querySelector('.result'),
 		img_result = document.querySelector('.img-result'),
@@ -269,7 +272,7 @@
 			/(\.jpg)$/i;
 
 		if (!allowedExtensions.exec(filePath)) {
-			alert('WARNING : Upload Photos Only');
+			swal("Error!", "Upload JPG Photos only", "error");
 			fileInput.value = '';
 			return false;
 		} else {
@@ -290,7 +293,7 @@
 			/(\.pdf)$/i;
 
 		if (!allowedExtensions.exec(filePath)) {
-			alert('WARNING : Upload PDF Only');
+			swal("Error!", "Upload PDF only", "error");
 			fileInput.value = '';
 			return false;
 		} else {
@@ -311,7 +314,7 @@
 			/(\.mp4)$/i;
 
 		if (!allowedExtensions.exec(filePath)) {
-			alert('WARNING : Upload Videos Only');
+			swal("Error!", "Upload Videos only", "error");
 			fileInput.value = '';
 			return false;
 		} else {

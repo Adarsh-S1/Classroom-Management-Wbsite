@@ -43,11 +43,34 @@
 			<center> <a href="/Announcements/pdf/{{announcement._id}}.pdf "><img
 						style="height: 100px; width: auto; margin-top: 10px;" src="{{pathpdf}}" width="104"
 						height="142"><br></a></center>
-			<center> <a onclick="return confirm('Do you want to delete {{announcement.Message}}?')"
-					href="/tutor/announcedelete/{{announcement._id}}"><button
-						class="btn btn-success">Delete</button></a></center>
+			<center><button onclick="delconfirm('{{announcement._id}}')" class="btn btn-danger">Delete</button></center>
 		</div>
 
 	</section>
 </body>
 <script type="text/javascript" src="/Image enlarge/magicthumb-trial/magicthumb/magicthumb.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+<script>
+	function delconfirm(announceid) {
+		swal({
+			title: "Are you sure?",
+			text: "Once deleted, you will not be able to recover this Announcement!",
+			icon: "warning",
+			buttons: true,
+			dangerMode: true,
+		})
+			.then((willDelete) => {
+				if (willDelete) {
+					window.location = "/tutor/announcedelete/" + announceid
+				} else {
+					swal("Your announcement is safe!");
+				}
+			});
+	}
+</script>
+<style>
+	.swal-modal .swal-text {
+		text-align: center;
+	}
+</style>

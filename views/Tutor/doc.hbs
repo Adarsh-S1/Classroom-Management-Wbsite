@@ -95,6 +95,8 @@
 		</div>
 	</section>
 	<script src="../socket.io/socket.io.js"></script>
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
 	<script>
 		var socket = io();
 		document.getElementById("button").addEventListener("click", function () {
@@ -116,7 +118,7 @@
 				/(\.pdf)$/i;
 
 			if (!allowedExtensions.exec(filePath)) {
-				alert('WARNING : Upload PDF Files Only');
+				swal("Error!", "Upload PDF only", "error");
 				fileInput.value = '';
 				return false;
 			} else {

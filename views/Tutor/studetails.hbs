@@ -173,8 +173,9 @@
                             <div class="card card-custom">
                                 <div class="card-body">
                                     <!--begin: Datatable-->
-                                    <table class="table table-bordered table-hover table-checkable " id="kt_datatable">
-                                        <thead>
+                                    <table class=" table-bordered table-hover table-checkable "
+                                        style="width: 100%; table-layout: fixed;">
+                                        <thead style="line-height: 50px;">
 
                                             <tr>
                                                 <th>
@@ -186,9 +187,7 @@
                                                 <th>
                                                     <center>Mark</center>
                                                 </th>
-                                                <th>
-                                                    <center>Save</center>
-                                                </th>
+
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -204,26 +203,32 @@
                                                                 width="104" height="142"><br><small>Click to download
                                                                 the file</small></center>
                                                 </td>
-                                                <td style="width: 100px;">
-                                                    <center>
-                                                        <input type="number" class="form-control" placeholder="Mark"
-                                                            value="">
-                                                    </center>
-                                                </td>
-                                                <style>
-                                                    input::-webkit-outer-spin-button,
-                                                    input::-webkit-inner-spin-button {
-                                                        -webkit-appearance: none;
-                                                        margin: 0;
-                                                    }
-                                                </style>
                                                 <td>
-                                                    <center> <button type="submit" class="btn btn-success">
-                                                            Save changes
+
+                                                    <center>
+                                                        <input type="number" min="0" max="20"
+                                                            class="text-center form-control" name="Mark"
+                                                            value="{{this.assignments.mark}}" placeholder="? / 20"
+                                                            id="{{this._id}}">
+                                                    </center>
+                                                    <br>
+                                                    <center> <button style="margin-top: -10px; margin-bottom: 10px;"
+                                                            type="submit" class="btn btn-success"
+                                                            onclick="marks('{{this._id}}','{{../stud._id}}')">
+                                                            Submit
                                                         </button></center>
+
                                                 </td>
+
                                             </tr>
                                             {{/each}}
+                                            <style>
+                                                input::-webkit-outer-spin-button,
+                                                input::-webkit-inner-spin-button {
+                                                    -webkit-appearance: none;
+                                                    margin: 0;
+                                                }
+                                            </style>
                                         </tbody>
                                     </table>
                                 </div>
@@ -237,7 +242,30 @@
     </div>
 
 </body>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script>
+
+    function marks(assignid, studid) {
+        var mark = document.getElementById(assignid).value;
+        if (parseInt(mark) <= 20 && parseInt(mark) >= 0) {
+            $.ajax({
+                url: '/tutor/marks',
+                method: 'post',
+                data: {
+                    Mark: mark,
+                    Assign: assignid,
+                    Stud: studid
+                },
+                success: (response) => {
+                    swal("Marks submitted", +response + "/20", "success");
+
+                }
+            })
+        } else {
+            swal(mark + "/20 ?", "Marks must be less than or equal to 20", "error");
+
+        }
+    }
     function attendance(studId) {
         if (new Date().getDay() == 0) {
             alert("Today is a holiday")
@@ -250,9 +278,9 @@
                 method: 'post',
                 success: (response) => {
                     if (response.status) {
-                        alert("Attendance Recorded")
+                        swal("Attendance Recorded!", "", "success");
                     } else {
-                        alert(response)
+                        swal("Attendance Not Recorded!", response, "error");
                     }
                 }
             })

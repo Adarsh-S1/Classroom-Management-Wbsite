@@ -21,14 +21,6 @@
 
 <body class="theme-primary">
 
-	<!-- The social media icon bar -->
-
-
-
-	<!---page Title --->
-
-	<!--Page content -->
-
 	<section style="margin-top: -500px;" class="py-50">
 		<div class="container">
 			<center>
@@ -160,9 +152,8 @@
 													</center>
 												</td>
 												<td>
-													<center> <a
-															onclick="return confirm('Do you want to delete {{this.Topic.Topic}}?')"
-															href="/tutor/delete-assign/{{this._id}}"><img
+													<center> <a style="cursor: pointer;"
+															onclick="delconfirm('{{this._id}}')"><img
 																src="../Studtable/trash-9-24.ico" alt="" srcset=""></a>
 													</center>
 												</td>
@@ -191,7 +182,7 @@
 				/(\.pdf)$/i;
 
 			if (!allowedExtensions.exec(filePath)) {
-				alert('WARNING : Upload PDF Files Only');
+				swal("Error!", "Upload PDF only", "error");
 				fileInput.value = '';
 				return false;
 			} else {
@@ -270,10 +261,11 @@
 	</script>
 	<!-- Vendor JS -->
 	<script src="../Template/js/vendors.min.js"></script>
-	<!-- Corenav Master JavaScript -->
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	<script src="../Template/corenav-master/coreNavigation-1.1.3.js"></script>
 	<script src="../Template/vendor_components/jquery-ui/jquery-ui.min.js"></script>
 	<script src="../socket.io/socket.io.js"></script>
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	<script>
 		var socket = io();
 		document.getElementById("form").onsubmit = function () {
@@ -282,6 +274,22 @@
 			socket.emit("message", topic, type)
 		}
 
-
+		function delconfirm(studid) {
+			swal({
+				title: "Are you sure?",
+				text: "Once deleted, you will not be able to recover this Assignment!",
+				icon: "warning",
+				buttons: true,
+				dangerMode: true,
+			})
+				.then((willDelete) => {
+					if (willDelete) {
+						window.location = "/tutor/delete-assign/" + studid
+					} else {
+						swal("Your Assignment is safe!");
+					}
+				});
+		}
 	</script>
+
 </body>

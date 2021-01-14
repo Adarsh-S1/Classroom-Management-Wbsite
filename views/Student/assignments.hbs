@@ -50,9 +50,9 @@
 									<div style="margin-left: -20px;" class="card card-custom">
 										<div style="margin-left: -10px;" class="card-body">
 											<!--begin: Datatable-->
-											<table class="table table-bordered table-hover table-checkable "
-												id="kt_datatable">
-												<thead>
+											<table class=" table-bordered table-hover table-checkable "
+												style="width: 100%; table-layout: fixed;">
+												<thead style="line-height: 50px;">
 
 													<tr>
 														<th>
@@ -64,9 +64,7 @@
 														<th>
 															<center>File</center>
 														</th>
-														<th>
-															<center>Submit</center>
-														</th>
+
 													</tr>
 												</thead>
 												<tbody>
@@ -87,11 +85,44 @@
 																			style="color: rgb(17, 165, 17);">Click to
 																			download the file</small></center>
 															</center>
-														</td>
-														<td>
+
 															<center> <a href="/assignments/{{this._id}}"><button
 																		class="btn btn-success">Submit</button></a>
 															</center>
+														</td>
+														<td hidden nowrap="nowrap"></td>
+													</tr>
+													{{/each}}
+												</tbody>
+											</table>
+											<center>
+												<div class="page-banner-entry">
+													<h1 style="margin-top: 70px;">SUBMITTED ASSIGNMENTS</h1>
+												</div>
+											</center>
+											<table class=" table-bordered table-hover table-checkable "
+												style="width: 100%; table-layout: fixed;">
+												<thead style="line-height: 50px;">
+													<tr>
+
+														<th>
+															<center>Topic</center>
+														</th>
+
+														<th>
+															<center>Marks</center>
+														</th>
+													</tr>
+												</thead>
+												<tbody>
+													{{#each submarks}}
+													<tr>
+														<td>
+															<center>{{this.topic}}</center>
+														</td>
+
+														<td>
+															<center>{{this.mark}} / 20</center>
 														</td>
 														<td hidden nowrap="nowrap"></td>
 													</tr>

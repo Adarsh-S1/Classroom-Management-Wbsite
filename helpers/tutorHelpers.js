@@ -141,6 +141,29 @@ module.exports = {
             });
         }
       }
+      let holidays = await db
+        .get()
+        .collection(collection.HOLIDAY_COLLECTION)
+        .find()
+        .toArray();
+      console.log(holidays);
+      if (holidays) {
+        for (var i = 0; i < holidays.length; i++) {
+          let holidayObj = {
+            date: holidays[i].Date,
+            month: holidays[i].Date.substring(3, 10),
+            status: "Holiday",
+          };
+          db.get()
+            .collection(collection.ATTENDANCE_COLLECTION)
+            .updateOne(
+              { student: objectId(studId) },
+              {
+                $push: { attendance: holidayObj },
+              }
+            );
+        }
+      }
     });
   },
   getAllStudents: () => {
@@ -360,6 +383,10 @@ module.exports = {
   },
   getstudAttend: (studId) => {
     return new Promise(async (resolve, reject) => {
+      let monthcheck =
+        ("0" + (new Date().getMonth() + 1)).slice(-2) +
+        "-" +
+        new Date().getFullYear();
       let attend = await db
         .get()
         .collection(collection.ATTENDANCE_COLLECTION)
@@ -373,10 +400,15 @@ module.exports = {
           {
             $project: {
               attendate: "$attendance.date",
+              month: "$attendance.month",
               status: "$attendance.status",
             },
           },
+          {
+            $match: { month: monthcheck },
+          },
         ])
+        .sort({ attendate: -1 })
         .toArray();
       resolve(attend);
     });
@@ -599,8 +631,10 @@ module.exports = {
       resolve(paid);
     });
   },
-  addHoliday: (datecheck) => {
+  addHoliday: (datecheck, insertdate) => {
+    console.log(datecheck);
     return new Promise(async (resolve, reject) => {
+      db.get().collection(collection.HOLIDAY_COLLECTION).insertOne(insertdate);
       let attendObj = {
         date: datecheck,
         month: datecheck.substring(3, 10),
@@ -663,6 +697,18 @@ module.exports = {
           }
         }
       }
+    });
+  },
+  subMarks: (mark, assignId, studId) => {
+    return new Promise(async (resolve, reject) => {
+      await db
+        .get()
+        .collection(collection.ASSIGNMENT_COLLECTION)
+        .updateOne(
+          { _id: objectId(assignId), "assignments.student": objectId(studId) },
+          { $set: { "assignments.$.mark": mark } }
+        );
+      resolve(mark);
     });
   },
 };

@@ -105,16 +105,18 @@
 			</div>
 		</div>
 	</section>
-	   	 <script src="../socket.io/socket.io.js"></script>
+	<script src="../socket.io/socket.io.js"></script>
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
 	<script>
-		var socket=io();
-		document.getElementById("button").addEventListener("click",function(){
-          var topic=document.getElementById("topic").value;
-		  		  let type="Notes"
-			socket.emit("message",topic,type)
+		var socket = io();
+		document.getElementById("button").addEventListener("click", function () {
+			var topic = document.getElementById("topic").value;
+			let type = "Notes"
+			socket.emit("message", topic, type)
 		})
-			
-		
+
+
 	</script>
 	<script>
 
@@ -127,7 +129,7 @@
 				/(\.mp4)$/i;
 
 			if (!allowedExtensions.exec(filePath)) {
-				alert('WARNING : Upload VIDEO Files Only');
+				swal("Error!", "Upload Videos only", "error");
 				fileInput.value = '';
 				return false;
 			} else {

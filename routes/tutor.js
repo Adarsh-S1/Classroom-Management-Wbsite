@@ -449,8 +449,8 @@ router.get("/studetails/:id", tutorLogin, async (req, res) => {
   });
 });
 router.get("/editstud/:id", tutorLogin, async (req, res) => {
-  let student = await tutorHelpers.getStudentDetails(req.params.id);
-  res.render("Tutor/Edit-Student", { tutor: true, student });
+  let stud = await tutorHelpers.getStudentDetails(req.params.id);
+  res.render("Tutor/Edit-Student", { tutor: true, stud });
 });
 router.post("/editstud/:id", tutorLogin, (req, res) => {
   let id = req.params.id;
@@ -576,9 +576,17 @@ router.get("/holiday", tutorLogin, (req, res) => {
   res.render("Tutor/holiday", { tutor: true });
 });
 router.post("/holiday", tutorLogin, (req, res) => {
-  tutorHelpers.addHoliday(req.body.Date).then((response) => {
+  tutorHelpers.addHoliday(req.body.Date, req.body).then((response) => {
     res.redirect("/tutor/holiday");
   });
+});
+router.post("/marks", (req, res) => {
+  console.log(req.body);
+  tutorHelpers
+    .subMarks(req.body.Mark, req.body.Assign, req.body.Stud)
+    .then((mark) => {
+      res.json(mark);
+    });
 });
 router.post("/test", (req, res) => {});
 module.exports = router;

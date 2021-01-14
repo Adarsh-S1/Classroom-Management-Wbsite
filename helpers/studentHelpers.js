@@ -113,6 +113,30 @@ module.exports = {
       resolve(assign);
     });
   },
+  assignMarks: (studId) => {
+    return new Promise(async (resolve, reject) => {
+      let assign = await db
+        .get()
+        .collection(collection.ASSIGNMENT_COLLECTION)
+        .aggregate([
+          {
+            $unwind: "$assignments",
+          },
+          {
+            $project: {
+              student: "$assignments.student",
+              mark: "$assignments.mark",
+              topic: "$Topic.Topic",
+            },
+          },
+          {
+            $match: { student: objectId(studId) },
+          },
+        ])
+        .toArray();
+      resolve(assign);
+    });
+  },
   subAssign: (assignId) => {
     return new Promise((resolve, reject) => {
       db.get()
@@ -128,25 +152,33 @@ module.exports = {
       student: id,
       assignment: assid,
     };
-
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
+      let assignmnets = await db
+        .get()
+        .collection(collection.ASSIGNMENT_COLLECTION)
+        .findOne({ _id: objectId(assignId), "assignments.student": id });
       if (
         db
           .get()
           .collection(collection.ASSIGNMENT_COLLECTION)
           .findOne({ _id: objectId(assignId) })
       ) {
-        db.get()
-          .collection(collection.ASSIGNMENT_COLLECTION)
-          .updateOne(
-            { _id: objectId(assignId) },
-            {
-              $push: { assignments: subassignment },
-            }
-          )
-          .then((response) => {
-            resolve(assid);
-          });
+        if (assignmnets) {
+          console.log(assignmnets);
+          resolve({ status: true });
+        } else {
+          db.get()
+            .collection(collection.ASSIGNMENT_COLLECTION)
+            .updateOne(
+              { _id: objectId(assignId) },
+              {
+                $push: { assignments: subassignment },
+              }
+            )
+            .then((response) => {
+              resolve(assid);
+            });
+        }
       }
     });
   },
@@ -327,6 +359,10 @@ module.exports = {
   },
   getfullAttendance: (studId) => {
     return new Promise(async (resolve, reject) => {
+      let month =
+        ("0" + (new Date().getMonth() + 1)).slice(-2) +
+        "-" +
+        new Date().getFullYear();
       let attend = await db
         .get()
         .collection(collection.ATTENDANCE_COLLECTION)
@@ -340,10 +376,15 @@ module.exports = {
           {
             $project: {
               attendate: "$attendance.date",
+              month: "$attendance.month",
               status: "$attendance.status",
             },
           },
+          {
+            $match: { month: month },
+          },
         ])
+        .sort({ attendate: -1 })
         .toArray();
       resolve(attend);
     });
@@ -525,15 +566,15 @@ module.exports = {
             $match: { student: objectId(studId) },
           },
           {
-            $match: { "attendance.month": monthcheck },
-          },
-          {
             $unwind: "$attendance",
           },
           {
             $project: {
               attendance: "$attendance",
             },
+          },
+          {
+            $match: { "attendance.month": monthcheck },
           },
         ])
         .toArray();
@@ -555,15 +596,15 @@ module.exports = {
             $match: { student: objectId(studId) },
           },
           {
-            $match: { "attendance.month": monthcheck },
-          },
-          {
             $unwind: "$attendance",
           },
           {
             $project: {
               attendance: "$attendance",
             },
+          },
+          {
+            $match: { "attendance.month": monthcheck },
           },
         ])
         .toArray();
@@ -585,15 +626,15 @@ module.exports = {
             $match: { student: objectId(studId) },
           },
           {
-            $match: { "attendance.month": monthcheck },
-          },
-          {
             $unwind: "$attendance",
           },
           {
             $project: {
               attendance: "$attendance",
             },
+          },
+          {
+            $match: { "attendance.month": monthcheck },
           },
         ])
         .toArray();
@@ -615,15 +656,15 @@ module.exports = {
             $match: { student: objectId(studId) },
           },
           {
-            $match: { "attendance.month": monthcheck },
-          },
-          {
             $unwind: "$attendance",
           },
           {
             $project: {
               attendance: "$attendance",
             },
+          },
+          {
+            $match: { "attendance.month": monthcheck },
           },
         ])
         .toArray();
@@ -639,15 +680,15 @@ module.exports = {
             $match: { student: objectId(studId) },
           },
           {
-            $match: { "attendance.month": monthcheck },
-          },
-          {
             $unwind: "$attendance",
           },
           {
             $project: {
               attendance: "$attendance",
             },
+          },
+          {
+            $match: { "attendance.month": monthcheck },
           },
         ])
         .toArray();
@@ -685,14 +726,16 @@ module.exports = {
           },
           {
             $project: {
-              date: "$attendance.month",
+              date: "$attendance.date",
+              month: "$attendance.month",
               status: "$attendance.status",
             },
           },
           {
-            $match: { date: date },
+            $match: { month: date },
           },
         ])
+        .sort({ date: -1 })
         .toArray();
       resolve(attend);
     });

@@ -25,7 +25,8 @@
 <body class="theme-primary" id="bg">
 	<div class="page-wraper">
 		<div class="page-content bg-white">
-			<div class="page-banner ovbl-dark" style="background-image:url(../Studtemplate/assets/images/banner/banner3.jpg);">
+			<div class="page-banner ovbl-dark"
+				style="background-image:url(../Studtemplate/assets/images/banner/banner3.jpg);">
 				<div class="container">
 					<div class="page-banner-entry">
 						<h1 class="text-white">NOTES</h1>
@@ -73,10 +74,13 @@
 															</button>
 														</div>
 													</form>
-													<div id="progress" style="display: none;"   class="progress progress-bar-striped active" style="width: 60%;">
-													<progress role="progressbar" id="progressBar" value="0" max="100"
-														style="margin-top: -7.5px; width:1000px; height: 25px;"></progress>
-                                                           </div>
+													<div id="progress" style="display: none;"
+														class="progress progress-bar-striped active"
+														style="width: 60%;">
+														<progress role="progressbar" id="progressBar" value="0"
+															max="100"
+															style="margin-top: -7.5px; width:1000px; height: 25px;"></progress>
+													</div>
 													<h3 id="status"></h3>
 													<p id="loaded_n_total"></p>
 												</div>
@@ -91,7 +95,7 @@
 			</section>
 		</div>
 	</div>
-	
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	<script>
 		function fileValidation() {
 			var fileInput =
@@ -104,7 +108,7 @@
 				/(\.pdf)$/i;
 
 			if (!allowedExtensions.exec(filePath)) {
-				alert('WARNING : Upload PDF Files Only');
+				swal("Error!", "Upload pdf files only", "error");
 				fileInput.value = '';
 				return false;
 			}

@@ -92,9 +92,8 @@
 
 												</td>
 												<td>
-													<center><a
-															onclick="return confirm('Do you want to delete {{this.Topic}}?')"
-															href="/tutor/notesdocdelete/{{this._id}}"><img
+													<center><a style="cursor: pointer;"
+															onclick="docdelconfirm('{{this._id}}')"><img
 																src="../Studtable/trash-9-24.ico" alt="" srcset=""></a>
 													</center>
 												</td>
@@ -150,9 +149,8 @@
 												</td>
 
 												<td>
-													<center><a
-															onclick="return confirm('Do you want to delete {{this.Topic}}?')"
-															href="/tutor/notesviddelete/{{this._id}}"><img
+													<center><a style="cursor: pointer;"
+															onclick="viddelconfirm('{{this._id}}')"><img
 																src="../Studtable/trash-9-24.ico" alt="" srcset=""></a>
 													</center>
 												</td>
@@ -204,10 +202,9 @@
 																src="../Image enlarge/images.png" /></a></center>
 												</td>
 												<td>
-													<center><a
-															onclick="return confirm('Do you want to delete {{this.Topic}}?')"
-															href="/tutor/notesyoudelete/{{this._id}}"><img
-																src="../Studtable/trash-9-24.ico" alt="" srcset=""></a>
+													<center><a style="cursor: pointer;"
+															onclick="youdelconfirm('{{this._id}}')">
+															<img src="../Studtable/trash-9-24.ico" alt="" srcset=""></a>
 													</center>
 												</td>
 												<td hidden nowrap="nowrap"></td>
@@ -224,10 +221,67 @@
 			</div>
 		</div>
 	</div>
-
-	<script src="../Template/js/vendors.min.js"></script>
-	<script src="../Template/corenav-master/coreNavigation-1.1.3.js"></script>
-	<script src="../Template//vendor_components/jquery-ui/jquery-ui.min.js"></script>
-	<script type="text/javascript" src="/Image enlarge/magicthumb-trial/magicthumb/magicthumb.js"></script>
-
 </body>
+<script src="../Template/js/vendors.min.js"></script>
+<script src="../Template/corenav-master/coreNavigation-1.1.3.js"></script>
+<script src="../Template//vendor_components/jquery-ui/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/Image enlarge/magicthumb-trial/magicthumb/magicthumb.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+<script>
+	function docdelconfirm(studid) {
+		swal({
+			title: "Are you sure?",
+			text: "Once deleted, you will not be able to recover this Document!",
+			icon: "warning",
+			buttons: true,
+			dangerMode: true,
+		})
+			.then((willDelete) => {
+				if (willDelete) {
+					window.location = "/tutor/notesdocdelete/" + studid
+				} else {
+					swal("Your Document is safe!");
+				}
+			});
+	}
+
+	function viddelconfirm(studid) {
+		swal({
+			title: "Are you sure?",
+			text: "Once deleted, you will not be able to recover this Video!",
+			icon: "warning",
+			buttons: true,
+			dangerMode: true,
+		})
+			.then((willDelete) => {
+				if (willDelete) {
+					window.location = "/tutor/notesviddelete/" + studid
+				} else {
+					swal("Your Video is safe!");
+				}
+			});
+	}
+
+	function youdelconfirm(studid) {
+		swal({
+			title: "Are you sure?",
+			text: "Once deleted, you will not be able to recover this youtube link!",
+			icon: "warning",
+			buttons: true,
+			dangerMode: true,
+		})
+			.then((willDelete) => {
+				if (willDelete) {
+					window.location = "/tutor/notesyoudelete/" + studid
+				} else {
+					swal("Your youtube link is safe!");
+				}
+			});
+	}
+</script>
+<style>
+	.swal-modal .swal-text {
+		text-align: center;
+	}
+</style>

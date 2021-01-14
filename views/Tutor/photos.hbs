@@ -129,9 +129,8 @@
 					</td>
 
 					<td>
-						<center> <a onclick="return confirm('Do you want to delete {{this.Name}}?')"
-								href="/tutor/delete-photo/{{this._id}}"><img src="../Studtable/trash-9-24.ico" alt=""
-									srcset=""></a>
+						<center> <a style="cursor: pointer;" onclick="delconfirm('{{this._id}}')"><img
+									src="../Studtable/trash-9-24.ico" alt="" srcset=""></a>
 						</center>
 					</td>
 				</tr>
@@ -139,13 +138,36 @@
 			</tbody>
 		</table>
 	</section>
-
-	<script src="../Template/js/vendors.min.js"></script>
-	<script src="../Template/corenav-master/coreNavigation-1.1.3.js"></script>
-	<script src="../Template//vendor_components/jquery-ui/jquery-ui.min.js"></script>
 </body>
+<script src="../Template/js/vendors.min.js"></script>
+<script src="../Template/corenav-master/coreNavigation-1.1.3.js"></script>
+<script src="../Template//vendor_components/jquery-ui/jquery-ui.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
-
+<script>
+	function delconfirm(studid) {
+		swal({
+			title: "Are you sure?",
+			text: "Once deleted, you will not be able to recover this Photo!",
+			icon: "warning",
+			buttons: true,
+			dangerMode: true,
+		})
+			.then((willDelete) => {
+				if (willDelete) {
+					window.location = "/tutor/delete-photo/" + studid
+				} else {
+					swal("Your Photo is safe!");
+				}
+			});
+	}
+</script>
+<style>
+	.swal-modal .swal-text {
+		text-align: center;
+	}
+</style>
 <script>
 
 	function fileValidation() {
@@ -157,7 +179,7 @@
 			/(\.jpg)$/i;
 
 		if (!allowedExtensions.exec(filePath)) {
-			alert('WARNING : Upload Photos Only');
+			swal("Error!", "Upload JPG Photos only", "error");
 			fileInput.value = '';
 			return false;
 		} else {
