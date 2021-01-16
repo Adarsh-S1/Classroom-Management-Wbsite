@@ -926,7 +926,7 @@ module.exports = {
     })
     })
   },
-  getChat:()=>{
+  getChat:()=>{ 
     return new Promise((resolve,reject)=>{
     db.get().collection(collection.CHAT_COLLECTION).find().sort({_id:-1}).toArray().then((response)=>{
       resolve(response)
