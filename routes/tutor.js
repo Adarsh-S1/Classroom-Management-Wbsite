@@ -588,5 +588,10 @@ router.post("/marks", (req, res) => {
       res.json(mark);
     });
 });
+router.get("/chat", tutorLogin, (req, res) => {
+  var sessionexport=req.session.tutor
+  module.exports.SESSIONEXP=sessionexport
+  res.render("Tutor/tutorchat", { tutor: true });
+});
 router.post("/test", (req, res) => {});
 module.exports = router;

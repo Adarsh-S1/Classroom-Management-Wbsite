@@ -2,6 +2,7 @@ var createError = require("http-errors");
 var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
+const studentHelpers = require("./helpers/studentHelpers");
 var logger = require("morgan");
 var http = require("http");
 var usersRouter = require("./routes/user");
@@ -12,7 +13,7 @@ const server = http.createServer(app);
 var io = require("socket.io")(server);
 const collection = require("./config/collections");
 io.on("connection", (socket) => {
-  console.log("New connection_______________");
+  console.log("new COnnection_____________________");
   socket.on("disconnect", () => {
     console.log("Connection Closed");
   });
@@ -32,6 +33,24 @@ io.on("connection", (socket) => {
     db.get().collection(collection.NOTI_COLLECTION).insertOne(objtopi);
     io.emit("topicassign", topic, type, date);
   });
+  studentHelpers.getChat().then((chat)=>{
+    io.emit('output',chat)
+  });
+  socket.on('input',function(data){
+    if(data.type){
+      data.name =tutorRouter.SESSIONEXP.Firstname+" "+tutorRouter.SESSIONEXP.Lastname+"(TUTOR)"
+      let message=data.message
+      studentHelpers.chat(data.name,tutorRouter.SESSIONEXP._id,message)
+      console.log(data);
+      io.emit('output',[data])
+    }else{
+    data.name =usersRouter.SESSIONEXP1.Name
+    let message=data.message
+    studentHelpers.chat(usersRouter.SESSIONEXP1.Name,usersRouter.SESSIONEXP1._id,message)
+    console.log(data);
+    io.emit('output',[data])
+    }
+  })
 });
 
 var fileUpload = require("express-fileupload");
@@ -56,6 +75,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(fileUpload());
 app.use(session({ secret: "Key", cookie: { maxAge: 3600000 } }));
+app.set('socketio', io);
 db.connect((err) => {
   if (err) console.log("connection error" + err);
   else console.log("--------Database Connected--------");

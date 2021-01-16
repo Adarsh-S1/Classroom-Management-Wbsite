@@ -4,6 +4,7 @@ const { response } = require("express");
 const bcrypt = require("bcrypt");
 const objectId = require("mongodb").ObjectID;
 const Razorpay = require("razorpay");
+const { resolve } = require("path");
 const instance = new Razorpay({
   key_id: "rzp_test_pd71wI8aXMt1wf",
   key_secret: "Y6k49kYdekn5xMd9HB5gY50o",
@@ -918,4 +919,18 @@ module.exports = {
       resolve(notifications);
     });
   },
+  chat:(studName,studId,message)=>{
+    return new Promise((resolve,reject)=>{
+    db.get().collection(collection.CHAT_COLLECTION).insertOne({name:studName,id:studId,message:message}).then((response)=>{
+      resolve(response)
+    })
+    })
+  },
+  getChat:()=>{
+    return new Promise((resolve,reject)=>{
+    db.get().collection(collection.CHAT_COLLECTION).find().sort({_id:-1}).toArray().then((response)=>{
+      resolve(response)
+    })
+    })
+  }
 };

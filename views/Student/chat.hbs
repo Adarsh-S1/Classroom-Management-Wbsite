@@ -1,0 +1,101 @@
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<link rel="icon" href="https://www.multipurposethemes.com/admin/eduadmin-template/images/favicon.ico">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
+	<link href="../Studtable/style.bundled1cf.css" rel="stylesheet" type="text/css" />
+	<link rel="stylesheet" type="text/css" href="../Studtemplate/assets/css/style.css">
+	<link rel="stylesheet" href="../Template/css/vendors_css.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+</head>
+
+<body id="bg">
+	<div class="page-wraper">
+		<div class="page-content ">
+			<div class="page-banner ovbl-dark"
+				style="background-image:url(../Studtemplate/assets/images/banner/banner3.jpg);">
+				<div class="container">
+					<div class="page-banner-entry">
+						<h1 class="text-white">CHAT</h1>
+					</div>
+				</div>
+			</div>
+			 <div class="container">
+        <div class="row">
+            <div class="col-md-6 offset-md-3 col-sm-12">
+                    <div id="chat">
+                        <div id="messages" >
+                        </div>
+                    <br>
+                    <textarea id="textarea" class="form-control" placeholder="Enter message..."></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+		</div>
+	</div>
+
+</body>
+<script src="../Template/js/vendors.min.js"></script>
+<script src="../Template/corenav-master/coreNavigation-1.1.3.js"></script>
+<script src="../Template/vendor_components/jquery-ui/jquery-ui.min.js"></script>
+<script src="../socket.io/socket.io.js"></script>
+
+<script>
+            (function(){
+            var element = function(id){
+                return document.getElementById(id);
+            }
+
+            // Get Elements
+            var messages = element('messages');
+            var textarea = element('textarea');
+
+         
+
+            // Connect to socket.io
+            var socket = io();
+            // Check for connection
+            if(socket !== undefined){
+                console.log('Connected to socket...');
+
+                // Handle Output
+                socket.on('output', function(data){
+                    console.log(data);
+                    if(data.length){
+                        for(var x = 0;x < data.length;x++){
+                            // Build out message div
+                            var message = document.createElement('div');
+                            message.setAttribute('class', 'chat-message');
+                            message.textContent = data[x].name+": "+data[x].message;
+                            messages.appendChild(message);
+                            messages.insertBefore(message, messages.firstChild);
+                        }
+                    }
+                });
+
+              
+
+                // Handle Input
+                textarea.addEventListener('keydown', function(event){
+                    if(event.which === 13 && event.shiftKey == false){
+                        // Emit to server input
+                        socket.emit('input', {
+                            message:textarea.value
+                        });
+
+                        event.preventDefault();
+                    }
+                })
+
+                // Handle Chat Clear
+            
+
+           
+            }
+
+        })();
+</script>

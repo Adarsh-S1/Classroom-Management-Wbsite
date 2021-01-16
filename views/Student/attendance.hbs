@@ -8,9 +8,8 @@
 	<link href="../Studtable/style.bundled1cf.css" rel="stylesheet" type="text/css" />
 	<link rel="stylesheet" type="text/css" href="../Studtemplate/assets/css/style.css">
 	<link rel="stylesheet" href="../Template/css/vendors_css.css">
-	<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker.css" rel="stylesheet"
-		type="text/css" />
-
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-datetimepicker/2.7.1/css/bootstrap-material-datetimepicker.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 </head>
 
 <body id="bg">
@@ -30,7 +29,7 @@
 
 					<div class="d-flex flex-column flex-row-fluid" id="kt_wrapper">
 						<center>
-							<h1 style=" font-family: 'Times New Roman', Times, serif;">ATTENDANCE</h1>
+							<h1 style=" font-family: 'Times New Roman', Times, serif; font-size: 30px;">ATTENDANCE</h1>
 						</center>
 						<center>
 							<h4>{{datecheck}}</h4>
@@ -45,26 +44,39 @@
 
 									<center>
 										<form action="/attendmonth" method="POST">
+<p class="help-block"><strong>MONTH PICKER</strong> </p>
 
-											<div class='col-sm-offset-4 col-sm-4'>
-												<div class="form-group">
-													<div class='input-group date' id='datetimepicker1'>
-														<label>Select Date: </label>
-														<div id="datepicker" class="input-group date"
-															data-date-format="mm-yyyy">
-															<input id="date" name="Date" class="form-control"
-																type="text" readonly />
-															<span class="input-group-addon"><i
-																	class="glyphicon glyphicon-calendar"></i></span>
-														</div>
+									<div class='row'>
 
-													</div>
-												</div>
-												<p class="help-block"><strong>Date format:</strong> mm-yyyy</p>
+  <div class='input-field col s6'>
+    <input name="Date" placeholder="MM-YYYY" size="20" type="text" id="datepicker" readonly required/>
+	<style>
+	::-webkit-input-placeholder {
+   text-align: center;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+   text-align: center;  
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+   text-align: center;  
+}
+
+:-ms-input-placeholder {  
+   text-align: center; 
+}
+input {
+    line-height: 30px;
+}
+
+	</style>
+  </div>
+</div>
+<p class="help-block"><strong>Date format:</strong> mm-yyyy</p>
 
 												<button style="margin-bottom: 20px;" class="btn btn-success"
 													type="submit">Submit</button>
-											</div>
 										</form>
 
 									</center>
@@ -140,13 +152,46 @@
 <script src="../Template/js/vendors.min.js"></script>
 <script src="../Template/corenav-master/coreNavigation-1.1.3.js"></script>
 <script src="../Template/vendor_components/jquery-ui/jquery-ui.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-datetimepicker/2.7.1/js/bootstrap-material-datetimepicker.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js"></script>
 <script>
-	$(function () {
-		$("#datepicker").datepicker({
-			autoclose: true,
-			todayHighlight: true
-		}).datepicker('update', new Date());
-	});
+$(document).ready(function() {
+  $("#datepicker").bootstrapMaterialDatePicker({
+    format: "MM-YYYY",
+    lang: "br",
+    time: false
+    //maxDate: moment()
+  });
+});
 
 </script>
+<style>
+	div .dtp-picker,
+div .dtp-actual-num,
+div .dtp-actual-day {
+  display: none
+}
+
+.dtp > .dtp-content > .dtp-date-view > header.dtp-header {
+  height: 40px;
+  background-color: #0080d0;
+}
+
+.dtp .p10 > a {
+  color: #0080d0;
+}
+
+.dtp div.dtp-actual-year {
+  color: #BAE3FF
+}
+
+.dtp div.dtp-date,
+.dtp div.dtp-time {
+  background-color: #03a9f4
+}
+
+.dtp div.dtp-actual-month {
+  margin-bottom: 10px;
+}
+</style>

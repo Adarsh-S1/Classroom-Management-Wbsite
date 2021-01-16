@@ -189,7 +189,7 @@
         <button class="back-to-top fa fa-chevron-up"></button>
     </div>
     <!-- External JavaScripts -->
-
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script type="text/javascript" src="../Image enlarge/magicthumb-trial/magicthumb/magicthumb.js"></script>
     <style>
         .myVideo:hover {
@@ -205,8 +205,14 @@
                 },
                 method: 'post',
                 success: (response) => {
-                    if (response.status) {
-                        console.log("STATUS")
+                   if (response[0].status=="Present" && date==response[0].attendate) {
+                        let date =
+                            ("0" + new Date().getDate()).slice(-2) +
+                            "-" +
+                            ("0" + (new Date().getMonth() + 1)).slice(-2) +
+                            "-" +
+                            new Date().getFullYear();
+                        swal("Attendance recorded", date + " : PRESENT", "success");
                     } else {
                         console.log("hi")
                     }

@@ -26,6 +26,7 @@ const studentLogin = (req, res, next) => {
       notifications = response;
     });
     studentHelpers.attendAllPage();
+    chatuser=req.session.student
     studentHelpers.userTest(req.session.student._id).then((response) => {
       if (response.status) {
         console.log("");
@@ -256,7 +257,8 @@ router.get("/assignments/:id", studentLogin, (req, res) => {
     studentHelpers
       .attendance(req.body, req.session.student._id)
       .then((response) => {
-        res.json({ status: true });
+        console.log(response);
+        res.json(response);
       });
   });
 let datee;
@@ -730,5 +732,11 @@ router.get("/events", studentLogin, (req, res) => {
   tutorHelpers.getEvents().then((events) => {
     res.render("Student/events", { student: true, events, notifications });
   });
+});
+
+router.get("/chat", studentLogin, (req, res) => {
+var sessionexport=req.session.student
+module.exports.SESSIONEXP1=sessionexport
+    res.render("Student/chat", { student: true,  notifications });
 });
 module.exports = router;
