@@ -33,9 +33,7 @@ io.on("connection", (socket) => {
     db.get().collection(collection.NOTI_COLLECTION).insertOne(objtopi);
     io.emit("topicassign", topic, type, date);
   });
-  studentHelpers.getChat().then((chat)=>{
-    io.emit('output',chat)
-  });
+
   socket.on('input',function(data){
     if(data.type){
       data.name =tutorRouter.SESSIONEXP.Firstname+" "+tutorRouter.SESSIONEXP.Lastname+"(TUTOR)"
@@ -64,7 +62,7 @@ app.engine(
   hbs({
     extname: "hbs",
     defaultLayout: "layout",
-    layoutsDir: __dirname + "/views/layout",
+    layoutsDir: __dirname + "/views/Layout",
     partialsDir: __dirname + "/views/Partials/",
   })
 );

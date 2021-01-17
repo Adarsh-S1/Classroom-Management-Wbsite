@@ -11,14 +11,18 @@
     <link rel="stylesheet" href="/Template/css/style.css">
 </head>
 
-<body id="bg">
+<body  id="bg">
 		
-			 <div style="margin-top: -500px;" class="container">
+			 <div style="position: absolute; margin-top: 200px; " class="container">
         <div class="row">
             <div class="col-md-6 offset-md-3 col-sm-12">
                     <div id="chat">
                         <div id="messages" >
                         </div>
+                       {{#each chat}} <div >
+                           {{this.name}} : {{this.message}}
+                        </div>
+          {{/each}}
                     <br>
                     <textarea id="textarea" class="form-control" placeholder="Enter message..."></textarea>
                    <center><p style="color: lightseagreen; margin-top: 5px; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">PRESS ENTER TO SEND A MESSAGE</p></center> 

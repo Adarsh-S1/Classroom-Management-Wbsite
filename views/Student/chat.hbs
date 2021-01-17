@@ -29,6 +29,10 @@
                     <div id="chat">
                         <div id="messages" >
                         </div>
+                                   {{#each chat}} <div >
+                           {{this.name}} : {{this.message}}
+                        </div>
+          {{/each}}
                     <br>
                     <textarea id="textarea" class="form-control" placeholder="Enter message..."></textarea>
                 </div>

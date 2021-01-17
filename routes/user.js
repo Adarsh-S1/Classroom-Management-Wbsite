@@ -737,6 +737,8 @@ router.get("/events", studentLogin, (req, res) => {
 router.get("/chat", studentLogin, (req, res) => {
 var sessionexport=req.session.student
 module.exports.SESSIONEXP1=sessionexport
-    res.render("Student/chat", { student: true,  notifications });
+studentHelpers.getChat().then((chat)=>{
+    res.render("Student/chat", { student: true,  notifications ,chat });
+  });
 });
 module.exports = router;
