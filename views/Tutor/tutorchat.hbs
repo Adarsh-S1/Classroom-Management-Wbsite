@@ -17,12 +17,13 @@
         <div class="row">
             <div class="col-md-6 offset-md-3 col-sm-12">
                     <div id="chat">
-                        <div id="messages" >
-                        </div>
+                        
                        {{#each chat}} <div >
                            {{this.name}} : {{this.message}}
                         </div>
           {{/each}}
+          <div id="messages" >
+                        </div>
                     <br>
                     <textarea id="textarea" class="form-control" placeholder="Enter message..."></textarea>
                    <center><p style="color: lightseagreen; margin-top: 5px; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">PRESS ENTER TO SEND A MESSAGE</p></center> 
@@ -63,9 +64,9 @@
                             // Build out message div
                             var message = document.createElement('div');
                             message.setAttribute('class', 'chat-message');
-                            message.textContent = data[x].name+": "+data[x].message;
+                            message.textContent = data[x].name+" : "+data[x].message;
                             messages.appendChild(message);
-                            messages.insertBefore(message, messages.firstChild);
+                            messages.insertAfter(message, messages.firstChild);
                         }
                     }
                 });
@@ -73,18 +74,21 @@
               
 
                 // Handle Input
+                
                 textarea.addEventListener('keydown', function(event){
                     if(event.which === 13 && event.shiftKey == false){
                         // Emit to server input
+                        if(textarea.value!=''){
                         socket.emit('input', {
                             message:textarea.value,
                             type:"tutor"
                         });
-
+                        }
+                          textarea.value=''
                         event.preventDefault();
                     }
                 })
-
+                
                 // Handle Chat Clear
             
 

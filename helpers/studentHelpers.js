@@ -919,16 +919,16 @@ module.exports = {
       resolve(notifications);
     });
   },
-  chat:(studName,studId,message)=>{
+  chat:(studName,studId,message,date)=>{
     return new Promise((resolve,reject)=>{
-    db.get().collection(collection.CHAT_COLLECTION).insertOne({name:studName,id:studId,message:message}).then((response)=>{
+    db.get().collection(collection.CHAT_COLLECTION).insertOne({name:studName,id:studId,message:message,date:date}).then((response)=>{
       resolve(response)
     })
     })
   },
   getChat:()=>{ 
     return new Promise((resolve,reject)=>{
-    db.get().collection(collection.CHAT_COLLECTION).find().sort({_id:-1}).toArray().then((response)=>{
+    db.get().collection(collection.CHAT_COLLECTION).find().sort({_id:1}).toArray().then((response)=>{
       resolve(response)
     })
     })

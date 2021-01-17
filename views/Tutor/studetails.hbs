@@ -268,7 +268,7 @@
     }
     function attendance(studId) {
         if (new Date().getDay() == 0) {
-            alert("Today is a holiday")
+            swal("HOLIDAY", "Today is a holiday", "error");
         } else {
             $.ajax({
                 url: '/tutor/manualattend',

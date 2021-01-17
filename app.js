@@ -35,16 +35,24 @@ io.on("connection", (socket) => {
   });
 
   socket.on('input',function(data){
+    let date =
+        ("0" + new Date().getDate()).slice(-2) +
+        "-" +
+        ("0" + (new Date().getMonth() + 1)).slice(-2) +
+        "-" +
+        new Date().getFullYear();
     if(data.type){
+      data.date=date
       data.name =tutorRouter.SESSIONEXP.Firstname+" "+tutorRouter.SESSIONEXP.Lastname+"(TUTOR)"
       let message=data.message
-      studentHelpers.chat(data.name,tutorRouter.SESSIONEXP._id,message)
+      studentHelpers.chat(data.name,tutorRouter.SESSIONEXP._id,message,date)
       console.log(data);
       io.emit('output',[data])
     }else{
+    data.date=date
     data.name =usersRouter.SESSIONEXP1.Name
     let message=data.message
-    studentHelpers.chat(usersRouter.SESSIONEXP1.Name,usersRouter.SESSIONEXP1._id,message)
+    studentHelpers.chat(usersRouter.SESSIONEXP1.Name,usersRouter.SESSIONEXP1._id,message,date)
     console.log(data);
     io.emit('output',[data])
     }

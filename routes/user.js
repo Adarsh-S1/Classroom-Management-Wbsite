@@ -549,7 +549,7 @@ router.get("/event/:id", studentLogin, (req, res) => {
 router.get("/success", (req, res) => {
   res.render("Student/success");
 });
-router.get("/failed", (req, res) => {
+router.get("/failed",studentLogin, (req, res) => {
   res.render("Student/failed");
 });
 router.post("/payevent", studentLogin, (req, res) => {
