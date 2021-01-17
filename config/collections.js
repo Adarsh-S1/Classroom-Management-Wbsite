@@ -12,5 +12,5 @@ module.exports = {
   PAID_COLLECTION: "paid",
   NOTI_COLLECTION: "notification",
   HOLIDAY_COLLECTION: "holidays",
-  CHAT_COLLECTION:"chats"
+  CHAT_COLLECTION: "chats",
 };

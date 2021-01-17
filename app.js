@@ -34,29 +34,38 @@ io.on("connection", (socket) => {
     io.emit("topicassign", topic, type, date);
   });
 
-  socket.on('input',function(data){
+  socket.on("input", function (data) {
     let date =
-        ("0" + new Date().getDate()).slice(-2) +
-        "-" +
-        ("0" + (new Date().getMonth() + 1)).slice(-2) +
-        "-" +
-        new Date().getFullYear();
-    if(data.type){
-      data.date=date
-      data.name =tutorRouter.SESSIONEXP.Firstname+" "+tutorRouter.SESSIONEXP.Lastname+"(TUTOR)"
-      let message=data.message
-      studentHelpers.chat(data.name,tutorRouter.SESSIONEXP._id,message,date)
+      ("0" + new Date().getDate()).slice(-2) +
+      "-" +
+      ("0" + (new Date().getMonth() + 1)).slice(-2) +
+      "-" +
+      new Date().getFullYear();
+    if (data.type) {
+      data.date = date;
+      data.name =
+        tutorRouter.SESSIONEXP.Firstname +
+        " " +
+        tutorRouter.SESSIONEXP.Lastname +
+        "(TUTOR)";
+      let message = data.message;
+      studentHelpers.chat(data.name, tutorRouter.SESSIONEXP._id, message, date);
       console.log(data);
-      io.emit('output',[data])
-    }else{
-    data.date=date
-    data.name =usersRouter.SESSIONEXP1.Name
-    let message=data.message
-    studentHelpers.chat(usersRouter.SESSIONEXP1.Name,usersRouter.SESSIONEXP1._id,message,date)
-    console.log(data);
-    io.emit('output',[data])
+      io.emit("output", [data]);
+    } else {
+      data.date = date;
+      data.name = usersRouter.SESSIONEXP1.Name;
+      let message = data.message;
+      studentHelpers.chat(
+        usersRouter.SESSIONEXP1.Name,
+        usersRouter.SESSIONEXP1._id,
+        message,
+        date
+      );
+      console.log(data);
+      io.emit("output", [data]);
     }
-  })
+  });
 });
 
 var fileUpload = require("express-fileupload");
@@ -81,7 +90,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(fileUpload());
 app.use(session({ secret: "Key", cookie: { maxAge: 3600000 } }));
-app.set('socketio', io);
+app.set("socketio", io);
 db.connect((err) => {
   if (err) console.log("connection error" + err);
   else console.log("--------Database Connected--------");

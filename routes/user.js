@@ -26,7 +26,7 @@ const studentLogin = (req, res, next) => {
       notifications = response;
     });
     studentHelpers.attendAllPage();
-    chatuser=req.session.student
+    chatuser = req.session.student;
     studentHelpers.userTest(req.session.student._id).then((response) => {
       if (response.status) {
         console.log("");
@@ -549,7 +549,7 @@ router.get("/event/:id", studentLogin, (req, res) => {
 router.get("/success", (req, res) => {
   res.render("Student/success");
 });
-router.get("/failed",studentLogin, (req, res) => {
+router.get("/failed", studentLogin, (req, res) => {
   res.render("Student/failed");
 });
 router.post("/payevent", studentLogin, (req, res) => {
@@ -735,10 +735,10 @@ router.get("/events", studentLogin, (req, res) => {
 });
 
 router.get("/chat", studentLogin, (req, res) => {
-var sessionexport=req.session.student
-module.exports.SESSIONEXP1=sessionexport
-studentHelpers.getChat().then((chat)=>{
-    res.render("Student/chat", { student: true,  notifications ,chat });
+  var sessionexport = req.session.student;
+  module.exports.SESSIONEXP1 = sessionexport;
+  studentHelpers.getChat().then((chat) => {
+    res.render("Student/chat", { student: true, notifications, chat });
   });
 });
 module.exports = router;

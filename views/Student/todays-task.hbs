@@ -205,7 +205,7 @@
                 },
                 method: 'post',
                 success: (response) => {
-                   if (response[0].status=="Present" && date==response[0].attendate) {
+                    if (response[0].status == "Present" && date == response[0].attendate) {
                         let date =
                             ("0" + new Date().getDate()).slice(-2) +
                             "-" +

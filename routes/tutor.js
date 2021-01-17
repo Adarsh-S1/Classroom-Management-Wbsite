@@ -589,10 +589,10 @@ router.post("/marks", (req, res) => {
     });
 });
 router.get("/chat", tutorLogin, (req, res) => {
-  var sessionexport=req.session.tutor
-  module.exports.SESSIONEXP=sessionexport
-  studentHelpers.getChat().then((chat)=>{
-    res.render("Tutor/tutorchat", { tutor: true ,chat});
+  var sessionexport = req.session.tutor;
+  module.exports.SESSIONEXP = sessionexport;
+  studentHelpers.getChat().then((chat) => {
+    res.render("Tutor/tutorchat", { tutor: true, chat });
   });
 });
 router.post("/test", (req, res) => {});
