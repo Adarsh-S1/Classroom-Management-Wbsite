@@ -13,12 +13,17 @@ const server = http.createServer(app);
 var io = require("socket.io")(server);
 const collection = require("./config/collections");
 io.on("connection", (socket) => {
-  console.log("new COnnection_____________________");
+  socket.on(usersRouter.SESSIONID, function (data) {
+    console.log(data.chatId,"Coming from browser");
+    console.log(usersRouter.CHATID,"Com ing from router");
+    data.name = usersRouter.SESSIONEXP1.Name;
+    studentHelpers.pvtChat(usersRouter.SESSIONEXP1.Name,data.message,data.chatId,data.userId)
+    io.emit(usersRouter.CHATID, [data]);
+  })
   socket.on("disconnect", () => {
     console.log("Connection Closed");
   });
   socket.on("message", (topic, type) => {
-    console.log(type);
     let date =
       ("0" + new Date().getDate()).slice(-2) +
       "-" +
@@ -48,9 +53,9 @@ io.on("connection", (socket) => {
         " " +
         tutorRouter.SESSIONEXP.Lastname +
         "(TUTOR)";
-      let message = data.message;
       studentHelpers.chat(data.name, tutorRouter.SESSIONEXP._id, message, date);
       console.log(data);
+      let message = data.message
       io.emit("output", [data]);
     } else {
       data.date = date;
@@ -65,7 +70,9 @@ io.on("connection", (socket) => {
       console.log(data);
       io.emit("output", [data]);
     }
+    
   });
+
 });
 
 var fileUpload = require("express-fileupload");
@@ -103,7 +110,6 @@ app.use(function (req, res, next) {
   next(createError(404));
 });
 
-// error handler
 app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;

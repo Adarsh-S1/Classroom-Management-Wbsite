@@ -38,8 +38,11 @@
 	<link rel="stylesheet" type="text/css" href="../Studtemplate/assets/vendors/revolution/css/navigation.css">
 
 </head>
-
+{{#if status}}
+	<body id="bg" onload="notify()">
+		{{else}}	
 <body id="bg">
+			{{/if}}
 
 	<div class="page-wraper">
 		<header class="header rs-nav header-transparent">
@@ -177,10 +180,8 @@
 
 					</div><!-- END REVOLUTION SLIDER -->
 				</div>
-
-
-
 			</div>
+			
 			<div style="margin-bottom: -130px;" class="scroll">
 
 				<a href="#schedule">
@@ -247,6 +248,7 @@
 						</div>
 					</div>
 				</div>
+				
 				<!-- Recent News -->
 				<div class="section-area section-sp2">
 					<div class="container">
@@ -632,6 +634,7 @@
 
 	<script
 		src="../Studtemplate/assets/vendors/revolution/js/extensions/revolution.extension.slideanims.min.js"></script>
+		<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 	<script>
 		jQuery(document).ready(function () {
@@ -657,6 +660,13 @@
 				});
 			}
 		});	
+	function notify(){
+		setTimeout(alertFunc, 3000);
+}
+function alertFunc(){
+	swal("TODAYS ATTENDANCE!", "Watch todays class to mark the attendance!")	
+
+}
 	</script>
 </body>
 

@@ -47,16 +47,41 @@ router.get("/", (req, res) => {
 });
 router.get("/student", studentLogin, (req, res) => {
   let stud = req.session.student;
+  let sessionId = req.session.student._id;
+  module.exports.SESSIONID = sessionId;
   studentHelpers.attendhome(req.session.student._id).then((attendance) => {
     tutorHelpers.getEvents().then((events) => {
       tutorHelpers.getAnnouncements().then((announcement) => {
-        res.render("Student/Stud-home", {
-          stud,
-          events,
-          attendance,
-          announcement,
-          notifications,
-        });
+        studentHelpers
+          .attendancenotify(req.session.student._id)
+          .then((status) => {
+            if (status.status == true) {
+              console.log(
+                status.status,
+                "_____________________________________________"
+              );
+              res.render("Student/Stud-home", {
+                stud,
+                events,
+                attendance,
+                announcement,
+                notifications,
+                status,
+              });
+            } else {
+              console.log(
+                status.status,
+                "---------------------------------------------------"
+              );
+              res.render("Student/Stud-home", {
+                stud,
+                events,
+                attendance,
+                announcement,
+                notifications,
+              });
+            }
+          });
       });
     });
   });
@@ -738,7 +763,28 @@ router.get("/chat", studentLogin, (req, res) => {
   var sessionexport = req.session.student;
   module.exports.SESSIONEXP1 = sessionexport;
   studentHelpers.getChat().then((chat) => {
-    res.render("Student/chat", { student: true, notifications, chat });
+    tutorHelpers.getAllStudents().then((stud) => {
+      res.render("Student/chat", { student: true, notifications, chat, stud });
+    });
+  });
+});
+router.get("/pvtchat/:id", studentLogin, (req, res) => {
+  let studId = req.session.student._id;
+  let chatId = req.params.id;
+  module.exports.CHATID = req.params.id;
+  tutorHelpers.getAllStudents().then((stud) => {
+    studentHelpers
+      .getPvtChat(req.session.student._id, req.params.id)
+      .then((chat) => {
+        res.render("Student/pvtchat", {
+          student: true,
+          notifications,
+          stud,
+          studId,
+          chatId,
+          chat
+        });
+      });
   });
 });
 module.exports = router;

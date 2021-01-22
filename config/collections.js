@@ -13,4 +13,5 @@ module.exports = {
   NOTI_COLLECTION: "notification",
   HOLIDAY_COLLECTION: "holidays",
   CHAT_COLLECTION: "chats",
+  PVT_CHAT_COLLECTION: "pvtchats"
 };

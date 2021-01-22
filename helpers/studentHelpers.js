@@ -929,6 +929,21 @@ module.exports = {
         });
     });
   },
+  pvtChat: (name, message, chatId, studId) => {
+    return new Promise((resolve, reject) => {
+      db.get()
+        .collection(collection.PVT_CHAT_COLLECTION)
+        .insertOne({
+          name: name,
+          studId: objectId(studId),
+          chatId: objectId(chatId),
+          message: message,
+        })
+        .then((response) => {
+          resolve(response);
+        });
+    });
+  },
   getChat: () => {
     return new Promise((resolve, reject) => {
       db.get()
@@ -938,6 +953,73 @@ module.exports = {
         .toArray()
         .then((response) => {
           resolve(response);
+        });
+    });
+  },
+  getPvtChat: (studId, chatId) => {
+    console.log("STUD ID_______________", studId);
+    console.log("CHAT ID_______________", chatId);
+    return new Promise((resolve, reject) => {
+      db.get()
+        .collection(collection.PVT_CHAT_COLLECTION)
+        .aggregate([
+          {
+            $match: {
+              $or: [
+                {
+                  studId: objectId(studId),
+                  chatId: objectId(chatId),
+                },
+                {
+                  studId: objectId(chatId),
+                  chatId: objectId(studId),
+                },
+              ],
+            },
+          },
+        ])
+        .toArray()
+        .then((response) => {
+          console.log(response);
+          resolve(response);
+        });
+    });
+  },
+  attendancenotify: (studId) => {
+    return new Promise((resolve, reject) => {
+      let datecheck =
+        ("0" + new Date().getDate()).slice(-2) +
+        "-" +
+        ("0" + (new Date().getMonth() + 1)).slice(-2) +
+        "-" +
+        new Date().getFullYear();
+      db.get()
+        .collection(collection.ATTENDANCE_COLLECTION)
+        .aggregate([
+          {
+            $match: { student: objectId(studId) },
+          },
+          {
+            $unwind: "$attendance",
+          },
+          {
+            $project: {
+              attendate: "$attendance.date",
+              status: "$attendance.status",
+            },
+          },
+          {
+            $match: { attendate: datecheck },
+          },
+        ])
+        .toArray()
+        .then((response) => {
+          if (response[0].status == "Absent") {
+            console.log(response);
+            resolve({ status: true });
+          } else {
+            resolve({ status: false });
+          }
         });
     });
   },

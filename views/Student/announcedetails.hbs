@@ -43,19 +43,28 @@
 					</div>
 				</div>
 			</div>
-			<center><a href="{{pathimg}}" class="MagicThumb"
-					data-options="expandEasing:cubic-bezier(.09,.63,0,.99);"><img src="{{pathimg}}" /></a></center>
-			<center><a href="{{announcement.im}}" class="MagicThumb"
-					data-options="expandEasing:cubic-bezier(.09,.63,0,.99);"><img src="{{announcement.im}}"
-						id="img" /></a></center>
-			<center class="mt-5"><a href="../Announcements/video/{{announcement._id}}.mp4" data-options="hint:always;"
-					class="MagicThumb"></a></center>
-			<center> <a href="../Announcements/pdf/{{announcement._id}}.pdf "><img
-						style="height: 100px; width: auto; margin-top: 10px;" src="{{pathpdf}}" alt="W3Schools"
-						width="104" height="142"><br></a></center>
-
+			<div class="row">
+				<div class="col-md-3">
+					<center><a href="{{pathimg}}" class="MagicThumb"
+							data-options="expandEasing:cubic-bezier(.09,.63,0,.99);"><img src="{{pathimg}}" /></a>
+					</center>
+				</div>
+				<div class="col-md-3">
+					<center><a href="{{announcement.im}}" class="MagicThumb"
+							data-options="expandEasing:cubic-bezier(.09,.63,0,.99);"><img src="{{announcement.im}}"
+								id="img" /></a></center>
+				</div>
+				<div class="col-md-3">
+					<center><a style="max-width: 100%;" href="../Announcements/video/{{announcement._id}}.mp4"
+							data-options="hint:always;" class="MagicThumb"></a></center>
+				</div>
+				<div class="col-md-3">
+					<center> <a href="../Announcements/pdf/{{announcement._id}}.pdf "><img
+								style="height: 100px; width: auto; margin-top: 10px;" src="{{pathpdf}}" alt="W3Schools"
+								width="104" height="142"><br></a></center>
+				</div>
+			</div>
 		</div>
-
 	</section>
 </body>
 <script type="text/javascript" src="/Image enlarge/magicthumb-trial/magicthumb/magicthumb.js"></script>

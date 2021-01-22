@@ -428,17 +428,7 @@
 .menu-links .nav > li:hover > a {
     color: #EFBB20;
 }
-.menu-links .nav > li:hover > a:after {
-    content: "";
-    width: 10px;
-    height: 10px;
-    background: #fff;
-    top: 85%;
-    position: absolute;
-    left: 30px;
-    transform: rotate(45deg);
-    z-index: 11;
-}
+
 .menu-links .nav > li:hover > .sub-menu,
 .menu-links .nav > li:hover > .mega-menu {
     opacity: 1;
@@ -1019,7 +1009,8 @@
 .header-transparent .menu-links .nav > li > a,
 .header-transparent .secondary-menu .btn-link,
 .header-transparent .navbar-toggler{
-    color: #fff;
+	color: #fff;
+	padding-left: 9px;
 }
 .header-transparent .secondary-menu .btn-link:hover{
 	color:var(--primary);

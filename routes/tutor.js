@@ -581,7 +581,6 @@ router.post("/holiday", tutorLogin, (req, res) => {
   });
 });
 router.post("/marks", (req, res) => {
-  console.log(req.body);
   tutorHelpers
     .subMarks(req.body.Mark, req.body.Assign, req.body.Stud)
     .then((mark) => {

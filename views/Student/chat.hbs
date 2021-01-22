@@ -24,8 +24,15 @@
                 </div>
             </div>
             <div class="container">
-                <div class="row">
-                    <div class="col-md-6 offset-md-3 col-sm-12">
+        
+                <div class="mt-5 row">
+                                        <div class="col-md-4 col-sm-6">
+                                        {{#each stud}}
+                                <a href="/pvtchat/{{this._id}}"><p>{{this.Name}}</p></a>
+{{/each}}
+                     </div>
+               
+                    <div class="col-md-8  col-sm-6">
                         <div id="chat">
 
                             {{#each chat}} <div>
@@ -106,12 +113,6 @@
                     event.preventDefault();
                 }
             })
-
-            // Handle Chat Clear
-
-
-
         }
-
     })();
 </script>
