@@ -957,8 +957,7 @@ module.exports = {
     });
   },
   getPvtChat: (studId, chatId) => {
-    console.log("STUD ID_______________", studId);
-    console.log("CHAT ID_______________", chatId);
+
     return new Promise((resolve, reject) => {
       db.get()
         .collection(collection.PVT_CHAT_COLLECTION)
@@ -980,7 +979,6 @@ module.exports = {
         ])
         .toArray()
         .then((response) => {
-          console.log(response);
           resolve(response);
         });
     });
@@ -1023,4 +1021,28 @@ module.exports = {
         });
     });
   },
+  findPvtChat:(studId)=>{
+    return new Promise((resolve,reject)=>{
+      db.get().collection(collection.STUDENT_COLLECTION).findOne({_id:objectId(studId)}).then((response)=>{
+        resolve(response)
+      })
+    })
+  },
+  getAllStudentsChat: (studId) => {
+    return new Promise(async (resolve, reject) => {
+      let students = await db
+        .get()
+        .collection(collection.STUDENT_COLLECTION)
+        .find()
+        .sort({ Rollno: 1 })
+        .toArray();
+        for(var i=0;i<students.length;i++){
+          if(students[i]._id==studId){
+            students.splice(i, i);
+            break;
+          }
+        }
+      resolve(students);
+    });
+  }
 };

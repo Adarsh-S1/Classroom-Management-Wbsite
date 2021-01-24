@@ -3,6 +3,7 @@ var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 const studentHelpers = require("./helpers/studentHelpers");
+const tutorHelpers = require("./helpers/tutorHelpers");
 var logger = require("morgan");
 var http = require("http");
 var usersRouter = require("./routes/user");
@@ -13,15 +14,16 @@ const server = http.createServer(app);
 var io = require("socket.io")(server);
 const collection = require("./config/collections");
 io.on("connection", (socket) => {
-  socket.on(usersRouter.SESSIONID, function (data) {
-    console.log(data.chatId,"Coming from browser");
-    console.log(usersRouter.CHATID,"Com ing from router");
-    data.name = usersRouter.SESSIONEXP1.Name;
-    studentHelpers.pvtChat(usersRouter.SESSIONEXP1.Name,data.message,data.chatId,data.userId)
-    io.emit(usersRouter.CHATID, [data]);
-  })
   socket.on("disconnect", () => {
     console.log("Connection Closed");
+  });
+
+  socket.on("pvtchat", async (data) => {
+    await studentHelpers.findPvtChat(data.userId).then((details) => {
+      data.name = details.Name;
+    });
+    studentHelpers.pvtChat(data.name, data.message, data.chatId, data.userId);
+    io.emit(data.chatId, [data]);
   });
   socket.on("message", (topic, type) => {
     let date =
@@ -39,7 +41,8 @@ io.on("connection", (socket) => {
     io.emit("topicassign", topic, type, date);
   });
 
-  socket.on("input", function (data) {
+  socket.on("input", async (data) => {
+    let details;
     let date =
       ("0" + new Date().getDate()).slice(-2) +
       "-" +
@@ -47,37 +50,31 @@ io.on("connection", (socket) => {
       "-" +
       new Date().getFullYear();
     if (data.type) {
+      await tutorHelpers.findPvtChat(data.tutorId).then((datamsg) => {
+        details = datamsg;
+      });
       data.date = date;
-      data.name =
-        tutorRouter.SESSIONEXP.Firstname +
-        " " +
-        tutorRouter.SESSIONEXP.Lastname +
-        "(TUTOR)";
-      studentHelpers.chat(data.name, tutorRouter.SESSIONEXP._id, message, date);
-      console.log(data);
-      let message = data.message
+      data.name = details.Firstname + " " + details.Lastname + " (TUTOR)";
+      let message = data.message;
+      studentHelpers.chat(data.name, details._id, message, date);
       io.emit("output", [data]);
     } else {
+      await studentHelpers.findPvtChat(data.userId).then((datamsg) => {
+        details = datamsg;
+      });
       data.date = date;
-      data.name = usersRouter.SESSIONEXP1.Name;
+      data.name = details.Name;
       let message = data.message;
-      studentHelpers.chat(
-        usersRouter.SESSIONEXP1.Name,
-        usersRouter.SESSIONEXP1._id,
-        message,
-        date
-      );
-      console.log(data);
+      studentHelpers.chat(details.Name, details._id, message, date);
       io.emit("output", [data]);
     }
-    
   });
-
 });
 
 var fileUpload = require("express-fileupload");
 var db = require("./config/connection");
 var session = require("express-session");
+const { ObjectId } = require("mongodb");
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "hbs");

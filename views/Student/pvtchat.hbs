@@ -83,9 +83,8 @@
         textarea.addEventListener('keydown', function (event) {
             if (event.which === 13 && event.shiftKey == false) {
                 if (textarea.value !== '') {
-                    socket.emit(userId, { message: textarea.value, userId: userId, chatId: chatId })
-                     socket.emit(chatId, { message: textarea.value, userId: userId, chatId: chatId })
-
+                      socket.emit('pvtchat', { message: textarea.value, userId: userId, chatId: chatId })
+        
                 }
                 textarea.value = ''
                 event.preventDefault();
@@ -100,7 +99,7 @@
                     message.setAttribute('class', 'chat-pvtmessage');
                     message.textContent = data[x].name + " : " + data[x].message;
                     messages.appendChild(message);
-                    
+
                 }
             }
         });
@@ -113,7 +112,7 @@
                     message.setAttribute('class', 'chat-pvtmessage');
                     message.textContent = data[x].name + " : " + data[x].message;
                     messages.appendChild(message);
-                    
+
                 }
             }
         });

@@ -24,14 +24,16 @@
                 </div>
             </div>
             <div class="container">
-        
+                <input type="text" value="{{stuDetails._id}}" id="userId" hidden>
                 <div class="mt-5 row">
-                                        <div class="col-md-4 col-sm-6">
-                                        {{#each stud}}
-                                <a href="/pvtchat/{{this._id}}"><p>{{this.Name}}</p></a>
-{{/each}}
-                     </div>
-               
+                    <div class="col-md-4 col-sm-6">
+                        {{#each stud}}
+                        <a href="/pvtchat/{{this._id}}">
+                            <p>{{this.Name}}</p>
+                        </a>
+                        {{/each}}
+                    </div>
+
                     <div class="col-md-8  col-sm-6">
                         <div id="chat">
 
@@ -73,18 +75,15 @@
         // Get Elements
         var messages = element('messages');
         var textarea = element('textarea');
-
-
+        var userId = element('userId').value
 
         // Connect to socket.io
         var socket = io();
         // Check for connection
         if (socket !== undefined) {
             console.log('Connected to socket...');
-
             // Handle Output
             socket.on('output', function (data) {
-                console.log(data);
                 if (data.length) {
                     for (var x = 0; x < data.length; x++) {
                         // Build out message div
@@ -106,7 +105,8 @@
                     // Emit to server input
                     if (textarea.value !== '') {
                         socket.emit('input', {
-                            message: textarea.value
+                            message: textarea.value,
+                            userId:userId
                         });
                     }
                     textarea.value = ''

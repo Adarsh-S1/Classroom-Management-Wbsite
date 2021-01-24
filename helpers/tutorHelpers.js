@@ -4,7 +4,6 @@ const { response } = require("express");
 const bcrypt = require("bcrypt");
 const { log } = require("handlebars");
 var objectId = require("mongodb").ObjectID;
-const collections = require("../config/collections");
 
 module.exports = {
   tutorRegister: (tutor) => {
@@ -146,7 +145,6 @@ module.exports = {
         .collection(collection.HOLIDAY_COLLECTION)
         .find()
         .toArray();
-      console.log(holidays);
       if (holidays) {
         for (var i = 0; i < holidays.length; i++) {
           let holidayObj = {
@@ -632,7 +630,6 @@ module.exports = {
     });
   },
   addHoliday: (datecheck, insertdate) => {
-    console.log(datecheck);
     return new Promise(async (resolve, reject) => {
       db.get().collection(collection.HOLIDAY_COLLECTION).insertOne(insertdate);
       let attendObj = {
@@ -711,4 +708,11 @@ module.exports = {
       resolve(mark);
     });
   },
+  findPvtChat:(tutorId)=>{
+    return new Promise((resolve,reject)=>{
+      db.get().collection(collection.TUTOR_COLLECTION).findOne({_id:objectId(tutorId)}).then((response)=>{
+        resolve(response)
+      })
+    })
+  }
 };

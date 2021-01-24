@@ -12,7 +12,7 @@
 </head>
 
 <body id="bg">
-
+      <input type="text" value="{{tutDetails._id}}" id="tutorId" hidden>
     <div style="position: absolute; margin-top: 200px; " class="container">
         <div class="row">
             <div class="col-md-6 offset-md-3 col-sm-12">
@@ -51,9 +51,7 @@
         // Get Elements
         var messages = element('messages');
         var textarea = element('textarea');
-
-
-
+        var id=element('tutorId').value
         // Connect to socket.io
         var socket = io();
         // Check for connection
@@ -62,7 +60,6 @@
 
             // Handle Output
             socket.on('output', function (data) {
-                console.log(data);
                 if (data.length) {
                     for (var x = 0; x < data.length; x++) {
                         // Build out message div
@@ -85,7 +82,8 @@
                     if (textarea.value != '') {
                         socket.emit('input', {
                             message: textarea.value,
-                            type: "tutor"
+                            type: "tutor",
+                            tutorId:id
                         });
                     }
                     textarea.value = ''

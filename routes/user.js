@@ -56,10 +56,7 @@ router.get("/student", studentLogin, (req, res) => {
           .attendancenotify(req.session.student._id)
           .then((status) => {
             if (status.status == true) {
-              console.log(
-                status.status,
-                "_____________________________________________"
-              );
+       
               res.render("Student/Stud-home", {
                 stud,
                 events,
@@ -69,10 +66,7 @@ router.get("/student", studentLogin, (req, res) => {
                 status,
               });
             } else {
-              console.log(
-                status.status,
-                "---------------------------------------------------"
-              );
+           
               res.render("Student/Stud-home", {
                 stud,
                 events,
@@ -263,7 +257,6 @@ router.get("/assignments/:id", studentLogin, (req, res) => {
     studentHelpers
       .submitAssignment(req.params.id, req.session.student._id)
       .then((response) => {
-        console.log(response);
         if (!response.status) {
           let file = req.files.file;
           file.mv("./public/studentAssignment/" + response + ".pdf", (err) => {
@@ -282,7 +275,6 @@ router.get("/assignments/:id", studentLogin, (req, res) => {
     studentHelpers
       .attendance(req.body, req.session.student._id)
       .then((response) => {
-        console.log(response);
         res.json(response);
       });
   });
@@ -297,7 +289,6 @@ router.get("/attendate", studentLogin, async (req, res) => {
     req.session.student._id
   );
   let date = datee;
-  console.log(datee);
   studentHelpers
     .totalMonthDayPresent(req.session.student._id, date)
     .then((days) => {
@@ -697,7 +688,6 @@ router.post("/paypal", studentLogin, (req, res) => {
   };
 
   paypal.payment.create(create_payment_json, function (error, payment) {
-    console.log(payment);
     if (error) {
       console.log(error);
       res.redirect("/failed");
@@ -733,7 +723,6 @@ router.get("/paypalsuccess", studentLogin, (req, res) => {
         console.log(error);
         res.redirect("/failed");
       } else {
-        console.log(payment);
         studentHelpers
           .eventBook(
             payment.transactions[0].description,
@@ -760,18 +749,16 @@ router.get("/events", studentLogin, (req, res) => {
 });
 
 router.get("/chat", studentLogin, (req, res) => {
-  var sessionexport = req.session.student;
-  module.exports.SESSIONEXP1 = sessionexport;
   studentHelpers.getChat().then((chat) => {
-    tutorHelpers.getAllStudents().then((stud) => {
-      res.render("Student/chat", { student: true, notifications, chat, stud });
+    studentHelpers.getAllStudentsChat(req.session.student._id).then((stud) => {
+      res.render("Student/chat", { student: true, notifications, chat, stud ,stuDetails:req.session.student});
     });
   });
 });
 router.get("/pvtchat/:id", studentLogin, (req, res) => {
   let studId = req.session.student._id;
   let chatId = req.params.id;
-  module.exports.CHATID = req.params.id;
+  module.exports.CHATID = req.params.id,
   tutorHelpers.getAllStudents().then((stud) => {
     studentHelpers
       .getPvtChat(req.session.student._id, req.params.id)
